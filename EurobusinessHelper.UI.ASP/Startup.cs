@@ -1,3 +1,5 @@
+using System;
+using EurobusinessHelper.Domain.Models.Config;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
@@ -14,18 +16,37 @@ namespace EurobusinessHelper.UI.ASP
 {
     public class Startup
     {
+        private AppConfig _appConfig;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _appConfig = Configuration.GetSection(nameof(AppConfig)).Get<AppConfig>();
         }
-
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+            switch (_appConfig.AuthenticationType)
+            {
+                case AuthenticationType.Microsoft:
+                    services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                        .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+                    break;
+                case AuthenticationType.Google:
+                    services.AddAuthentication()
+                        .AddGoogle(options =>
+                        {
+                            options.ClientId = Configuration["GoogleAuth:ClientId"];
+                            options.ClientSecret = Configuration["GoogleAuth:ClientSecret"];
+                        });
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_appConfig.AuthenticationType));
+            }
+            
+
+            services.InjectDependencies(Configuration);
             
             services
                 .AddControllers(options =>
