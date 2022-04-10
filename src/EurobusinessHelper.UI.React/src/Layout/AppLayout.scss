@@ -1,0 +1,143 @@
+@import "../colours.scss";
+
+$menuAnimationDuration: 0.25s;
+$menuSidebarWidth: 250px;
+
+.header-icon {
+    color: $accentSecondary;
+    font-size: 1.5em;
+}
+
+.title {
+    text-transform: uppercase;
+    margin-left: 10px;
+}
+
+.application-header {
+    display: flex;
+    flex: 0 1 auto;
+    background-color: $backgroundLighter;
+    padding: 20px;
+    font-size: 1.5em;
+    border-bottom: 1px solid $accent;
+    justify-content: left;
+}
+
+.header-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+}
+
+.header-left {
+    transition: width $menuAnimationDuration ease-in;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .menu-title {
+        display: none!important;
+    }
+}
+
+.menu-title {
+    transition: width $menuAnimationDuration ease-in;
+    transition: opacity $menuAnimationDuration ease-in;
+    transition-delay: $menuAnimationDuration;
+}
+
+.menu-title.visible {
+    opacity: 1;
+}
+
+.header-left.hidden {
+    width: 36px;
+    overflow: hidden;
+    transition-delay: $menuAnimationDuration;
+    >.menu-title {
+        width: 0px;
+        overflow: hidden;
+        opacity: 0;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    .header-left {
+        width: 230px;
+    }
+}
+
+
+
+.header-left {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+
+    .menu-icon {
+        transition: width $menuAnimationDuration ease-in;
+        position: absolute;
+        right: 0px;
+    }
+
+    svg.hidden {
+        width: 0px;
+    }
+}
+
+.menu-title {
+    margin-right: auto;
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+}
+
+.menu-buttons {
+    position: relative;
+    color: $accentSecondary;
+    font-size: 1.5em;
+    width: 36px;
+}
+
+.application-sidebar {
+    position: absolute;
+    background-color: $backgroundLighter;
+    transition: width $menuAnimationDuration ease-in;
+    overflow: hidden;
+
+    p,
+    a {
+        transition: opacity $menuAnimationDuration ease-in;
+        padding: 10px;
+    }
+}
+
+.application-sidebar.visible {
+    transition-delay: 0s;
+    p,
+    a {
+        transition-delay: $menuAnimationDuration;
+        opacity: 1;
+    }
+}
+
+.application-sidebar.hidden {
+    width: 0px;
+    transition-delay: $menuAnimationDuration;
+    p,
+    a {
+        transition-delay: 0s;
+        opacity: 0;
+    }
+}
+
+
+.application-sidebar {
+    display: flex;
+    width: $menuSidebarWidth;
+    flex-direction: column;
+    top: 0px;
+    bottom: 0px;
+  }

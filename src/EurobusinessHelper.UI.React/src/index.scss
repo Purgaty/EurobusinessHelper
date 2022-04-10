@@ -1,0 +1,52 @@
+@import './colours.scss';
+
+html,
+body,
+#root,
+.body,
+.application-container {
+  height: 100%;
+  margin: 0px;
+  background-color: $background;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: $primary;
+}
+
+p {
+  margin: 0px;
+}
+
+.body {
+  display: flex;
+  flex-flow: column;
+}
+
+.application-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.application-body {
+  display: flex;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.application-footer {
+  display: flex;
+  flex: 0 1 auto;
+  background-color: $backgroundLighter;
+  padding: 20px;
+  font-size: 1.5em;
+  border-top: 1px solid $accent;
+  justify-content: right;
+  align-items: center;
+}
+
+.application-content {
+  display: flex;
+  flex: 1 1 auto;
+  margin: 20px
+}
