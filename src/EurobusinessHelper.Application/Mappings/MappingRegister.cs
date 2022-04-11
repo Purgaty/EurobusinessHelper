@@ -10,9 +10,7 @@ public class MappingRegister : ICodeGenerationRegister
     {
         //register mappings
         CreateMap<Identity, IdentityDto>(config)
-            //custom mapping logic here
-            // .Map(d => d.Name, s => string.IsNullOrWhiteSpace(s.Name) ? "John Doe" : s.Name)
-            ;
+            .Map(d => d.Name, s => s.FirstName + " " + s.LastName);
     }
 
     private static TypeAdapterSetter<TSource, TDestination> CreateMap<TSource, TDestination>(

@@ -15,7 +15,8 @@ namespace EurobusinessHelper.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 260, nullable: false, collation: "NOCASE"),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true, collation: "NOCASE")
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true, collation: "NOCASE"),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {

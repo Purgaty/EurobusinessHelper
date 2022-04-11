@@ -12,7 +12,10 @@ internal class UserConfiguration : IEntityTypeConfiguration<Identity>
             .UseCollation(ConfigurationConsts.NoCaseCollation)
             .HasMaxLength(260)
             .IsRequired();
-        builder.Property(u => u.Name)
+        builder.Property(u => u.FirstName)
+            .UseCollation(ConfigurationConsts.NoCaseCollation)
+            .HasMaxLength(200);
+        builder.Property(u => u.LastName)
             .UseCollation(ConfigurationConsts.NoCaseCollation)
             .HasMaxLength(200);
     }

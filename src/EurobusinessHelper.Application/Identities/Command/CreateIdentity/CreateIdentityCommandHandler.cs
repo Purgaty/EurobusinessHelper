@@ -16,7 +16,8 @@ internal class CreateIdentityCommandHandler : ICreateIdentityCommandHandler
         var entity = new Domain.Entities.Identity
         {
             Email = command.Email,
-            Name = command.Name
+            FirstName = command.FirstName,
+            LastName = command.LastName
         };
 
         _dbContext.Identities.Add(entity);

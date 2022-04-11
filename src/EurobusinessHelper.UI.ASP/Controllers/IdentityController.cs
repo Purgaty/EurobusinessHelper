@@ -21,11 +21,4 @@ public class IdentityController : ControllerBase
     {
         return Ok(await _securityContext.GetCurrentIdentityDisplay());
     }
-
-    [HttpGet("dummyAnonymous")]
-    [AllowAnonymous]
-    public IActionResult DummyAnonymous()
-    {
-        return Ok("you're in");
-    }
 }

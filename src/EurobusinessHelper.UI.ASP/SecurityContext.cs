@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EurobusinessHelper.Application.Common.Exceptions;
 using EurobusinessHelper.Application.Common.Interfaces;
@@ -63,11 +64,13 @@ public class SecurityContext : ISecurityContext
 
     private CreateIdentityCommand BuildCreateIdentityCommand()
     {
-        var email = _httpContextAccessor.HttpContext?.User.Identity?.Name;
-        var name = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == NameClaimType)?.Value;
+        var email = GetClaimValue(ClaimTypes.Email);
         if (email == default)
             throw new UnauthorizedException();
-        return new CreateIdentityCommand(email, name);
+        var firstName = GetClaimValue(ClaimTypes.GivenName);
+        var lastName = GetClaimValue(ClaimTypes.Surname);
+        
+        return new CreateIdentityCommand(email, firstName, lastName);
     }
 
     private async Task<Identity?> GetIdentity()
@@ -78,9 +81,14 @@ public class SecurityContext : ISecurityContext
 
     private GetIdentityByEmailQuery BuildGetIdentityByEmailQuery()
     {
-        var email = _httpContextAccessor.HttpContext?.User.Identity?.Name;
+        var email = GetClaimValue(ClaimTypes.Email);
         if (email == default)
             throw new UnauthorizedException();
         return new GetIdentityByEmailQuery(email);
+    }
+
+    private string? GetClaimValue(string claimType)
+    {
+        return _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
     }
 }

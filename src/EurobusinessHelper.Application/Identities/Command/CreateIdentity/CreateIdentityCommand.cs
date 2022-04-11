@@ -2,11 +2,13 @@
 
 public class CreateIdentityCommand
 {
-    public CreateIdentityCommand(string email, string? name = default)
+    public CreateIdentityCommand(string email, string? firstName = default, string? lastName = default)
     {
         Email = email;
-        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
     }
     public string Email { get; }
-    public string? Name { get; }
+    public string? FirstName { get; }
+    public string? LastName { get; }
 }
