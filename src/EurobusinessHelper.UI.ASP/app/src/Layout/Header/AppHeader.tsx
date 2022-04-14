@@ -1,6 +1,6 @@
 import { FaDice } from 'react-icons/fa'
 import { AiOutlineClose, AiOutlineMenuUnfold } from 'react-icons/ai'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 const AppHeader = ({
   menuOpen,
