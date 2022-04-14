@@ -1,8 +1,7 @@
 import axios from "axios";
 import config from "../app/config";
 
-export default class IdentityService
-{
+export default class IdentityService {
     private static baseUrl = config.apiUrl + '/api/identity/';
 
     static async getCurrentIdentity() {
