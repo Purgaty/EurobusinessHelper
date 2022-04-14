@@ -2,5 +2,5 @@
 
 public class ConfigurationConsts
 {
-    public const string NoCaseCollation = "NOCASE";
+    public const string CaseInsensitiveAccentInsensitiveCollation = "SQL_Latin1_General_CP1_CI_AS";
 }

@@ -13,7 +13,8 @@ public static class DependencyInjection
     {
         return services
                 .AddDbContext<IApplicationDbContext, ApplicationDbContext>(b =>
-                    b.UseSqlite(configuration.GetConnectionString("GameDb")!))
+                    //connection string stored in user-secrets (dotnet user-secrets command)
+                    b.UseSqlServer(configuration.GetConnectionString("GameDb")!))
             ;
     }
 }

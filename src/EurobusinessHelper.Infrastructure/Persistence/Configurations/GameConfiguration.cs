@@ -9,7 +9,7 @@ internal class GameConfiguration : IEntityTypeConfiguration<Game>
     public void Configure(EntityTypeBuilder<Game> builder)
     {
         builder.Property(g => g.Name)
-            .UseCollation(ConfigurationConsts.NoCaseCollation)
+            .UseCollation(ConfigurationConsts.CaseInsensitiveAccentInsensitiveCollation)
             .HasMaxLength(200)
             .IsRequired();
     }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EurobusinessHelper.UI.ASP.Auth;
+using EurobusinessHelper.UI.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -33,5 +34,11 @@ public class AuthController : ControllerBase
     {
         await HttpContext.SignOutAsync();
         return Redirect("/api/identity/current");
+    }
+
+    [HttpGet("test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("you're in");
     }
 }

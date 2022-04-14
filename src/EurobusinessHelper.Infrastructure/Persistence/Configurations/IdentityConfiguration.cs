@@ -9,14 +9,14 @@ internal class UserConfiguration : IEntityTypeConfiguration<Identity>
     public void Configure(EntityTypeBuilder<Identity> builder)
     {
         builder.Property(u => u.Email)
-            .UseCollation(ConfigurationConsts.NoCaseCollation)
+            .UseCollation(ConfigurationConsts.CaseInsensitiveAccentInsensitiveCollation)
             .HasMaxLength(260)
             .IsRequired();
         builder.Property(u => u.FirstName)
-            .UseCollation(ConfigurationConsts.NoCaseCollation)
+            .UseCollation(ConfigurationConsts.CaseInsensitiveAccentInsensitiveCollation)
             .HasMaxLength(200);
         builder.Property(u => u.LastName)
-            .UseCollation(ConfigurationConsts.NoCaseCollation)
+            .UseCollation(ConfigurationConsts.CaseInsensitiveAccentInsensitiveCollation)
             .HasMaxLength(200);
     }
 }
