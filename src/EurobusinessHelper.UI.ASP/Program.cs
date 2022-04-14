@@ -1,7 +1,9 @@
 using EurobusinessHelper.UI;
 using EurobusinessHelper.UI.ASP;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Cors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Logging.AddLog4Net("log4net.config");
 
 builder.Services.InjectDependencies(builder.Configuration);
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,7 +31,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EurobusinessHelper v1")); 
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EurobusinessHelper v1"));
+    app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(_ => true)
+        .AllowCredentials()
+    );
 }
 else 
 {

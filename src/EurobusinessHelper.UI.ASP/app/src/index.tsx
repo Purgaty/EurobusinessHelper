@@ -5,6 +5,11 @@ import App from './App'
 import { store } from './app/store'
 import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'
+import { setUpAxios } from "./axios"
+
+setUpAxios();
+
+console.log(process.env);
 
 ReactDOM.render(
   <React.StrictMode>

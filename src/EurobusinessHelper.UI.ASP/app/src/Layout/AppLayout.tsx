@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LoginPage from '../LoginPage/LoginPage'
-import AppHeader from './AppHeader'
+import { BrowserRouter } from 'react-router-dom'
+import AppHeader from './Header/AppHeader'
 import './AppLayout.scss'
 import AppSidebar from './AppSidebar'
 import {
   clearCloseMenuTimeout,
   startCloseMenuTimeout
 } from './closeMenuTimeout'
+import { AppFooter } from './Footer/AppFooter'
+import { AppRoutes } from './AppRoutes'
 
 const AppLayout = () => {
   const [menuOpen, setMenuOpen] = React.useState(false)
@@ -22,8 +23,7 @@ const AppLayout = () => {
   )
   const onMenuEnter = useCallback(() => {
     clearCloseMenuTimeout(closeMenuTimeout, setCloseMenuTimeout)
-    if (!menuOpen)
-      setMenuOpen(true)
+    if (!menuOpen) setMenuOpen(true)
   }, [closeMenuTimeout, setCloseMenuTimeout, menuOpen])
 
   return (
@@ -42,23 +42,11 @@ const AppLayout = () => {
             onMenuLeave={onMenuLeave}
           />
           <div className='application-content'>
-            <Routes>
-              <Route path='/' element={<p>HOME</p>} />
-              <Route
-                path='/users'
-                element={
-                  <div>
-                    <p>USERS</p>
-                  </div>
-                }
-              />
-              <Route path='/games' element={<p>GAMES</p>} />
-              <Route path='/login' element={<LoginPage />} />
-            </Routes>
+            <AppRoutes />
           </div>
         </BrowserRouter>
       </div>
-      <div className='application-footer'>FOOTER</div>
+      <AppFooter />
     </div>
   )
 }
