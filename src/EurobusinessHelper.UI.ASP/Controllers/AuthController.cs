@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.UI.ASP.Auth;
 using EurobusinessHelper.UI.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EurobusinessHelper.UI.ASP.Controllers;
 
@@ -12,6 +14,13 @@ namespace EurobusinessHelper.UI.ASP.Controllers;
 [AllowAnonymous]
 public class AuthController : ControllerBase
 {
+    private readonly AppConfig _appConfig;
+
+    public AuthController(IOptions<AppConfig> appConfig)
+    {
+        _appConfig = appConfig.Value;
+    }
+    
     [HttpGet("challenge/{provider}")]
     public Task Challenge(AuthType provider, string redirectUri = "/")
     {
@@ -36,9 +45,7 @@ public class AuthController : ControllerBase
         return Redirect("/api/identity/current");
     }
 
-    [HttpGet("test")]
-    public async Task<IActionResult> Test()
-    {
-        return Ok("you're in");
-    }
+    [HttpGet("providers")]
+    public IActionResult GetActiveProviders()
+        => Ok(_appConfig.ActiveAuthenticationTypes);
 }

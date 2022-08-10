@@ -2,5 +2,5 @@
 
 public class AppConfig
 {
-    public AuthenticationType AuthenticationType { get; set; }
+    public ICollection<AuthenticationType> ActiveAuthenticationTypes { get; set; } = new List<AuthenticationType>();
 }

@@ -3,5 +3,6 @@
 public enum AuthenticationType
 {
     Microsoft,
-    Google
+    Google,
+    Facebook
 }
