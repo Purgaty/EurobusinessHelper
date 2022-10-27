@@ -38,6 +38,10 @@ if (app.Environment.IsDevelopment())
         .SetIsOriginAllowed(_ => true)
         .AllowCredentials()
     );
+    app.UseCookiePolicy(new CookiePolicyOptions
+    {
+        MinimumSameSitePolicy = SameSiteMode.Lax
+    });
 }
 else 
 {
