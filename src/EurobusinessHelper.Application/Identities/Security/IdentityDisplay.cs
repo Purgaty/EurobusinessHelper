@@ -1,13 +1,13 @@
 ﻿namespace EurobusinessHelper.Application.Identities.Security;
 
-public class IdentityDto
+public class IdentityDisplay
 {
-    public IdentityDto(string email, string? name = default)
+    public IdentityDisplay(string email, string name = default)
     {
         Email = email;
         Name = name;
     }
 
     public string Email { get; }
-    public string? Name { get; }
+    public string Name { get; }
 }

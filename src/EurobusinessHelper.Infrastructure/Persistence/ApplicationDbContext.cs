@@ -19,6 +19,12 @@ internal class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Identity> Identities => Set<Identity>();
     public DbSet<Game> Games => Set<Game>();
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+    {
+        SetTimestamps();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
@@ -26,14 +32,60 @@ internal class ApplicationDbContext : DbContext, IApplicationDbContext
             .EnableSensitiveDataLogging()
 #endif
             .UseLoggerFactory(_loggerFactory);
-        
+
         base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            
+
         base.OnModelCreating(modelBuilder);
+    }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = new())
+    {
+        SetTimestamps();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        SetTimestamps();
+        return base.SaveChanges();
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        SetTimestamps();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    private void SetTimestamps()
+    {
+        SetCreatedOnTimestamp();
+        SetModifiedOnTimestamp();
+    }
+
+    private void SetCreatedOnTimestamp()
+    {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added);
+        foreach (var entry in entries)
+            if (entry.Entity is IEntity entity)
+            {
+                entity.CreatedOn = DateTime.Now;
+                entity.ModifiedOn = DateTime.Now;
+            }
+    }
+
+    private void SetModifiedOnTimestamp()
+    {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Modified);
+        foreach (var entry in entries)
+            if (entry.Entity is IEntity entity)
+                entity.ModifiedOn = DateTime.Now;
     }
 }

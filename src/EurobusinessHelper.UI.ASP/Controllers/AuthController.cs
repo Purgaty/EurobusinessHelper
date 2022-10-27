@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using EurobusinessHelper.Domain.Config;
+﻿using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.UI.ASP.Auth;
-using EurobusinessHelper.UI.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;

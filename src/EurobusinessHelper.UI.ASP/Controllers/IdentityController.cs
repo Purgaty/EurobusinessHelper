@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
-using EurobusinessHelper.Application.Identities.Security;
+﻿using EurobusinessHelper.Application.Identities.Security;
 using EurobusinessHelper.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace EurobusinessHelper.UI.ASP.Controllers;
 

@@ -1,47 +1,45 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using EurobusinessHelper.Application.Common.Exceptions;
-using EurobusinessHelper.Application.Common.Interfaces;
-using EurobusinessHelper.Application.Identities.Command.CreateIdentity;
+using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
 using EurobusinessHelper.Application.Identities.Security;
-using EurobusinessHelper.Application.Mappings;
 using EurobusinessHelper.Domain.Entities;
-using Microsoft.AspNetCore.Http;
+using MapsterMapper;
 
 namespace EurobusinessHelper.UI.ASP;
 
 public class SecurityContext : ISecurityContext
 {
-    private const string NameClaimType = "name";
-    
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IGetIdentityByEmailQueryHandler _getIdentityByEmailQueryHandler;
     private readonly ICreateIdentityCommandHandler _createIdentityCommandHandler;
     private readonly IGetIdentityByIdQueryHandler _getIdentityByIdQueryHandler;
-    private Identity? _currentIdentity;
+    private readonly IMapper _mapper;
+    private Identity _currentIdentity;
 
     public SecurityContext(IHttpContextAccessor httpContextAccessor,
         IGetIdentityByEmailQueryHandler getIdentityByEmailQueryHandler,
         ICreateIdentityCommandHandler createIdentityCommandHandler,
-        IGetIdentityByIdQueryHandler getIdentityByIdQueryHandler)
+        IGetIdentityByIdQueryHandler getIdentityByIdQueryHandler,
+        IMapper mapper)
     {
         _httpContextAccessor = httpContextAccessor;
         _getIdentityByEmailQueryHandler = getIdentityByEmailQueryHandler;
         _createIdentityCommandHandler = createIdentityCommandHandler;
         _getIdentityByIdQueryHandler = getIdentityByIdQueryHandler;
-    }
-
-    public async Task<IdentityDto> GetCurrentIdentityDisplay()
-    {
-        return (await GetCurrentIdentity()).AdaptToDto();
+        _mapper = mapper;
     }
 
     public async Task<Identity> GetCurrentIdentity()
     {
         return _currentIdentity ??= await GetOrCreateIdentity();
+    }
+
+    public async Task<IdentityDisplay> GetCurrentIdentityDisplay()
+    {
+        var identity = await GetCurrentIdentity();
+        return _mapper.Map<IdentityDisplay>(identity);
     }
 
     private async Task<Identity> GetOrCreateIdentity()
@@ -73,7 +71,7 @@ public class SecurityContext : ISecurityContext
         return new CreateIdentityCommand(email, firstName, lastName);
     }
 
-    private async Task<Identity?> GetIdentity()
+    private async Task<Identity> GetIdentity()
     {
         var query = BuildGetIdentityByEmailQuery();
         return await _getIdentityByEmailQueryHandler.Handle(query);
@@ -87,7 +85,7 @@ public class SecurityContext : ISecurityContext
         return new GetIdentityByEmailQuery(email);
     }
 
-    private string? GetClaimValue(string claimType)
+    private string GetClaimValue(string claimType)
     {
         return _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
     }

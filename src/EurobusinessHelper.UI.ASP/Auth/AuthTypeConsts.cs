@@ -1,9 +1,8 @@
-﻿using EurobusinessHelper.UI.ASP.Auth;
-using Microsoft.AspNetCore.Authentication.Facebook;
+﻿using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 
-namespace EurobusinessHelper.UI.Auth;
+namespace EurobusinessHelper.UI.ASP.Auth;
 
 public static class AuthTypeConsts
 {

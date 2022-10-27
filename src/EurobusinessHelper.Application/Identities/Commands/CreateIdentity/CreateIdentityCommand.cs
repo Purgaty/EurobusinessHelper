@@ -1,4 +1,4 @@
-﻿namespace EurobusinessHelper.Application.Identities.Command.CreateIdentity;
+﻿namespace EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 
 public class CreateIdentityCommand
 {

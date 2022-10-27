@@ -22,6 +22,7 @@ public static class DependencyInjection
                 .AddScoped<ISecurityContext, SecurityContext>()
                 .InjectApplicationDependencies()
                 .InjectInfrastructureDependencies(configuration)
+                .RegisterMappings()
                 .SetUpAuthentication(configuration)
                 .AddSwaggerGen(c =>
                 {

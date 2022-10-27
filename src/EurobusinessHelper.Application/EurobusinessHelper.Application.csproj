@@ -3,7 +3,8 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
+        <LangVersion>10</LangVersion>
   </PropertyGroup>
 
     <ItemGroup>
@@ -12,12 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="Mapster" Version="7.3.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+      <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
     </ItemGroup>
-
-    <Target Name="Mapster" AfterTargets="AfterBuild">
-        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
-        <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -n EurobusinessHelper.Application.Mappings -o &quot;Mappings&quot;" />
-    </Target>
-
 </Project>

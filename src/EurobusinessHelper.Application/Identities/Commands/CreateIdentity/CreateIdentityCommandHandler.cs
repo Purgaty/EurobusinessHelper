@@ -1,6 +1,6 @@
 ﻿using EurobusinessHelper.Application.Common.Interfaces;
 
-namespace EurobusinessHelper.Application.Identities.Command.CreateIdentity;
+namespace EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 
 internal class CreateIdentityCommandHandler : ICreateIdentityCommandHandler
 {
