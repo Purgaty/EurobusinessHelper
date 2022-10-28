@@ -1,12 +1,19 @@
-import Button from '@mui/material/Button'
-import AuthService from "../Services/AuthService"
+import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+import { challenge, getProviders } from './actions';
 
 const LoginPage = (props: LoginPageProps) => {
+  const [providers, setProviders] = useState<string[]>([]);
+ 
+  useEffect(() => {
+    getProviders().then(p => {
+      setProviders(p);
+    });
+  },[]);
+
   return (
     <div>
-      <Button variant="contained" onClick={() => AuthService.challenge('microsoft')}>Microsoft</Button>
-      <Button variant="contained" onClick={() => AuthService.challenge('google')}>Google</Button>
-      <Button variant="contained" onClick={() => AuthService.challenge('facebook')}>Facebook</Button>
+      {providers.map(provider => (<Button variant="contained" key={provider} onClick={() => challenge(provider.toLowerCase())}>{provider}</Button>))}
     </div>
   )
 }
