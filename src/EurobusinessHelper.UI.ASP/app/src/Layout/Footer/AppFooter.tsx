@@ -1,16 +1,17 @@
-import axios from "axios";
-import React, { useEffect } from 'react'
-import config from "../../app/config";
-import IdentityService from "../../Services/IdentityService";
-import {setIdentity} from "./identityReducer";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchCurrentIdentity } from "./actions";
+import { selectIdentity } from "./authSlice";
 
 export const AppFooter = () => {
+  const dispatch = useAppDispatch();
+  const identity = useAppSelector(selectIdentity);
+
   useEffect(() => {
-    axios.get(config.apiUrl + "/api/auth/test").then(res => res.data);
-    IdentityService.getCurrentIdentity().then(result => setIdentity(result));
-  });
-  
-  return (
-    <div className='application-footer'>FOOTER</div>
-  )
-}
+    if (!identity) {
+      dispatch(fetchCurrentIdentity());
+    }
+  }, [dispatch, identity]);
+
+  return <div className="application-footer">{identity?.name}</div>;
+};

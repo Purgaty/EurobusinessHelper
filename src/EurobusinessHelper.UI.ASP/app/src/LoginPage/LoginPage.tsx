@@ -1,18 +1,36 @@
-import Button from '@mui/material/Button'
-import AuthService from "../Services/AuthService"
+import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { selectProviders } from "../Layout/Footer/authSlice";
+import { challenge, fetchProviders } from "./actions";
 
 const LoginPage = (props: LoginPageProps) => {
+  const dispatch = useAppDispatch();
+  const providers = useAppSelector(selectProviders);
+
+  useEffect(() => {
+    if (!providers) {
+      dispatch(fetchProviders());
+    }
+  }, [dispatch, providers]);
+
   return (
     <div>
-      <Button variant="contained" onClick={() => AuthService.challenge('microsoft')}>Microsoft</Button>
-      <Button variant="contained" onClick={() => AuthService.challenge('google')}>Google</Button>
-      <Button variant="contained" onClick={() => AuthService.challenge('facebook')}>Facebook</Button>
+      {providers?.map((provider) => (
+        <Button
+          variant="contained"
+          key={provider}
+          onClick={() => challenge(provider.toLowerCase())}
+        >
+          {provider}
+        </Button>
+      ))}
     </div>
-  )
-}
+  );
+};
 
 interface LoginPageProps {
-  loggedIn?: boolean
+  loggedIn?: boolean;
 }
 
-export default LoginPage
+export default LoginPage;
