@@ -28,10 +28,8 @@ public static class DependencyInjection
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo {Title = "EurobusinessHelper", Version = "v1"});
                 });
-            ;
     }
-    
-    
+
     private static IServiceCollection SetUpAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var config = GetAppConfig(configuration);

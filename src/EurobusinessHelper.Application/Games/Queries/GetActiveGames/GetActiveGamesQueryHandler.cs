@@ -1,11 +1,11 @@
 ﻿using EurobusinessHelper.Application.Common.Interfaces;
 using Mapster;
-using MapsterMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EurobusinessHelper.Application.Games.Queries.GetActiveGamesQuery;
+namespace EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 
-public class GetActiveGamesQueryHandler : IGetActiveGamesQueryHandler
+public class GetActiveGamesQueryHandler : IRequestHandler<GetActiveGamesQuery, GetActiveGamesQueryResult>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly TypeAdapterConfig _mapperConfig;
@@ -15,7 +15,7 @@ public class GetActiveGamesQueryHandler : IGetActiveGamesQueryHandler
         _dbContext = dbContext;
         _mapperConfig = mapperConfig;
     }
-    public async Task<GetActiveGamesQueryResult> Handle(GetActiveGamesQuery query)
+    public async Task<GetActiveGamesQueryResult> Handle(GetActiveGamesQuery query, CancellationToken cancellationToken)
     {
         var dbQuery = _dbContext.Games
             .Where(g => g.IsActive);
@@ -24,7 +24,7 @@ public class GetActiveGamesQueryHandler : IGetActiveGamesQueryHandler
 
         return new GetActiveGamesQueryResult
         {
-            Items = await dbQuery.ProjectToType<GetActiveGamesQueryResult.Item>(_mapperConfig).ToListAsync()
+            Items = await dbQuery.ProjectToType<GetActiveGamesQueryResult.Item>(_mapperConfig).ToListAsync(cancellationToken)
         };
     }
 }

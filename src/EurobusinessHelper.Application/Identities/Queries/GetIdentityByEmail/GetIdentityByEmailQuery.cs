@@ -1,6 +1,9 @@
-﻿namespace EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
+﻿using EurobusinessHelper.Domain.Entities;
+using MediatR;
 
-public class GetIdentityByEmailQuery
+namespace EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
+
+public class GetIdentityByEmailQuery : IRequest<Identity>
 {
     public GetIdentityByEmailQuery(string email)
     {
