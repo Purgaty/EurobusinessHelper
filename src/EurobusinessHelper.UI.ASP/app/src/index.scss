@@ -1,4 +1,4 @@
-@import './colours.scss';
+@import "./colours.scss";
 
 html,
 body,
@@ -7,8 +7,9 @@ body,
 .application-container {
   height: 100%;
   margin: 0px;
-  background-color: $background;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-image: url("https://images.pexels.com/photos/776654/pexels-photo-776654.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   color: $primary;
 }
 
@@ -23,7 +24,7 @@ p {
 
 .application-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .application-body {
@@ -37,10 +38,8 @@ p {
 .application-footer {
   display: flex;
   flex: 0 1 auto;
-  background-color: $backgroundLighter;
   padding: 20px;
-  font-size: 1.5em;
-  border-top: 1px solid $accent;
+  font-size: calc(1em + 1vw);
   justify-content: right;
   align-items: center;
 }
@@ -48,5 +47,4 @@ p {
 .application-content {
   display: flex;
   flex: 1 1 auto;
-  margin: 20px
 }
