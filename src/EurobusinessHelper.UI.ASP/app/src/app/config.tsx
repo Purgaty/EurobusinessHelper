@@ -1,9 +1,9 @@
 const prodConfig = {
-  apiUrl: ''
-}
+  apiUrl: "",
+};
 
 const devConfig = {
-  apiUrl: 'http://localhost:5000'
-}
+  apiUrl: "http://192.168.1.106:3000",
+};
 
-export default process.env.NODE_ENV === 'development' ? devConfig : prodConfig;
+export default process.env.NODE_ENV === "development" ? devConfig : prodConfig;
