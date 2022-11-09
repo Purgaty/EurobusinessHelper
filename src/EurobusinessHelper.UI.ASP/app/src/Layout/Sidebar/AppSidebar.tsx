@@ -12,25 +12,25 @@ const AppSidebar = () => {
         <AiOutlineMenuUnfold className="menu-open" />
       </div>
       <div className="menu-links">
-        <div className="link home">
+        <div className="link">
           <AiFillHome className="link-icon" />
           <Link className="link-text" to="/">
             Home
           </Link>
         </div>
-        <div className="link users">
+        <div className="link">
           <HiUsers className="link-icon" />
           <Link className="link-text" to="/users">
             Users
           </Link>
         </div>
-        <div className="link games">
+        <div className="link">
           <FaDice className="link-icon" />
           <Link className="link-text" to="/games">
             Games
           </Link>
         </div>
-        <div className="link login">
+        <div className="link">
           <RiLoginBoxFill className="link-icon" />
           <Link className="link-text" to="/login">
             Login
