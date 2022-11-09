@@ -1,0 +1,67 @@
+@import "../../colours.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: $backgroundLighter;
+  font-size: calc(1em + 0.5vw);
+  padding: 0 0.5em;
+  transition: all 1s;
+  position: absolute;
+  z-index: 1;
+}
+
+.sidebar:hover {
+  .menu-open {
+    width: 0;
+  }
+  .link-text {
+    width: calc(5em + 1vw);
+  }
+}
+
+.link-text {
+  transition: all 1s;
+}
+
+.menu-open:hover {
+  color: rgba($accentSecondary, 0.9);
+}
+
+.menu-open {
+  padding-top: 0.5em;
+  cursor: pointer;
+  font-size: calc(1em + 1vw);
+  transition: 1s;
+  position: absolute;
+}
+
+.menu-links {
+  margin: auto 0;
+}
+
+.link {
+  margin: 1.5em auto;
+  display: flex;
+  flex-direction: row;
+
+  &:hover {
+    .link-icon,
+    .link-text {
+      color: rgba($accentSecondary, 0.9);
+    }
+  }
+}
+
+.link-icon,
+.link-text {
+  margin: 0.5vh;
+  transition: 0.5s;
+  cursor: pointer;
+}
+.link-text {
+  text-decoration: none;
+  color: $primary;
+  width: 0;
+  overflow: hidden;
+}

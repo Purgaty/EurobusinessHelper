@@ -1,0 +1,17 @@
+@import "../../colours.scss";
+
+.application-header {
+  display: flex;
+  font-size: calc(1em + 2vw);
+  position: absolute;
+  right: 0;
+}
+
+.header {
+  display: flex;
+  margin-left: auto;
+}
+
+.header-icon {
+  margin-right: 1vw;
+}

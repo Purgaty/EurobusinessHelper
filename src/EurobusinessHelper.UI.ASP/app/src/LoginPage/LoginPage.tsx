@@ -1,8 +1,10 @@
-import Button from "@mui/material/Button";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { BsFacebook, BsGoogle, BsMicrosoft } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectProviders } from "../Layout/Footer/authSlice";
 import { challenge, fetchProviders } from "./actions";
+import { providerNames } from "./consts";
+import "./LoginPage.scss";
 
 const LoginPage = (props: LoginPageProps) => {
   const dispatch = useAppDispatch();
@@ -14,17 +16,41 @@ const LoginPage = (props: LoginPageProps) => {
     }
   }, [dispatch, providers]);
 
+  const placeIcon = (provider: string) => {
+    switch (provider) {
+      case providerNames.facebook:
+        return <BsFacebook />;
+
+      case providerNames.google:
+        return <BsGoogle />;
+
+      case providerNames.microsoft:
+        return <BsMicrosoft />;
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <div>
-      {providers?.map((provider) => (
-        <Button
-          variant="contained"
-          key={provider}
-          onClick={() => challenge(provider.toLowerCase())}
-        >
-          {provider}
-        </Button>
-      ))}
+    <div className="login-page">
+      <div className="container">
+        <p>Log In</p>
+        <div className="buttons">
+          {providers?.map((provider) => (
+            <div
+              className="provider"
+              key={provider}
+              onClick={() => challenge(provider.toLowerCase())}
+            >
+              <div className="provider-icon">
+                {placeIcon(provider.toLowerCase())}
+              </div>
+              <span className="provider-name">{provider}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
