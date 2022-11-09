@@ -8,18 +8,15 @@ namespace EurobusinessHelper.UI.ASP.Controllers;
 public class IdentityController : ControllerBase
 {
     private readonly ISecurityContext _securityContext;
-    private readonly ILogger<IdentityController> _logger;
 
-    public IdentityController(ISecurityContext securityContext, ILogger<IdentityController> logger)
+    public IdentityController(ISecurityContext securityContext)
     {
         _securityContext = securityContext;
-        _logger = logger;
     }
 
     [HttpGet("current")]
     public async Task<ActionResult<Identity>> GetCurrentIdentity()
     {
-        _logger.LogInformation("GetCurrentIdentity");
         return Ok(await _securityContext.GetCurrentIdentityDisplay());
     }
 }

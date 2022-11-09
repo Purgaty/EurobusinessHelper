@@ -18,6 +18,8 @@ internal class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public DbSet<Identity> Identities => Set<Identity>();
     public DbSet<Game> Games => Set<Game>();
+    public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {

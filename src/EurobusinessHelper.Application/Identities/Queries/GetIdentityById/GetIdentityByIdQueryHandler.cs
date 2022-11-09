@@ -1,8 +1,11 @@
 ﻿using EurobusinessHelper.Application.Common.Interfaces;
+using EurobusinessHelper.Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
 
-internal class GetIdentityByIdQueryHandler : IGetIdentityByIdQueryHandler
+internal class GetIdentityByIdQueryHandler : IRequestHandler<GetIdentityByIdQuery, Identity>
 {
     private readonly IApplicationDbContext _dbContext;
 
@@ -11,8 +14,8 @@ internal class GetIdentityByIdQueryHandler : IGetIdentityByIdQueryHandler
         _dbContext = dbContext;
     }
 
-    public async Task<Domain.Entities.Identity?> Handle(GetIdentityByIdQuery query)
+    public async Task<Identity> Handle(GetIdentityByIdQuery query, CancellationToken cancellationToken)
     {
-        return await _dbContext.Identities.FindAsync(query.Id);
+        return await _dbContext.Identities.FirstOrDefaultAsync(i => i.Id == query.Id, cancellationToken);
     }
 }

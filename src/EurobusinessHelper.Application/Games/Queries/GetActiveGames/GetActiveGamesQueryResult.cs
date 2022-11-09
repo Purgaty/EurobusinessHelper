@@ -1,4 +1,4 @@
-﻿namespace EurobusinessHelper.Application.Games.Queries.GetActiveGamesQuery;
+﻿namespace EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 
 public class GetActiveGamesQueryResult
 {
@@ -8,7 +8,9 @@ public class GetActiveGamesQueryResult
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
+        public bool IsPasswordProtected { get; init; }
         public string CreatedBy { get; init; }
         public DateTime CreatedOn { get; init; }
+        public int AccountCount { get; set; }
     }
 }

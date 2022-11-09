@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
     [HttpGet("authenticate")]
     public async Task<IActionResult> Authenticate()
     {
-        var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Redirect("/api/identity/current");
     }
 

@@ -1,8 +1,9 @@
 ﻿using EurobusinessHelper.Application.Common.Interfaces;
+using MediatR;
 
 namespace EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 
-internal class CreateIdentityCommandHandler : ICreateIdentityCommandHandler
+internal class CreateIdentityCommandHandler : IRequestHandler<CreateIdentityCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
 
@@ -10,7 +11,7 @@ internal class CreateIdentityCommandHandler : ICreateIdentityCommandHandler
     {
         _dbContext = dbContext;
     }
-    public async Task<Guid> Handle(CreateIdentityCommand command)
+    public async Task<Guid> Handle(CreateIdentityCommand command, CancellationToken cancellationToken)
     {
         //todo configure mapper
         var entity = new Domain.Entities.Identity
@@ -21,7 +22,7 @@ internal class CreateIdentityCommandHandler : ICreateIdentityCommandHandler
         };
 
         _dbContext.Identities.Add(entity);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return entity.Id;
     }
 }

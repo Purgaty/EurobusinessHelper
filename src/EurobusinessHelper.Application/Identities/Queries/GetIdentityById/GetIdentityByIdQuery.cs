@@ -1,6 +1,9 @@
-﻿namespace EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
+﻿using EurobusinessHelper.Domain.Entities;
+using MediatR;
 
-public class GetIdentityByIdQuery
+namespace EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
+
+public class GetIdentityByIdQuery : IRequest<Identity>
 {
     public GetIdentityByIdQuery(Guid id)
     {

@@ -1,5 +1,8 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using EurobusinessHelper.UI.ASP;
+using EurobusinessHelper.UI.ASP.Middleware;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -23,6 +26,8 @@ builder.Logging.AddLog4Net("log4net.config");
 builder.Services.InjectDependencies(builder.Configuration);
 
 builder.Services.AddCors();
+
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -51,6 +56,7 @@ else
 
 app.UseStaticFiles();
 app.UseRouting();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

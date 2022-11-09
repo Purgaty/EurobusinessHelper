@@ -6,28 +6,23 @@ using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
 using EurobusinessHelper.Application.Identities.Security;
 using EurobusinessHelper.Domain.Entities;
 using MapsterMapper;
+using MediatR;
 
 namespace EurobusinessHelper.UI.ASP;
 
 public class SecurityContext : ISecurityContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IGetIdentityByEmailQueryHandler _getIdentityByEmailQueryHandler;
-    private readonly ICreateIdentityCommandHandler _createIdentityCommandHandler;
-    private readonly IGetIdentityByIdQueryHandler _getIdentityByIdQueryHandler;
+    private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private Identity _currentIdentity;
 
     public SecurityContext(IHttpContextAccessor httpContextAccessor,
-        IGetIdentityByEmailQueryHandler getIdentityByEmailQueryHandler,
-        ICreateIdentityCommandHandler createIdentityCommandHandler,
-        IGetIdentityByIdQueryHandler getIdentityByIdQueryHandler,
+        IMediator mediator,
         IMapper mapper)
     {
         _httpContextAccessor = httpContextAccessor;
-        _getIdentityByEmailQueryHandler = getIdentityByEmailQueryHandler;
-        _createIdentityCommandHandler = createIdentityCommandHandler;
-        _getIdentityByIdQueryHandler = getIdentityByIdQueryHandler;
+        _mediator = mediator;
         _mapper = mapper;
     }
 
@@ -53,8 +48,8 @@ public class SecurityContext : ISecurityContext
     private async Task<Identity> CreateIdentity()
     {
         var command = BuildCreateIdentityCommand();
-        var identityId = await _createIdentityCommandHandler.Handle(command);
-        var identity = await _getIdentityByIdQueryHandler.Handle(new GetIdentityByIdQuery(identityId));
+        var identityId = await _mediator.Send(command);
+        var identity = await _mediator.Send(new GetIdentityByIdQuery(identityId));
         if (identity == default)
             throw new UnauthorizedException();
         return identity;
@@ -74,7 +69,7 @@ public class SecurityContext : ISecurityContext
     private async Task<Identity> GetIdentity()
     {
         var query = BuildGetIdentityByEmailQuery();
-        return await _getIdentityByEmailQueryHandler.Handle(query);
+        return await _mediator.Send(query);
     }
 
     private GetIdentityByEmailQuery BuildGetIdentityByEmailQuery()

@@ -1,8 +1,8 @@
 ﻿namespace EurobusinessHelper.Application.Common.Exceptions;
 
-public class UnauthorizedException: ApplicationException
+public class UnauthorizedException: EurobusinessException
 {
-    public UnauthorizedException() : base("User is not authorized")
+    public UnauthorizedException() : base(EurobusinessExceptionCode.UnauthorizedUser, "User is not authorized")
     {
     }
 }

@@ -18,5 +18,8 @@ internal class UserConfiguration : IEntityTypeConfiguration<Identity>
         builder.Property(u => u.LastName)
             .UseCollation(ConfigurationConsts.CaseInsensitiveAccentInsensitiveCollation)
             .HasMaxLength(200);
+        builder
+            .HasIndex(u => u.Email)
+            .IsUnique();
     }
 }
