@@ -33,7 +33,7 @@ const LoginPage = (props: LoginPageProps) => {
   };
 
   return (
-    <div className="LoginPage">
+    <div className="login-page">
       <div className="container">
         <p>Log In</p>
         <div className="buttons">
