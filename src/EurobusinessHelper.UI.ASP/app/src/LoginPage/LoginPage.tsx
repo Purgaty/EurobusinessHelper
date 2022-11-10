@@ -34,7 +34,7 @@ const LoginPage = (props: LoginPageProps) => {
 
   return (
     <div className="login-page">
-      <div className="container">
+      <div className="container login-container">
         <p>Log In</p>
         <div className="buttons">
           {providers?.map((provider) => (
