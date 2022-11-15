@@ -12,9 +12,13 @@
   width: 20%;
   min-width: fit-content;
   height: 50%;
+  p {
+    margin: 1.5em 0 auto 0;
+    font-size: 2em;
+  }
 }
 
-.buttons {
+.providers {
   width: 100%;
   margin: auto 1em 2em 1em;
 
@@ -25,21 +29,10 @@
 
   font-size: 1.5em;
 }
-
-.provider {
+.provider-button {
   width: 8em;
   height: 2em;
   margin: 0.5em;
-
-  background: rgba($accentSecondary, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: all 1s;
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 
   &:hover {
     transform: translateY(-1vh);
