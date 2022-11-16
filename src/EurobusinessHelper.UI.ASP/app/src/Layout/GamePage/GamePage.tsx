@@ -7,10 +7,15 @@ import { Game } from "./types";
 
 const GamePage = () => {
   const [games, setGames] = useState<Game[]>();
+  const [search, setSearch] = useState<string>("");
 
   const showGames = async () => {
-    const data = await getGames();
+    const data = await getGames(search);
     setGames(data);
+  };
+
+  const handleInput = (event: any) => {
+    setSearch(event.target.value);
   };
 
   useEffect(() => {
@@ -21,8 +26,14 @@ const GamePage = () => {
     <div className="game-page">
       <div className="container game-container">
         <div className="search-bar">
-          <input type="text" className="input" placeholder="Search..." />
-          <div className="button search-button">
+          <input
+            type="text"
+            className="input"
+            placeholder="Search..."
+            value={search}
+            onChange={handleInput}
+          />
+          <div className="button search-button" onClick={showGames}>
             <BiSearch />
           </div>
         </div>
