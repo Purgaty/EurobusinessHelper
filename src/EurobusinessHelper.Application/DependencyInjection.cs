@@ -1,6 +1,7 @@
 ﻿using EurobusinessHelper.Application.Common.Utilities.PasswordHasher;
 using EurobusinessHelper.Application.Games.Commands.CreateGame;
 using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
+using EurobusinessHelper.Application.Games.Commands.DeleteGame;
 using EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 using EurobusinessHelper.Application.Games.Queries.GetGameAccounts;
 using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
@@ -23,13 +24,14 @@ public static class DependencyInjection
                 //commands
                 .AddTransient<IRequestHandler<CreateIdentityCommand, Guid>, CreateIdentityCommandHandler>()
                 .AddTransient<IRequestHandler<CreateGameCommand, Guid>, CreateGameCommandHandler>()
-                .AddTransient<IRequestHandler<CreateGameAccountCommand, Unit>, CreateGameAccountCommandHandler>()
+                .AddTransient<IRequestHandler<JoinGameCommand, Unit>, JoinGameCommandHandler>()
+                .AddTransient<IRequestHandler<DeleteGameCommand, Unit>, DeleteGameCommandHandler>()
 
                 //queries
                 .AddTransient<IRequestHandler<GetIdentityByEmailQuery, Identity>, GetIdentityByEmailQueryHandler>()
                 .AddTransient<IRequestHandler<GetIdentityByIdQuery, Identity>, GetIdentityByIdQueryHandler>()
                 .AddTransient<IRequestHandler<GetActiveGamesQuery, GetActiveGamesQueryResult>, GetActiveGamesQueryHandler>()
-                .AddTransient<IRequestHandler<GetGameAccountsQuery, GetGameAccountsQueryResult>, GetGameAccountsQueryHandler>()
+                .AddTransient<IRequestHandler<GetGameDetailsQuery, GetGameDetailsQueryResult>, GetGameDetailsQueryHandler>()
             
                 //utilities
                 .AddTransient<IPasswordHasher, PasswordHasher>()
@@ -43,9 +45,6 @@ public static class DependencyInjection
         config.NewConfig<Game, GetActiveGamesQueryResult>();
         config.NewConfig<Identity, IdentityDisplay>()
             .Map(d => d.Name, s => $"{s.FirstName} {s.LastName}");
-        config.NewConfig<Game, GetActiveGamesQueryResult.Item>()
-            .Map(d => d.CreatedBy, s => $"{s.CreatedBy.FirstName} {s.CreatedBy.LastName} ({s.CreatedBy.Email})")
-            .Map(d => d.AccountCount, s => s.Accounts.Count);
 
         return services.AddSingleton(config)
             .AddSingleton<IMapper, ServiceMapper>();

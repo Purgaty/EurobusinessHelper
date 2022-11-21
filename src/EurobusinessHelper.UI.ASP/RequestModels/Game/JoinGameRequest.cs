@@ -1,6 +1,6 @@
 ﻿namespace EurobusinessHelper.UI.ASP.RequestModels.Game;
 
-public class CreateGameAccountRequest
+public class JoinGameRequest
 {
     public string Password { get; set; }
 }

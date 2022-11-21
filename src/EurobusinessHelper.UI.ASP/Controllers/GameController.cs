@@ -1,5 +1,6 @@
 ﻿using EurobusinessHelper.Application.Games.Commands.CreateGame;
 using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
+using EurobusinessHelper.Application.Games.Commands.DeleteGame;
 using EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 using EurobusinessHelper.Application.Games.Queries.GetGameAccounts;
 using EurobusinessHelper.UI.ASP.RequestModels.Game;
@@ -33,10 +34,20 @@ public class GameController : ControllerBase
         return Ok(await _mediator.Send(command));
     }
 
-    [HttpPost("{gameId:guid}/accounts")]
-    public async Task<IActionResult> CreateGameAccount(Guid gameId, [FromBody]CreateGameAccountRequest request)
+    [HttpGet("{gameId:guid}")]
+    public async Task<IActionResult> GetGameDetails(Guid gameId)
     {
-        var command = new CreateGameAccountCommand
+        var query = new GetGameDetailsQuery
+        {
+            GameId = gameId
+        };
+        return Ok(await _mediator.Send(query));
+    }
+
+    [HttpPut("{gameId:guid}")]
+    public async Task<IActionResult> JoinGame(Guid gameId, [FromBody]JoinGameRequest request)
+    {
+        var command = new JoinGameCommand
         {
             GameId = gameId,
             Password = request.Password
@@ -46,13 +57,14 @@ public class GameController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{gameId:guid}/accounts")]
-    public async Task<IActionResult> GetGameAccounts(Guid gameId)
+    [HttpDelete("{gameId:guid}")]
+    public async Task<IActionResult> DeleteGame(Guid gameId)
     {
-        var query = new GetGameAccountsQuery
+        var command = new DeleteGameCommand
         {
             GameId = gameId
         };
-        return Ok(await _mediator.Send(query));
+        await _mediator.Send(command);
+        return NoContent();
     }
 }
