@@ -1,16 +1,19 @@
-﻿namespace EurobusinessHelper.Application.Games.Queries.GetGameAccounts;
+﻿using EurobusinessHelper.Domain.Entities;
+
+namespace EurobusinessHelper.Application.Games.Queries.GetGameAccounts;
 
 public class GetGameDetailsQueryResult
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
     public virtual Identity CreatedBy { get; set; }
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     public bool IsPasswordProtected { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
+    public GameState State { get; set; }
     public ICollection<Account> Accounts { get; set; }
-    public int Count => Accounts.Count;
+    public int AccountCount => Accounts.Count;
     
     public class Account
     {

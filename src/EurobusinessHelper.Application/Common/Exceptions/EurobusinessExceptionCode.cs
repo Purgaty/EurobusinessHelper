@@ -2,10 +2,13 @@
 
 public enum EurobusinessExceptionCode
 {
+    InternalAppError,
     UnauthorizedUser,
     GameNotFound,
     AccountAlreadyExists,
     InvalidGamePassword,
     PasswordNotProvided,
-    GameAccessDenied
+    GameAccessDenied,
+    InvalidGameStateChange,
+    CannotJoinNotNewGame
 }

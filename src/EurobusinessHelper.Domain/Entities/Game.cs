@@ -10,6 +10,14 @@ public class Game : IEntity
     public string Password { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
+    public GameState State { get; set; } = GameState.New;
     
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+}
+
+public enum GameState
+{
+    New,
+    Started,
+    Finished
 }

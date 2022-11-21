@@ -8,17 +8,27 @@ using Microsoft.Extensions.Options;
 
 namespace EurobusinessHelper.UI.ASP.Controllers;
 
+/// <summary>
+/// Auth controller
+/// </summary>
 [Route("/api/auth")]
 [AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly AppConfig _appConfig;
 
+    /// <inheritdoc />
     public AuthController(IOptions<AppConfig> appConfig)
     {
         _appConfig = appConfig.Value;
     }
     
+    /// <summary>
+    /// Redirect to identity provider
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="redirectUri"></param>
+    /// <returns></returns>
     [HttpGet("challenge/{provider}")]
     public Task Challenge(AuthType provider, string redirectUri = "/")
     {
@@ -29,6 +39,10 @@ public class AuthController : ControllerBase
             });
     }
 
+    /// <summary>
+    /// Authentication
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("authenticate")]
     public async Task<IActionResult> Authenticate()
     {
@@ -36,6 +50,10 @@ public class AuthController : ControllerBase
         return Redirect("/api/identity/current");
     }
 
+    /// <summary>
+    /// Logout
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("logout")]
     public async Task<IActionResult> Logout()
     {
@@ -43,6 +61,10 @@ public class AuthController : ControllerBase
         return Redirect("/api/identity/current");
     }
 
+    /// <summary>
+    /// Get active identity providers
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("providers")]
     public IActionResult GetActiveProviders()
         => Ok(_appConfig.ActiveAuthenticationTypes);

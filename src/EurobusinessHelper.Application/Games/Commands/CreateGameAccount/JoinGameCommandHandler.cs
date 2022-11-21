@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
 
-public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, Unit>
+public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
@@ -51,5 +51,9 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand, Unit>
         if (game.IsPasswordProtected && !_passwordHasher.ValidatePassword(request.Password, game.Password))
             throw new EurobusinessException(EurobusinessExceptionCode.InvalidGamePassword,
                 $"Provided game password is invalid");
+
+        if (game.State != GameState.New)
+            throw new EurobusinessException(EurobusinessExceptionCode.CannotJoinNotNewGame,
+                $"Cannot join game in {game.State} state");
     }
 }
