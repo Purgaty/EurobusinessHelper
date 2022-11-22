@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using EurobusinessHelper.Application.Common.Exceptions;
+using EurobusinessHelper.Application.Games.Queries.GetIdentityGames;
 using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
@@ -16,6 +17,7 @@ public class SecurityContext : ISecurityContext
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private Identity _currentIdentity;
+    private IEnumerable<Guid> _currentIdentityGames;
 
     public SecurityContext(IHttpContextAccessor httpContextAccessor,
         IMediator mediator,
@@ -35,6 +37,21 @@ public class SecurityContext : ISecurityContext
     {
         var identity = await GetCurrentIdentity();
         return _mapper.Map<IdentityDisplay>(identity);
+    }
+
+    public async Task<IEnumerable<Guid>> GetCurrentIdentityGames()
+    {
+        return _currentIdentityGames ??= await LoadCurrentIdentityGames();
+    }
+
+    private async Task<IEnumerable<Guid>> LoadCurrentIdentityGames()
+    {
+        var currentIdentity = await GetCurrentIdentity();
+        var currentIdentityGames = await _mediator.Send(new GetIdentityGamesQuery
+        {
+            IdentityId = currentIdentity.Id
+        });
+        return currentIdentityGames.Games;
     }
 
     private async Task<Identity> GetOrCreateIdentity()

@@ -1,8 +1,11 @@
 ﻿using EurobusinessHelper.Application.Common.Utilities.PasswordHasher;
 using EurobusinessHelper.Application.Games.Commands.CreateGame;
 using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
+using EurobusinessHelper.Application.Games.Commands.DeleteGame;
+using EurobusinessHelper.Application.Games.Commands.UpdateGameState;
 using EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 using EurobusinessHelper.Application.Games.Queries.GetGameAccounts;
+using EurobusinessHelper.Application.Games.Queries.GetIdentityGames;
 using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
@@ -23,13 +26,16 @@ public static class DependencyInjection
                 //commands
                 .AddTransient<IRequestHandler<CreateIdentityCommand, Guid>, CreateIdentityCommandHandler>()
                 .AddTransient<IRequestHandler<CreateGameCommand, Guid>, CreateGameCommandHandler>()
-                .AddTransient<IRequestHandler<CreateGameAccountCommand, Unit>, CreateGameAccountCommandHandler>()
+                .AddTransient<IRequestHandler<JoinGameCommand, Unit>, JoinGameCommandHandler>()
+                .AddTransient<IRequestHandler<DeleteGameCommand, Unit>, DeleteGameCommandHandler>()
+                .AddTransient<IRequestHandler<UpdateGameStateCommand, Unit>, UpdateGameStateCommandHandler>()
 
                 //queries
                 .AddTransient<IRequestHandler<GetIdentityByEmailQuery, Identity>, GetIdentityByEmailQueryHandler>()
                 .AddTransient<IRequestHandler<GetIdentityByIdQuery, Identity>, GetIdentityByIdQueryHandler>()
                 .AddTransient<IRequestHandler<GetActiveGamesQuery, GetActiveGamesQueryResult>, GetActiveGamesQueryHandler>()
-                .AddTransient<IRequestHandler<GetGameAccountsQuery, GetGameAccountsQueryResult>, GetGameAccountsQueryHandler>()
+                .AddTransient<IRequestHandler<GetGameDetailsQuery, GetGameDetailsQueryResult>, GetGameDetailsQueryHandler>()
+                .AddTransient<IRequestHandler<GetIdentityGamesQuery, GetIdentityGamesQueryResult>, GetIdentityGamesQueryHandler>()
             
                 //utilities
                 .AddTransient<IPasswordHasher, PasswordHasher>()
@@ -43,9 +49,6 @@ public static class DependencyInjection
         config.NewConfig<Game, GetActiveGamesQueryResult>();
         config.NewConfig<Identity, IdentityDisplay>()
             .Map(d => d.Name, s => $"{s.FirstName} {s.LastName}");
-        config.NewConfig<Game, GetActiveGamesQueryResult.Item>()
-            .Map(d => d.CreatedBy, s => $"{s.CreatedBy.FirstName} {s.CreatedBy.LastName} ({s.CreatedBy.Email})")
-            .Map(d => d.AccountCount, s => s.Accounts.Count);
 
         return services.AddSingleton(config)
             .AddSingleton<IMapper, ServiceMapper>();

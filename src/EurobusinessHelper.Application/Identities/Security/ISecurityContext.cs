@@ -6,4 +6,5 @@ public interface ISecurityContext
 {
     public Task<Identity> GetCurrentIdentity();
     Task<IdentityDisplay> GetCurrentIdentityDisplay();
+    Task<IEnumerable<Guid>> GetCurrentIdentityGames();
 }

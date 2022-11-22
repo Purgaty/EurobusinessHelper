@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
 
-public class CreateGameAccountCommandHandler : IRequestHandler<CreateGameAccountCommand, Unit>
+public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ISecurityContext _securityContext;
 
-    public CreateGameAccountCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext,
+    public JoinGameCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext,
         IPasswordHasher passwordHasher)
     {
         _securityContext = securityContext;
@@ -22,7 +22,7 @@ public class CreateGameAccountCommandHandler : IRequestHandler<CreateGameAccount
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<Unit> Handle(CreateGameAccountCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(JoinGameCommand request, CancellationToken cancellationToken)
     {
         var currentIdentity = await _securityContext.GetCurrentIdentity();
         var game = await _dbContext.Games
@@ -38,7 +38,7 @@ public class CreateGameAccountCommandHandler : IRequestHandler<CreateGameAccount
         return Unit.Value;
     }
 
-    private void Validate(CreateGameAccountCommand request, Game game, Identity currentIdentity)
+    private void Validate(JoinGameCommand request, Game game, Identity currentIdentity)
     {
         if (game == default)
             throw new EurobusinessException(EurobusinessExceptionCode.GameNotFound,
@@ -51,5 +51,9 @@ public class CreateGameAccountCommandHandler : IRequestHandler<CreateGameAccount
         if (game.IsPasswordProtected && !_passwordHasher.ValidatePassword(request.Password, game.Password))
             throw new EurobusinessException(EurobusinessExceptionCode.InvalidGamePassword,
                 $"Provided game password is invalid");
+
+        if (game.State != GameState.New)
+            throw new EurobusinessException(EurobusinessExceptionCode.CannotJoinNotNewGame,
+                $"Cannot join game in {game.State} state");
     }
 }

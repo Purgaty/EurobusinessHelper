@@ -27,6 +27,7 @@ public static class DependencyInjection
                 .AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo {Title = "EurobusinessHelper", Version = "v1"});
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "EurobusinessHelper.UI.ASP.xml"));
                 });
     }
 

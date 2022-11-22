@@ -37,6 +37,10 @@ public class ExceptionMiddleware
         return exceptionCode switch
         {
             EurobusinessExceptionCode.UnauthorizedUser => HttpStatusCode.Unauthorized,
+            EurobusinessExceptionCode.GameAccessDenied => HttpStatusCode.Forbidden,
+            EurobusinessExceptionCode.GameNotFound => HttpStatusCode.NotFound,
+            EurobusinessExceptionCode.AccountAlreadyExists => HttpStatusCode.Conflict,
+            EurobusinessExceptionCode.InvalidGamePassword => HttpStatusCode.Forbidden,
             _ => HttpStatusCode.BadRequest
         };
     }
