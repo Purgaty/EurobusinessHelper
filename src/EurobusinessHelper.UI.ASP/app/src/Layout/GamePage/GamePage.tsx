@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FaLock, FaLockOpen } from "react-icons/fa";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import { getGames } from "./actions";
 import "./GamePage.scss";
+import { NewGame } from "./NewGame";
 import { Game } from "./types";
 
 const GamePage = () => {
   const [games, setGames] = useState<Game[]>();
   const [search, setSearch] = useState<string>("");
+  const [gameDetails, setGameDetails] = useState<any>();
 
   const showGames = async () => {
     const data = await getGames(search);
@@ -28,7 +31,7 @@ const GamePage = () => {
         <div className="search-bar">
           <input
             type="text"
-            className="input"
+            className="input search-input"
             placeholder="Search..."
             value={search}
             onChange={handleInput}
@@ -47,8 +50,15 @@ const GamePage = () => {
             </div>
           ))}
         </div>
+        <div
+          className="button add-game-button"
+          onClick={() => setGameDetails(<NewGame />)}
+        >
+          <p className="add-text">Add Game</p>
+          <IoMdAddCircleOutline className="add-icon" />
+        </div>
       </div>
-      <div className="container details-container"></div>
+      <div className="container details-container">{gameDetails}</div>
     </div>
   );
 };

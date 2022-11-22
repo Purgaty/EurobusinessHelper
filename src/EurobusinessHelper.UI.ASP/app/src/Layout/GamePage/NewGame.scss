@@ -1,0 +1,113 @@
+@import "../../colours.scss";
+
+.new-game {
+  width: 90%;
+  height: 100%;
+  margin-top: 5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+}
+
+.new-game-title {
+  margin-bottom: 1em;
+  font-size: calc(1em + 1vw);
+}
+
+.password-title {
+  font-size: calc(1em + 0.5vw);
+}
+
+.new-game-input {
+  font-size: 1.5em;
+  border-bottom: 2px solid $primary;
+  &::placeholder {
+    opacity: 1;
+    color: rgba($primary, 0.5);
+  }
+}
+
+.password-switch {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2em;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0px 0px 0px 2px $accentSecondary;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: $primary;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $accentSecondary;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.buttons {
+  width: 25%;
+  min-width: 10em;
+}
+
+.game-button {
+  width: 100%;
+  height: 5%;
+  min-height: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: calc(1em + 0.5vw);
+  margin: 1em 0;
+
+  &:hover {
+    transform: translateY(-1vh);
+  }
+}

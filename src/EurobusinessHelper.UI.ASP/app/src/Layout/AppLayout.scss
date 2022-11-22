@@ -36,13 +36,17 @@
 }
 
 .button {
-  background: rgba($accentSecondary, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: $accentSecondary;
   cursor: pointer;
   transition: all 1s;
+  border-radius: 150px;
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.input {
+  all: unset;
+  padding: 0.25em;
 }
