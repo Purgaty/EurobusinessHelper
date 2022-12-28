@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BsFacebook, BsGoogle, BsMicrosoft } from "react-icons/bs";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectProviders } from "../Layout/Footer/authSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectProviders } from "../../Layout/Footer/authSlice";
 import { challenge, fetchProviders } from "./actions";
 import { providerNames } from "./consts";
 import "./LoginPage.scss";

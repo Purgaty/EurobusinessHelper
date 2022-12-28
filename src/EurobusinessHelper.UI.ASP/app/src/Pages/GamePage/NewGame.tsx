@@ -7,13 +7,11 @@ export const NewGame = () => {
   return (
     <div className="new-game">
       <p className="new-game-title">New Game</p>
-      <div className="game-name">
-        <input
-          type="text"
-          className="input new-game-input"
-          placeholder="Game Name"
-        />
-      </div>
+      <input
+        type="text"
+        className="input new-game-input"
+        placeholder="Game Name"
+      />
       <div className="password-switch">
         <p className="password-title">Password</p>
         <label className="switch">

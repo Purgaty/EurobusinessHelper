@@ -1,5 +1,5 @@
-import { setProviders } from "../Layout/Footer/authSlice";
-import AuthService from "../Services/Auth/AuthService";
+import { setProviders } from "../../Layout/Footer/authSlice";
+import AuthService from "../../Services/Auth/AuthService";
 
 export const challenge = (providerName: string): void => {
   AuthService.challenge(providerName);

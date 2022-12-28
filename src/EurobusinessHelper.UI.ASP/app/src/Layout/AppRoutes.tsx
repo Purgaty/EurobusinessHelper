@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
-import LoginPage from "../LoginPage/LoginPage";
-import GamePage from "./GamePage/GamePage";
+import GamePage from "../Pages/GamePage/GamePage";
+import LoginPage from "../Pages/LoginPage/LoginPage";
 
 export const AppRoutes = () => {
   return (

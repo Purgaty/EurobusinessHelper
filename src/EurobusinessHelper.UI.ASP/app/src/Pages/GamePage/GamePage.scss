@@ -14,7 +14,7 @@
   width: 20%;
   min-width: fit-content;
   height: 90%;
-  margin: 1em;
+  margin: 2em;
   overflow: hidden;
 
   display: flex;
@@ -99,6 +99,7 @@
 
 .add-game-button {
   width: 80%;
+  min-width: fit-content;
   height: 5%;
   min-height: 1.5em;
   display: flex;
@@ -127,5 +128,5 @@
 .details-container {
   width: 80%;
   height: 90%;
-  margin: 1em;
+  margin: 3em;
 }
