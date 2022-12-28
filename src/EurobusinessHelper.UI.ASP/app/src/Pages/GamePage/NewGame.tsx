@@ -26,8 +26,8 @@ export const NewGame = () => {
         placeholder="Password"
       />
       <div className="buttons">
-        <div className="button game-button">Add New Game</div>
-        <div className="button game-button">Cancel</div>
+        <div className="button button-hover game-button">Add New Game</div>
+        <div className="button button-hover game-button">Cancel</div>
       </div>
     </div>
   );

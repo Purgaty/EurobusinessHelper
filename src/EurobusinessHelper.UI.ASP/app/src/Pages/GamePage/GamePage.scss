@@ -106,10 +106,6 @@
   align-items: center;
   justify-content: center;
   font-size: calc(1em + 0.5vw);
-
-  &:hover {
-    transform: translateY(-1vh);
-  }
 }
 
 .add-text {

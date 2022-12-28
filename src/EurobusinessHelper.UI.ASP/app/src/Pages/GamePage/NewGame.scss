@@ -114,8 +114,4 @@ input:checked + .slider:before {
 
   font-size: calc(1em + 0.5vw);
   margin: 1em 0;
-
-  &:hover {
-    transform: translateY(-1vh);
-  }
 }

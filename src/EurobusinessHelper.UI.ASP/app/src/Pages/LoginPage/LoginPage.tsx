@@ -39,7 +39,7 @@ const LoginPage = (props: LoginPageProps) => {
         <div className="providers">
           {providers?.map((provider) => (
             <div
-              className="button provider-button"
+              className="button button-hover provider-button"
               key={provider}
               onClick={() => challenge(provider.toLowerCase())}
             >

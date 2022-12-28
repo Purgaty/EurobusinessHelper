@@ -3,6 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { getGames } from "./actions";
+import { GameDetails } from "./GameDetails";
 import "./GamePage.scss";
 import { NewGame } from "./NewGame";
 import { Game } from "./types";
@@ -42,7 +43,11 @@ const GamePage = () => {
         </div>
         <div className="game-list">
           {games?.map((game, i) => (
-            <div className="game" key={i}>
+            <div
+              className="game"
+              key={i}
+              onClick={() => setGameDetails(<GameDetails gameId={game.id} />)}
+            >
               <p className="game-name">{game.name}</p>
               <div className="lock-icon">
                 {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
@@ -51,7 +56,7 @@ const GamePage = () => {
           ))}
         </div>
         <div
-          className="button add-game-button"
+          className="button button-hover add-game-button"
           onClick={() => setGameDetails(<NewGame />)}
         >
           <p className="add-text">Add Game</p>

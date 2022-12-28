@@ -10,6 +10,11 @@ export default class GameService {
     return response.data.items;
   }
 
+  static async getGameDetails(gameId: string): Promise<{}> {
+    const response = await axios.get(config.apiUrl + "/api/game/" + gameId);
+    return response.data;
+  }
+
   static async postGame(game: NewGame): Promise<[]> {
     const response = await axios.post(config.apiUrl + "/api/game", game);
     return response.data.items;
