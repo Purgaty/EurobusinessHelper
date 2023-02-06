@@ -2,6 +2,7 @@ export interface Game {
   isPasswordProtected: boolean;
   name: string;
   id: string;
+  state: string;
 }
 
 export interface NewGame extends Game {
@@ -28,4 +29,8 @@ export interface Player {
   name: string;
   email: string;
   balance: number;
+}
+
+export interface JoinGameData {
+  password: string;
 }

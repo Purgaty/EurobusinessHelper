@@ -4,7 +4,7 @@
   width: 90%;
   height: 90%;
   font-size: calc(1em + 0.5vw);
-  .game-name {
+  .game-title {
     font-size: calc(2em + 1vw);
     display: flex;
     flex-direction: row;
@@ -12,6 +12,12 @@
     border-bottom: 2px solid $primary;
   }
 }
+.delete-game {
+  margin-left: auto;
+  font-size: calc(0.5em + 1vw);
+  cursor: pointer;
+}
+
 .dates {
   margin: 0.5em 0;
 }
@@ -96,19 +102,34 @@
   margin-left: auto;
 }
 
-.game-buttons {
+.join-block {
   margin-left: auto;
-  margin-top: 2em;
+  margin-top: 5em;
   width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 }
 
-.join-button,
-.delete-button {
-  width: 50%;
-  margin: 1em;
+.password-input {
+  text-align: center;
+  font-size: calc(0.5em + 0.5vw);
+
+  border: 2px solid $accentSecondary;
+  border-radius: 150px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.join-button {
+  width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: calc(1em + 0.1vw);
+  border-radius: 150px;
 }
 .text {
   padding: 0.2em;
