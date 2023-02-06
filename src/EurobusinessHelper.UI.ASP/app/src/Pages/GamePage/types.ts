@@ -34,3 +34,7 @@ export interface Player {
 export interface JoinGameData {
   password: string;
 }
+
+export interface GameInfoList {
+  [key: string]: GameInfo;
+}

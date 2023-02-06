@@ -25,10 +25,7 @@ export const NewGame = () => {
         className="input new-game-input"
         placeholder="Password"
       />
-      <div className="buttons">
-        <div className="button button-hover game-button">Add New Game</div>
-        <div className="button button-hover game-button">Cancel</div>
-      </div>
+      <div className="button button-hover game-button">Add New Game</div>
     </div>
   );
 };

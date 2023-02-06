@@ -1,54 +1,65 @@
 import React, { useEffect, useState } from "react";
 import { BiTrash } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
-import { deleteGame, getGameDetails, joinGame } from "./actions";
+import { deleteGame, fetchDetails, fetchGames, joinGame } from "./actions";
 import "./GameDetails.scss";
-import { GameInfo, Player } from "./types";
+import { selectGameDetails } from "./gameSlice";
+import { Player } from "./types";
 
-export const GameDetails = ({ gameId }: { gameId: string }) => {
-  const [details, setDetails] = useState<GameInfo>();
+export interface GameDetailsProps {
+  gameId: string;
+  clearSelectedGame: Function;
+}
+
+export const GameDetails = ({
+  gameId,
+  clearSelectedGame,
+}: GameDetailsProps) => {
   const [password, setPassword] = useState<string>("");
 
   const identity = useAppSelector(selectIdentity);
-
-  const getDetails = async () => {
-    const data = await getGameDetails(gameId);
-    setDetails(data);
-  };
+  const gameDetails = useSelector(selectGameDetails(gameId));
+  const dispatch = useDispatch();
 
   const handleInput = (event: any) => {
     setPassword(event.target.value);
   };
 
   useEffect(() => {
-    getDetails();
     setPassword("");
   }, [gameId]);
 
   return (
     <div className="game-details">
       <div className="game-title">
-        <div className="game-name">{details?.name} </div>
+        <div className="game-name">{gameDetails?.name} </div>
         <div
           className="delete-game"
           style={{
             display:
-              details?.createdBy.email === identity?.email ? "block" : "none",
+              gameDetails?.createdBy.email === identity?.email
+                ? "block"
+                : "none",
           }}
-          onClick={() => deleteGame(gameId)}
+          onClick={async () => {
+            await deleteGame(gameId);
+            dispatch(fetchGames(""));
+            clearSelectedGame();
+          }}
         >
           <BiTrash />
         </div>
       </div>
       <div className="dates">
-        <div className="created">Created on: {details?.createdOn}</div>
-        <div className="modified">Last modified: {details?.modifiedOn}</div>
+        <div className="created">Created on: {gameDetails?.createdOn}</div>
+        <div className="modified">Last modified: {gameDetails?.modifiedOn}</div>
       </div>
       <div className="tags">
-        <div className="state">{details?.state}</div>
+        <div className="state">{gameDetails?.state}</div>
         <div className="is-active">
-          {details?.isActive ? (
+          {gameDetails?.isActive ? (
             <>
               <div className="active"></div>
               <div>Active</div>
@@ -60,12 +71,12 @@ export const GameDetails = ({ gameId }: { gameId: string }) => {
             </>
           )}
         </div>
-        <div className="players">Players: {details?.accountCount}</div>
+        <div className="players">Players: {gameDetails?.accountCount}</div>
       </div>
       <div className="details-block">
         <div className="players-list">
           Players:
-          {details?.accounts?.map((player: Player) => (
+          {gameDetails?.accounts?.map((player: Player) => (
             <div className="player" key={player.id}>
               <div className="player-name">{player.name}</div>
               <div className="player-balance">{player.balance}$</div>
@@ -81,7 +92,7 @@ export const GameDetails = ({ gameId }: { gameId: string }) => {
               value={password}
               onChange={handleInput}
               style={{
-                display: details?.isPasswordProtected ? "block" : "none",
+                display: gameDetails?.isPasswordProtected ? "block" : "none",
               }}
             />
           </div>
@@ -89,7 +100,7 @@ export const GameDetails = ({ gameId }: { gameId: string }) => {
             className="button button-hover join-button"
             onClick={async () => {
               await joinGame(gameId, { password });
-              getDetails();
+              dispatch(fetchDetails(gameId, true));
             }}
           >
             <p className="text">Join</p>
