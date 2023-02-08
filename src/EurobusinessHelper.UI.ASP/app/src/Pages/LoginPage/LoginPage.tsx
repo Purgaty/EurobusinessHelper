@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BsFacebook, BsGoogle, BsMicrosoft } from "react-icons/bs";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectProviders } from "../Layout/Footer/authSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectProviders } from "../../Layout/Footer/authSlice";
 import { challenge, fetchProviders } from "./actions";
 import { providerNames } from "./consts";
 import "./LoginPage.scss";
@@ -34,12 +34,12 @@ const LoginPage = (props: LoginPageProps) => {
 
   return (
     <div className="login-page">
-      <div className="container">
+      <div className="container login-container">
         <p>Log In</p>
-        <div className="buttons">
+        <div className="providers">
           {providers?.map((provider) => (
             <div
-              className="provider"
+              className="button button-hover provider-button"
               key={provider}
               onClick={() => challenge(provider.toLowerCase())}
             >

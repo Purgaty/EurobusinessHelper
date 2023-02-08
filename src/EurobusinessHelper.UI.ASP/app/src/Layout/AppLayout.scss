@@ -13,9 +13,46 @@
 }
 
 .application-body {
-  margin-top: calc(1em + 3vw);
+  margin: calc(1em + 3vw) 0;
 }
 
 .application-footer {
   bottom: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba($background, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  -webkit-box-shadow: 0px 0px 100px 14px rgba($backgroundLighter, 1);
+  -moz-box-shadow: 0px 0px 100px 14px rgba($backgroundLighter, 1);
+  box-shadow: 0px 0px 100px 14px rgba($backgroundLighter, 1);
+}
+
+.button {
+  background: $accentSecondary;
+  cursor: pointer;
+  transition: all 1s;
+  border-radius: 150px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button-hover {
+  &:hover {
+    transform: translateY(-1vh);
+  }
+}
+
+.input {
+  all: unset;
+  padding: 0.25em;
 }

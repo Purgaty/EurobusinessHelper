@@ -1,0 +1,136 @@
+@import "../../colours.scss";
+
+.game-details {
+  width: 90%;
+  height: 90%;
+  font-size: calc(1em + 0.5vw);
+  .game-title {
+    font-size: calc(2em + 1vw);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 2px solid $primary;
+  }
+}
+.delete-game {
+  margin-left: auto;
+  font-size: calc(0.5em + 1vw);
+  cursor: pointer;
+}
+
+.dates {
+  margin: 0.5em 0;
+}
+
+.tags {
+  margin: 1em 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+.is-active,
+.state,
+.players {
+  width: 6em;
+  min-width: fit-content;
+  height: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($backgroundLighter, 0.8);
+  border-radius: 15px;
+}
+
+.active,
+.not-active {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 16px;
+  margin-right: 0.5em;
+}
+.active {
+  background-color: $accent;
+}
+.not-active {
+  background-color: $accentSecondary;
+}
+
+.details-block {
+  width: 100%;
+  margin-top: 3em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.players-list {
+  width: 40%;
+  height: 60%;
+  margin-right: auto;
+
+  overflow: auto;
+  scroll-behavior: smooth;
+}
+
+.players-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.players-list::-webkit-scrollbar {
+  width: 0.5em;
+  background-color: transparent;
+}
+
+.players-list::-webkit-scrollbar-thumb {
+  background-color: rgba($primary, 0.5);
+  border-radius: 150px;
+}
+
+.player {
+  width: 100%;
+  margin: 0.5em 0;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid $primary;
+}
+.player-name {
+  margin-right: auto;
+}
+.player-balance {
+  margin-left: auto;
+}
+
+.join-block {
+  margin-left: auto;
+  margin-top: 5em;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.password-input {
+  text-align: center;
+  font-size: calc(0.5em + 0.5vw);
+
+  border: 2px solid $accentSecondary;
+  border-radius: 150px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.join-button {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(1em + 0.1vw);
+  border-radius: 150px;
+}
+.text {
+  padding: 0.2em;
+}
