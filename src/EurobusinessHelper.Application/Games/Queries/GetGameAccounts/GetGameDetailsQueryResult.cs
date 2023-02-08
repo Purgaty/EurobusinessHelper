@@ -9,6 +9,7 @@ public class GetGameDetailsQueryResult
     public virtual Identity CreatedBy { get; set; }
     public bool IsActive { get; set; }
     public bool IsPasswordProtected { get; set; }
+    public bool CanJoin { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
     public GameState State { get; set; }

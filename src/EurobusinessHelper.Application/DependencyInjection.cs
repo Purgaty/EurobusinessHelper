@@ -46,9 +46,11 @@ public static class DependencyInjection
     {
         var config = new TypeAdapterConfig();
         
-        config.NewConfig<Game, GetActiveGamesQueryResult>();
         config.NewConfig<Identity, IdentityDisplay>()
             .Map(d => d.Name, s => $"{s.FirstName} {s.LastName}");
+        config.NewConfig<Account, GetGameDetailsQueryResult.Account>()
+            .Map(a => a.Name, a => a.Owner.FirstName + " " + a.Owner.LastName)
+            .Map(a => a.Email, a => a.Owner.Email);
 
         return services.AddSingleton(config)
             .AddSingleton<IMapper, ServiceMapper>();

@@ -27,6 +27,7 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand>
         var currentIdentity = await _securityContext.GetCurrentIdentity();
         var game = await _dbContext.Games
             .Include(g => g.Accounts)
+            .ThenInclude(a => a.Owner)
             .FirstOrDefaultAsync(g => g.Id == request.GameId, cancellationToken);
         Validate(request, game, currentIdentity);
         game!.Accounts.Add(new Account
