@@ -11,6 +11,7 @@ public class Game : IEntity
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
     public GameState State { get; set; } = GameState.New;
+    public int StartingAccountBalance { get; set; }
     
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
 }

@@ -1,4 +1,5 @@
-﻿using EurobusinessHelper.Domain.Config;
+﻿using System.Net;
+using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.UI.ASP.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace EurobusinessHelper.UI.ASP.Controllers;
 
 /// <summary>
-/// Auth controller
+///     Auth controller
 /// </summary>
 [Route("/api/auth")]
 [AllowAnonymous]
@@ -22,9 +23,9 @@ public class AuthController : ControllerBase
     {
         _appConfig = appConfig.Value;
     }
-    
+
     /// <summary>
-    /// Redirect to identity provider
+    ///     Redirect to identity provider
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="redirectUri"></param>
@@ -40,7 +41,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Authentication
+    ///     Authentication
     /// </summary>
     /// <returns></returns>
     [HttpGet("authenticate")]
@@ -51,7 +52,7 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Logout
+    ///     Logout
     /// </summary>
     /// <returns></returns>
     [HttpGet("logout")]
@@ -62,10 +63,12 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Get active identity providers
+    ///     Get active identity providers
     /// </summary>
     /// <returns></returns>
     [HttpGet("providers")]
     public IActionResult GetActiveProviders()
-        => Ok(_appConfig.ActiveAuthenticationTypes);
+    {
+        return Ok(_appConfig.ActiveAuthenticationTypes);
+    }
 }

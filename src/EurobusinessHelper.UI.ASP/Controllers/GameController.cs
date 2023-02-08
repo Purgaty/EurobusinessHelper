@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EurobusinessHelper.UI.ASP.Controllers;
 
 /// <summary>
-/// Game controller
+///     Game controller
 /// </summary>
 [Route("api/game")]
 public class GameController : ControllerBase
@@ -52,7 +52,7 @@ public class GameController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {
-            Participant = await _securityContext.GetCurrentIdentity()
+            Owner = await _securityContext.GetCurrentIdentity()
         }));
     }
 

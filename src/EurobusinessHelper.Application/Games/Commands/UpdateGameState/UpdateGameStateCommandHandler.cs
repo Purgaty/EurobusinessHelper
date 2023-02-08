@@ -28,7 +28,7 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
             .Include(g => g.CreatedBy)
             .Include(g => g.Accounts)
             .FirstOrDefaultAsync(g => g.Id == request.GameId, cancellationToken);
-        await ValidateCommand(game);
+        await ValidateCommand(request, game);
         UpdateGame(request, game);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return Unit.Value;
@@ -40,11 +40,14 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
         if (game.State != GameState.Started)
             return;
         foreach (var gameAccount in game.Accounts)
-            gameAccount.Balance = _appConfig.StartingBalance;
+            gameAccount.Balance = game.StartingAccountBalance;
     }
 
-    private async Task ValidateCommand(Game game)
+    private async Task ValidateCommand(UpdateGameStateCommand request, Game game)
     {
+        if(game == default)
+            throw new EurobusinessException(EurobusinessExceptionCode.GameNotFound,
+                $"Game {request.GameId} not found.");
         var currentIdentity = await _securityContext.GetCurrentIdentity();
         if (game.CreatedBy.Id != currentIdentity.Id)
             throw new EurobusinessException(EurobusinessExceptionCode.GameAccessDenied,

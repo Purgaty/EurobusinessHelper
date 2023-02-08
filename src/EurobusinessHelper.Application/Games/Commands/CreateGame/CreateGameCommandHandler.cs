@@ -29,6 +29,7 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
             Name = command.Name,
             IsPasswordProtected = command.IsPasswordProtected,
             Password = GetPasswordHash(command),
+            StartingAccountBalance = command.StartingAccountBalance,
             CreatedBy = await _securityContext.GetCurrentIdentity()
         };
         _dbContext.Games.Add(entity);
@@ -42,6 +43,10 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
         if (command.IsPasswordProtected && string.IsNullOrWhiteSpace(command.Password))
             throw new EurobusinessException(EurobusinessExceptionCode.PasswordNotProvided,
                 "Game protected by password must have a password set");
+
+        if (command.StartingAccountBalance == default)
+            throw new EurobusinessException(EurobusinessExceptionCode.StartingAccountBalanceNotProvided,
+                "Starting account balance must be greater than 0");
     }
 
     private string GetPasswordHash(CreateGameCommand command)

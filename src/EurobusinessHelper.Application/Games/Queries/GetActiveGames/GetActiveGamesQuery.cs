@@ -7,5 +7,5 @@ public class GetActiveGamesQuery : IRequest<GetActiveGamesQueryResult>
 {
     public string Query { get; init; }
     public IEnumerable<GameState> States { get; init; } = Enumerable.Empty<GameState>();
-    public Identity Participant { get; init; }
+    public Identity Owner { get; init; }
 }
