@@ -2,7 +2,7 @@ export interface Game {
   isPasswordProtected: boolean;
   name: string;
   id: string;
-  state: string;
+  state: GameState;
 }
 
 export interface NewGame extends Game {
@@ -19,7 +19,7 @@ export interface GameInfo extends Game {
   isActive: boolean;
   createdOn: string;
   modifiedOn: string;
-  state: string;
+  state: GameState;
   accounts: [Player];
   accountCount: number;
 }
@@ -37,4 +37,10 @@ export interface JoinGameData {
 
 export interface GameInfoList {
   [key: string]: GameInfo;
+}
+
+export enum GameState {
+  New,
+  Started,
+  Finished,
 }

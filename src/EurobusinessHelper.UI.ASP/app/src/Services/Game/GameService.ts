@@ -3,6 +3,7 @@ import config from "../../app/config";
 import {
   Game,
   GameInfo,
+  GameState,
   JoinGameData,
   NewGame,
 } from "../../Pages/GamePage/types";
@@ -26,15 +27,15 @@ export default class GameService {
   }
 
   static async joinGame(gameId: string, password: JoinGameData): Promise<void> {
-    const response = await axios.put(
-      config.apiUrl + "/api/game/" + gameId,
-      password
-    );
-    return response.data;
+    await axios.put(config.apiUrl + "/api/game/" + gameId, password);
   }
 
   static async deleteGame(gameId: string): Promise<void> {
     const response = await axios.delete(config.apiUrl + "/api/game/" + gameId);
     return response.data;
+  }
+
+  static async startGame(gameId: string, state: GameState): Promise<void> {
+    await axios.put(config.apiUrl + "/api/game/" + gameId + "/state/" + state);
   }
 }
