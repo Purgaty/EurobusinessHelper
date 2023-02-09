@@ -19,7 +19,6 @@ export interface GameInfo extends Game {
   isActive: boolean;
   createdOn: string;
   modifiedOn: string;
-  state: GameState;
   accounts: [Player];
   accountCount: number;
 }
@@ -40,7 +39,7 @@ export interface GameInfoList {
 }
 
 export enum GameState {
-  New,
-  Started,
-  Finished,
+  New = "New",
+  Started = "Started",
+  Finished = "Finished",
 }

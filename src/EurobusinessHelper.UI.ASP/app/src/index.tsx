@@ -9,8 +9,6 @@ import * as serviceWorker from "./serviceWorker";
 
 setUpAxios();
 
-console.log(process.env);
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

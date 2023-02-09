@@ -1,2 +1,1 @@
-Set-Location .\src\EurobusinessHelper.UI.ASP\
-dotnet run
+dotnet run --project .\src\EurobusinessHelper.UI.ASP\

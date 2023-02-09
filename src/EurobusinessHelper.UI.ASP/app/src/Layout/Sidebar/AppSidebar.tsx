@@ -1,6 +1,5 @@
 import { AiFillHome, AiOutlineMenuUnfold } from "react-icons/ai";
 import { FaDice } from "react-icons/fa";
-import { HiUsers } from "react-icons/hi";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import "./AppSidebar.scss";
@@ -16,12 +15,6 @@ const AppSidebar = () => {
           <AiFillHome className="link-icon" />
           <Link className="link-text" to="/">
             Home
-          </Link>
-        </div>
-        <div className="link">
-          <HiUsers className="link-icon" />
-          <Link className="link-text" to="/users">
-            Users
           </Link>
         </div>
         <div className="link">

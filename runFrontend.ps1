@@ -1,2 +1,1 @@
-Set-Location .\src\EurobusinessHelper.UI.ASP\app\
-npm start
+npm start --prefix .\src\EurobusinessHelper.UI.ASP\app\

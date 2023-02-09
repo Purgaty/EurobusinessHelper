@@ -62,7 +62,7 @@ export const GameDetails = ({
     return (
       <div className="game-details">
         <div className="game-title">
-          <div className="game-name">{gameDetails?.name} </div>
+          <div className="game-details-name">{gameDetails?.name} </div>
           <div
             className="delete-game"
             style={{
@@ -142,7 +142,8 @@ export const GameDetails = ({
               }}
               style={{
                 display:
-                  gameDetails?.createdBy.email === identity?.email
+                  gameDetails?.createdBy.email === identity?.email &&
+                  gameDetails?.state !== GameState.Started
                     ? ""
                     : "none",
               }}

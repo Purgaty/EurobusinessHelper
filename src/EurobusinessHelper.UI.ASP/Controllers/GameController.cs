@@ -48,10 +48,11 @@ public class GameController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("mine")]
-    public async Task<IActionResult> GetMyGames()
+    public async Task<IActionResult> GetMyGames(string query = null)
     {
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {
+            Query = query,
             Owner = await _securityContext.GetCurrentIdentity()
         }));
     }

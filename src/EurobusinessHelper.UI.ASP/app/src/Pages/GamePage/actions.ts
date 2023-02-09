@@ -5,6 +5,7 @@ import {
   setGameDetails,
   setGameList,
   setGameListSearch,
+  setMyGameList,
 } from "./gameSlice";
 import { GameState, JoinGameData, NewGame } from "./types";
 
@@ -13,6 +14,7 @@ export const refreshGames =
   async (dispatch: Function, getState: Function): Promise<void> => {
     const query = selectGameListSearch(getState());
     await dispatch(fetchGames(query));
+    await dispatch(fetchMyGames(query));
   };
 
 export const fetchGames =
@@ -21,6 +23,14 @@ export const fetchGames =
     dispatch(setGameSearch(query));
     const gameList = await GameService.getGames(query);
     dispatch(setGameList(gameList));
+  };
+
+export const fetchMyGames =
+  (query: string) =>
+  async (dispatch: Function): Promise<void> => {
+    dispatch(setGameSearch(query));
+    const gameList = await GameService.getMyGames(query);
+    dispatch(setMyGameList(gameList));
   };
 
 export const fetchDetails =

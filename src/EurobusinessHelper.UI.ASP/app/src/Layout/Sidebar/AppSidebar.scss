@@ -22,6 +22,7 @@
 
 .link-text {
   transition: all 1s;
+  white-space: nowrap;
 }
 
 .menu-open:hover {
@@ -57,9 +58,9 @@
 .link-text {
   margin: 0.5vh;
   transition: 0.5s;
-  cursor: pointer;
 }
 .link-text {
+  cursor: pointer;
   text-decoration: none;
   color: $primary;
   width: 0;
