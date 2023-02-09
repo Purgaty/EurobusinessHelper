@@ -29,7 +29,7 @@ const GamePage = () => {
 
   useEffect(() => {
     dispatch(refreshGames());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="game-page">
