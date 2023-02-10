@@ -17,5 +17,6 @@ public class TransferMoneyRequest
     /// Amount of transferred money
     /// </summary>
     [Required]
+    [Range(0, int.MaxValue)]
     public int Amount { get; set; }
 }

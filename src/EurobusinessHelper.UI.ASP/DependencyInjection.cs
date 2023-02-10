@@ -12,8 +12,17 @@ using Microsoft.OpenApi.Models;
 
 namespace EurobusinessHelper.UI.ASP;
 
+/// <summary>
+/// Dependency injection config
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Dependency injection extension method
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
     public static IServiceCollection InjectDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         return services

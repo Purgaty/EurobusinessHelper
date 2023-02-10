@@ -11,5 +11,7 @@ public enum EurobusinessExceptionCode
     GameAccessDenied,
     InvalidGameStateChange,
     CannotJoinNotNewGame,
-    StartingAccountBalanceNotProvided
+    StartingAccountBalanceNotProvided,
+    AccountNotFound,
+    InsufficientFunds
 }

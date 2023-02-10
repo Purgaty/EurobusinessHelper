@@ -1,4 +1,6 @@
-﻿using EurobusinessHelper.Application.Common.Utilities.PasswordHasher;
+﻿using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
+using EurobusinessHelper.Application.Accounts.Queries.CheckAccountGameAccess;
+using EurobusinessHelper.Application.Common.Utilities.PasswordHasher;
 using EurobusinessHelper.Application.Games.Commands.CreateGame;
 using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
 using EurobusinessHelper.Application.Games.Commands.DeleteGame;
@@ -29,6 +31,7 @@ public static class DependencyInjection
                 .AddTransient<IRequestHandler<JoinGameCommand, Unit>, JoinGameCommandHandler>()
                 .AddTransient<IRequestHandler<DeleteGameCommand, Unit>, DeleteGameCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateGameStateCommand, Unit>, UpdateGameStateCommandHandler>()
+                .AddTransient<IRequestHandler<TransferMoneyCommand, Unit>, TransferMoneyCommandHandler>()
 
                 //queries
                 .AddTransient<IRequestHandler<GetIdentityByEmailQuery, Identity>, GetIdentityByEmailQueryHandler>()
@@ -36,6 +39,7 @@ public static class DependencyInjection
                 .AddTransient<IRequestHandler<GetActiveGamesQuery, GetActiveGamesQueryResult>, GetActiveGamesQueryHandler>()
                 .AddTransient<IRequestHandler<GetGameDetailsQuery, GetGameDetailsQueryResult>, GetGameDetailsQueryHandler>()
                 .AddTransient<IRequestHandler<GetIdentityGamesQuery, GetIdentityGamesQueryResult>, GetIdentityGamesQueryHandler>()
+                .AddTransient<IRequestHandler<CheckAccountGameAccessQuery, bool>, CheckAccountGameAccessQueryHandler>()
             
                 //utilities
                 .AddTransient<IPasswordHasher, PasswordHasher>()

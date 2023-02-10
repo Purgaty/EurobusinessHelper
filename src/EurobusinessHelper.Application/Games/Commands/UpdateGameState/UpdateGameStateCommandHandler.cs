@@ -1,11 +1,9 @@
 ﻿using EurobusinessHelper.Application.Common.Exceptions;
 using EurobusinessHelper.Application.Common.Interfaces;
 using EurobusinessHelper.Application.Identities.Security;
-using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace EurobusinessHelper.Application.Games.Commands.UpdateGameState;
 
@@ -13,13 +11,11 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ISecurityContext _securityContext;
-    private readonly AppConfig _appConfig;
 
-    public UpdateGameStateCommandHandler(IApplicationDbContext dbContext, ISecurityContext securityContext, IOptions<AppConfig> appConfig)
+    public UpdateGameStateCommandHandler(IApplicationDbContext dbContext, ISecurityContext securityContext)
     {
         _dbContext = dbContext;
         _securityContext = securityContext;
-        _appConfig = appConfig.Value;
     }
     
     public async Task<Unit> Handle(UpdateGameStateCommand request, CancellationToken cancellationToken)

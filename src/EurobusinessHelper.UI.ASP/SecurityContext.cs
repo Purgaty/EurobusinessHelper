@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using EurobusinessHelper.Application.Common.Exceptions;
-using EurobusinessHelper.Application.Games.Queries.GetIdentityGames;
 using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
@@ -11,14 +10,23 @@ using MediatR;
 
 namespace EurobusinessHelper.UI.ASP;
 
+/// <summary>
+/// Security context containing information about
+/// currently authenticated identity
+/// </summary>
 public class SecurityContext : ISecurityContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private Identity _currentIdentity;
-    private IEnumerable<Guid> _currentIdentityGames;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="httpContextAccessor"></param>
+    /// <param name="mediator"></param>
+    /// <param name="mapper"></param>
     public SecurityContext(IHttpContextAccessor httpContextAccessor,
         IMediator mediator,
         IMapper mapper)
@@ -28,30 +36,23 @@ public class SecurityContext : ISecurityContext
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Gets or creates identity for currently authenticated user
+    /// </summary>
+    /// <returns></returns>
     public async Task<Identity> GetCurrentIdentity()
     {
         return _currentIdentity ??= await GetOrCreateIdentity();
     }
 
+    /// <summary>
+    /// Gets the display object for current identity
+    /// </summary>
+    /// <returns></returns>
     public async Task<IdentityDisplay> GetCurrentIdentityDisplay()
     {
         var identity = await GetCurrentIdentity();
         return _mapper.Map<IdentityDisplay>(identity);
-    }
-
-    public async Task<IEnumerable<Guid>> GetCurrentIdentityGames()
-    {
-        return _currentIdentityGames ??= await LoadCurrentIdentityGames();
-    }
-
-    private async Task<IEnumerable<Guid>> LoadCurrentIdentityGames()
-    {
-        var currentIdentity = await GetCurrentIdentity();
-        var currentIdentityGames = await _mediator.Send(new GetIdentityGamesQuery
-        {
-            IdentityId = currentIdentity.Id
-        });
-        return currentIdentityGames.Games;
     }
 
     private async Task<Identity> GetOrCreateIdentity()

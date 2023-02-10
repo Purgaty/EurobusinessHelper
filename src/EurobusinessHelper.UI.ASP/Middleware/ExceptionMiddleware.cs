@@ -5,15 +5,27 @@ using EurobusinessHelper.Application.Common.Exceptions;
 
 namespace EurobusinessHelper.UI.ASP.Middleware;
 
+/// <summary>
+/// Middleware converting application exceptions to HTTP codes
+/// </summary>
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionMiddleware> _logger;
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="next"></param>
+    /// <param name="logger"></param>
     public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
     {
         _logger = logger;
         _next = next;
     }
+    /// <summary>
+    /// Exception catching
+    /// </summary>
+    /// <param name="httpContext"></param>
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
@@ -38,6 +50,7 @@ public class ExceptionMiddleware
         {
             EurobusinessExceptionCode.UnauthorizedUser => HttpStatusCode.Unauthorized,
             EurobusinessExceptionCode.GameAccessDenied => HttpStatusCode.Forbidden,
+            EurobusinessExceptionCode.AccountNotFound or
             EurobusinessExceptionCode.GameNotFound => HttpStatusCode.NotFound,
             EurobusinessExceptionCode.AccountAlreadyExists => HttpStatusCode.Conflict,
             EurobusinessExceptionCode.InvalidGamePassword => HttpStatusCode.Forbidden,

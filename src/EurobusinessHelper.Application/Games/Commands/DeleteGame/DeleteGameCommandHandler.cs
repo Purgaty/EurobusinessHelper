@@ -38,6 +38,6 @@ public class DeleteGameCommandHandler : IRequestHandler<DeleteGameCommand>
         var currentIdentity = await _securityContext.GetCurrentIdentity();
         if (game.CreatedBy.Id != currentIdentity.Id)
             throw new EurobusinessException(EurobusinessExceptionCode.GameAccessDenied,
-                $"Account {currentIdentity.Email} isn't the owner of game {game.Name}");
+                $"Identity {currentIdentity.Email} isn't the owner of game {game.Name}");
     }
 }

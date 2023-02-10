@@ -39,7 +39,8 @@ public class GameController : ControllerBase
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {
             Query = query,
-            States = new[] {GameState.New}
+            Joinable = true,
+            Participant = await _securityContext.GetCurrentIdentity()
         }));
     }
 
@@ -53,7 +54,7 @@ public class GameController : ControllerBase
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {
             Query = query,
-            Owner = await _securityContext.GetCurrentIdentity()
+            Participant = await _securityContext.GetCurrentIdentity()
         }));
     }
 

@@ -21,10 +21,10 @@ public class GetActiveGamesQueryHandler : IRequestHandler<GetActiveGamesQuery, G
             .Where(g => g.IsActive);
         if (query.Query != default)
             dbQuery = dbQuery.Where(g => g.Name.Contains(query.Query));
-        if (query.States.Any())
-            dbQuery = dbQuery.Where(g => query.States.Contains(g.State));
-        if (query.Owner != default)
-            dbQuery = dbQuery.Where(g => g.Accounts.Any(a => a.Owner.Id == query.Owner.Id));
+        if (query.Participant != default)
+            dbQuery = query.Joinable ?
+                dbQuery.Where(g => g.Accounts.All(a => a.Owner.Id != query.Participant.Id)) :
+                dbQuery.Where(g => g.Accounts.Any(a => a.Owner.Id == query.Participant.Id));
 
         return new GetActiveGamesQueryResult
         {

@@ -6,6 +6,6 @@ namespace EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 public class GetActiveGamesQuery : IRequest<GetActiveGamesQueryResult>
 {
     public string Query { get; init; }
-    public IEnumerable<GameState> States { get; init; } = Enumerable.Empty<GameState>();
-    public Identity Owner { get; init; }
+    public bool Joinable { get; set; }
+    public Identity Participant { get; init; }
 }

@@ -2,7 +2,10 @@
 using EurobusinessHelper.Application.Common.Interfaces;
 using EurobusinessHelper.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using IsolationLevel = System.Data.IsolationLevel;
+using Transaction = EurobusinessHelper.Domain.Entities.Transaction;
 
 namespace EurobusinessHelper.Infrastructure.Persistence;
 
@@ -21,6 +24,9 @@ internal class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
 
+    public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel)
+        => Database.BeginTransaction(isolationLevel);
+    
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         SetTimestamps();

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using EurobusinessHelper.Domain.Config;
+﻿using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.UI.ASP.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
