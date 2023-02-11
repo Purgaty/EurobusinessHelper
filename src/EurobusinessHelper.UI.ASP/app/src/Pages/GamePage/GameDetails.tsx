@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BiTrash } from "react-icons/bi";
+import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
@@ -37,7 +38,6 @@ export const GameDetails = ({
       dispatch(fetchDetails(gameId, true));
       dispatch(refreshGames());
     } catch (error: any) {
-      console.log({ error });
       setErrorMessage("Incorrect password");
     }
   }, [dispatch, gameId, password]);
@@ -60,9 +60,6 @@ export const GameDetails = ({
   }, [gameId]);
 
   const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
-  const createdOn = new Date(gameDetails?.createdOn || 0);
-  const modifirdOn = new Date(gameDetails?.modifiedOn || 0);
-
   if (gameDetails) {
     return (
       <div className="game-details">
@@ -84,15 +81,11 @@ export const GameDetails = ({
         <div className="dates">
           <div className="created">
             Created on:{" "}
-            {createdOn.toLocaleDateString() +
-              " " +
-              createdOn.toLocaleTimeString()}
+            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.createdOn}</Moment>
           </div>
           <div className="modified">
             Last modified:{" "}
-            {modifirdOn.toLocaleDateString() +
-              " " +
-              modifirdOn.toLocaleTimeString()}
+            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.modifiedOn}</Moment>
           </div>
         </div>
         <div className="line-block">
