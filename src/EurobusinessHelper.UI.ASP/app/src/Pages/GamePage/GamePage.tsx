@@ -1,17 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { FaLock, FaLockOpen } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
 import { useAppDispatch } from "../../app/hooks";
 import { fetchDetails, refreshGames } from "./actions";
 import { GameDetails } from "./GameDetails";
+import GameList from "./GameList";
 import "./GamePage.scss";
 import GameSearch from "./GameSearch";
 import { selectGameList, selectMyGameList } from "./gameSlice";
 import { NewGame } from "./NewGame";
-import { Game } from "./types";
 
 const GamePage = () => {
   const [selectedGame, setSelectedGame] = useState<string>("");
@@ -21,13 +18,6 @@ const GamePage = () => {
   const gameList = useSelector(selectGameList);
   const myGameList = useSelector(selectMyGameList);
 
-  const onGameClick = useCallback(
-    (gameId: string) => {
-      setSelectedGame(gameId);
-      setIsNewGame(false);
-    },
-    [setSelectedGame, setIsNewGame]
-  );
   useEffect(() => {
     if (selectedGame) dispatch(fetchDetails(selectedGame));
   }, [selectedGame, dispatch]);
@@ -36,36 +26,24 @@ const GamePage = () => {
     dispatch(refreshGames());
   }, [dispatch]);
 
-  const showGameList = (list: Game[]) => {
-    return list?.map((game, i) => {
-      tippy(`#game-name-${i}`, {
-        content: game.name,
-      });
-      return (
-        <div
-          className="game-list-item"
-          key={i}
-          onClick={() => onGameClick(game.id)}
-        >
-          <div className="game">
-            <p className="game-name" id={`game-name-${i}`}>
-              {game.name}
-            </p>
-            <div className="lock-icon">
-              {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
-            </div>
-          </div>
-        </div>
-      );
-    });
-  };
-
   return (
     <div className="game-page">
       <div className="container game-container">
         <GameSearch />
         <div className="game-list">
-          {showMyGames ? showGameList(myGameList) : showGameList(gameList)}
+          {showMyGames ? (
+            <GameList
+              list={myGameList}
+              setSelectedGame={setSelectedGame}
+              setIsNewGame={setIsNewGame}
+            />
+          ) : (
+            <GameList
+              list={gameList}
+              setSelectedGame={setSelectedGame}
+              setIsNewGame={setIsNewGame}
+            />
+          )}
         </div>
         <div
           className="button button-hover add-game-button"
