@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BiTrash } from "react-icons/bi";
+import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
@@ -35,9 +36,9 @@ export const GameDetails = ({
     try {
       await joinGame(gameId, { password });
       dispatch(fetchDetails(gameId, true));
+      dispatch(refreshGames());
     } catch (error: any) {
       setErrorMessage("Incorrect password");
-      error.preventDefault();
     }
   }, [dispatch, gameId, password]);
 
@@ -59,7 +60,6 @@ export const GameDetails = ({
   }, [gameId]);
 
   const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
-
   if (gameDetails) {
     return (
       <div className="game-details">
@@ -79,9 +79,13 @@ export const GameDetails = ({
           )}
         </div>
         <div className="dates">
-          <div className="created">Created on: {gameDetails?.createdOn}</div>
+          <div className="created">
+            Created on:{" "}
+            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.createdOn}</Moment>
+          </div>
           <div className="modified">
-            Last modified: {gameDetails?.modifiedOn}
+            Last modified:{" "}
+            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.modifiedOn}</Moment>
           </div>
         </div>
         <div className="line-block">
@@ -147,8 +151,6 @@ export const GameDetails = ({
                 className="button button-hover join-button"
                 onClick={async () => {
                   await onJoinGameClick();
-                  dispatch(refreshGames());
-                  clearSelectedGame();
                 }}
               >
                 <p className="text">Join</p>
