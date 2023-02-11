@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 import { useAppDispatch } from "../../app/hooks";
 import { fetchDetails, refreshGames } from "./actions";
 import { GameDetails } from "./GameDetails";
@@ -35,21 +37,27 @@ const GamePage = () => {
   }, [dispatch]);
 
   const showGameList = (list: Game[]) => {
-    return list?.map((game, i) => (
-      <div
-        className="game-list-item"
-        key={i}
-        onClick={() => onGameClick(game.id)}
-      >
-        <p className="text-tooltip">{game.name}</p>
-        <div className="game">
-          <p className="game-name">{game.name}</p>
-          <div className="lock-icon">
-            {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
+    return list?.map((game, i) => {
+      tippy(`#game-name-${i}`, {
+        content: game.name,
+      });
+      return (
+        <div
+          className="game-list-item"
+          key={i}
+          onClick={() => onGameClick(game.id)}
+        >
+          <div className="game">
+            <p className="game-name" id={`game-name-${i}`}>
+              {game.name}
+            </p>
+            <div className="lock-icon">
+              {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
+            </div>
           </div>
         </div>
-      </div>
-    ));
+      );
+    });
   };
 
   return (
