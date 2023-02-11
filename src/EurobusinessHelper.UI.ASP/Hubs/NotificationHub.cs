@@ -32,18 +32,18 @@ public class NotificationHub : Hub
     public async Task RequestBankTransfer(int amount)
     {
         var currentAccountId = _connectedAccounts[Context.ConnectionId];
-        var requestId = Guid.Parse("ABDAED01-643B-4BF3-88A8-BEBE17320D41");
+        var requestId = Guid.NewGuid();
 
         var clients = _connectedAccounts.ToList()
             .Where(c => c.Value != currentAccountId)
             .Select(c => Clients.Client(c.Key));
-        var tasks = clients.Select(c => SendRequestNotification(c, currentAccountId, amount));
+        var tasks = clients.Select(c => SendRequestNotification(c, currentAccountId, amount, requestId));
         await Task.WhenAll(tasks);
     }
 
-    private async Task SendRequestNotification(IClientProxy client, Guid accountId, int amount)
+    private async Task SendRequestNotification(IClientProxy client, Guid accountId, int amount, Guid requestId)
     {
-        await client.SendAsync("requestTransferNotification", accountId, amount);
+        await client.SendAsync("requestTransferNotification", accountId, amount, requestId);
     }
 
     /// <summary>

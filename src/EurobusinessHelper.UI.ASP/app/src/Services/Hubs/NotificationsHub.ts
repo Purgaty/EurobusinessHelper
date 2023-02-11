@@ -8,8 +8,8 @@ export default class NotificationsHub extends BaseHub
     constructor() {
         super("/notifications");
 
-        this.connection.on("requestTransferNotification", (accountId: string, amount: number) => {
-            alert(`Tranfer for ${amount} requested from ${accountId}`);
+        this.connection.on("requestTransferNotification", (accountId: string, amount: number, requestId: string) => {
+            alert(`Tranfer for ${amount} requested from ${accountId}. RequestId: ${requestId}`);
         });
     }
 
