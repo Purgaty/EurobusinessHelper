@@ -126,7 +126,11 @@ export const GameDetails = ({
             </div>
             <div
               className="button button-hover join-button"
-              onClick={onJoinGameClick}
+              onClick={async () => {
+                await onJoinGameClick();
+                dispatch(refreshGames());
+                clearSelectedGame();
+              }}
               style={{
                 display: checkPlayer() ? "none" : "",
               }}
@@ -138,7 +142,7 @@ export const GameDetails = ({
               onClick={async () => {
                 await startGame(gameDetails?.id, GameState.Started);
                 dispatch(refreshGames());
-                clearSelectedGame();
+                dispatch(fetchDetails(gameId, true));
               }}
               style={{
                 display:
