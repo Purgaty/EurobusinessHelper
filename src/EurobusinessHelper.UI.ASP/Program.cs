@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using EurobusinessHelper.UI.ASP;
+using EurobusinessHelper.UI.ASP.Hubs;
 using EurobusinessHelper.UI.ASP.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,7 @@ builder.Services.InjectDependencies(builder.Configuration);
 builder.Services.AddCors();
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -64,7 +66,10 @@ else
 
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.MapHub<NotificationHub>("/notifications");
 
 app.UseAuthentication();
 app.UseAuthorization();

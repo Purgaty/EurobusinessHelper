@@ -2,12 +2,8 @@
 
 public class IdentityDisplay
 {
-    public IdentityDisplay(string email, string name = default)
-    {
-        Email = email;
-        Name = name;
-    }
 
-    public string Email { get; }
-    public string Name { get; }
+    public Guid Id { get; init; }
+    public string Email { get; init; }
+    public string Name { get; init; }
 }
