@@ -31,19 +31,11 @@ const GamePage = () => {
       <div className="container game-container">
         <GameSearch />
         <div className="game-list">
-          {showMyGames ? (
-            <GameList
-              list={myGameList}
-              setSelectedGame={setSelectedGame}
-              setIsNewGame={setIsNewGame}
-            />
-          ) : (
-            <GameList
-              list={gameList}
-              setSelectedGame={setSelectedGame}
-              setIsNewGame={setIsNewGame}
-            />
-          )}
+          <GameList
+            list={showMyGames ? myGameList : gameList}
+            setSelectedGame={setSelectedGame}
+            setIsNewGame={setIsNewGame}
+          />
         </div>
         <div
           className="button button-hover add-game-button"
