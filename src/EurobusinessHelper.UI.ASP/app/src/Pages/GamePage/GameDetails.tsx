@@ -35,9 +35,10 @@ export const GameDetails = ({
     try {
       await joinGame(gameId, { password });
       dispatch(fetchDetails(gameId, true));
+      dispatch(refreshGames());
     } catch (error: any) {
+      console.log({ error });
       setErrorMessage("Incorrect password");
-      error.preventDefault();
     }
   }, [dispatch, gameId, password]);
 
@@ -59,6 +60,8 @@ export const GameDetails = ({
   }, [gameId]);
 
   const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
+  const createdOn = new Date(gameDetails?.createdOn || 0);
+  const modifirdOn = new Date(gameDetails?.modifiedOn || 0);
 
   if (gameDetails) {
     return (
@@ -79,9 +82,17 @@ export const GameDetails = ({
           )}
         </div>
         <div className="dates">
-          <div className="created">Created on: {gameDetails?.createdOn}</div>
+          <div className="created">
+            Created on:{" "}
+            {createdOn.toLocaleDateString() +
+              " " +
+              createdOn.toLocaleTimeString()}
+          </div>
           <div className="modified">
-            Last modified: {gameDetails?.modifiedOn}
+            Last modified:{" "}
+            {modifirdOn.toLocaleDateString() +
+              " " +
+              modifirdOn.toLocaleTimeString()}
           </div>
         </div>
         <div className="line-block">
@@ -147,8 +158,6 @@ export const GameDetails = ({
                 className="button button-hover join-button"
                 onClick={async () => {
                   await onJoinGameClick();
-                  dispatch(refreshGames());
-                  clearSelectedGame();
                 }}
               >
                 <p className="text">Join</p>
