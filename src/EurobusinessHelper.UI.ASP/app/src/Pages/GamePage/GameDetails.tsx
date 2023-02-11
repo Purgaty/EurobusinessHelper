@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
@@ -58,25 +58,25 @@ export const GameDetails = ({
     setErrorMessage("");
   }, [gameId]);
 
+  const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
+
   if (gameDetails) {
     return (
       <div className="game-details">
         <div className="game-title">
           <div className="game-details-name">{gameDetails?.name} </div>
-          <div
-            className="delete-game"
-            style={{
-              display:
-                gameDetails?.createdBy.email === identity?.email ? "" : "none",
-            }}
-            onClick={async () => {
-              await deleteGame(gameId);
-              dispatch(refreshGames());
-              clearSelectedGame();
-            }}
-          >
-            <BiTrash />
-          </div>
+          {gameDetails?.createdBy.email === identity?.email && (
+            <div
+              className="delete-game"
+              onClick={async () => {
+                await deleteGame(gameId);
+                dispatch(refreshGames());
+                clearSelectedGame();
+              }}
+            >
+              <BiTrash />
+            </div>
+          )}
         </div>
         <div className="dates">
           <div className="created">Created on: {gameDetails?.createdOn}</div>
@@ -84,23 +84,41 @@ export const GameDetails = ({
             Last modified: {gameDetails?.modifiedOn}
           </div>
         </div>
-        <div className="tags">
-          <div className="state">{gameDetails?.state}</div>
-          <div className="is-active">
-            {gameDetails?.isActive ? (
-              <>
-                <div className="active"></div>
-                <div>Active</div>
-              </>
-            ) : (
-              <>
-                <div className="not-active"></div>
-                <div>Not Active</div>
-              </>
-            )}
+        <div className="line-block">
+          <div className="tags">
+            <div className="state">{gameDetails?.state}</div>
+            <div className="is-active">
+              {gameDetails?.isActive ? (
+                <>
+                  <div className="active"></div>
+                  <div>Active</div>
+                </>
+              ) : (
+                <>
+                  <div className="not-active"></div>
+                  <div>Not Active</div>
+                </>
+              )}
+            </div>
+            <div className="players">Players: {gameDetails?.accountCount}</div>
           </div>
-          <div className="players">Players: {gameDetails?.accountCount}</div>
+          {gameDetails?.createdBy.email === identity?.email &&
+            gameDetails?.state !== GameState.Started && (
+              <div className="start-block">
+                <div
+                  className="button button-hover start-button"
+                  onClick={async () => {
+                    await startGame(gameDetails?.id, GameState.Started);
+                    dispatch(refreshGames());
+                    dispatch(fetchDetails(gameId, true));
+                  }}
+                >
+                  <p className="text">Start Game</p>
+                </div>
+              </div>
+            )}
         </div>
+
         <div className="details-block">
           <div className="players-list">
             Players:
@@ -110,51 +128,33 @@ export const GameDetails = ({
               </div>
             ))}
           </div>
-
-          <div className="join-block">
-            <div className="password">
-              <input
-                type="text"
-                className="input password-input"
-                value={password}
-                onChange={handleInput}
-                style={{
-                  display: gameDetails?.isPasswordProtected ? "" : "none",
+          {!playerCheck && (
+            <div className="join-block">
+              <div className="password">
+                {gameDetails?.isPasswordProtected && (
+                  <>
+                    <input
+                      type="password"
+                      className="input password-input"
+                      value={password}
+                      onChange={handleInput}
+                    />
+                    <div className="error-message">{errorMessage}</div>
+                  </>
+                )}
+              </div>
+              <div
+                className="button button-hover join-button"
+                onClick={async () => {
+                  await onJoinGameClick();
+                  dispatch(refreshGames());
+                  clearSelectedGame();
                 }}
-              />
-              <div className="error-message">{errorMessage}</div>
+              >
+                <p className="text">Join</p>
+              </div>
             </div>
-            <div
-              className="button button-hover join-button"
-              onClick={async () => {
-                await onJoinGameClick();
-                dispatch(refreshGames());
-                clearSelectedGame();
-              }}
-              style={{
-                display: checkPlayer() ? "none" : "",
-              }}
-            >
-              <p className="text">Join</p>
-            </div>
-            <div
-              className="button button-hover start-button"
-              onClick={async () => {
-                await startGame(gameDetails?.id, GameState.Started);
-                dispatch(refreshGames());
-                dispatch(fetchDetails(gameId, true));
-              }}
-              style={{
-                display:
-                  gameDetails?.createdBy.email === identity?.email &&
-                  gameDetails?.state !== GameState.Started
-                    ? ""
-                    : "none",
-              }}
-            >
-              <p className="text">Start Game</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
