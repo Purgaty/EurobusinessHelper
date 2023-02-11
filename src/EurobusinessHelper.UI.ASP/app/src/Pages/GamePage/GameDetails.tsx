@@ -114,12 +114,15 @@ export const GameDetails = ({
           <div className="join-block">
             <div className="password">
               <input
-                type="text"
+                type="password"
                 className="input password-input"
                 value={password}
                 onChange={handleInput}
                 style={{
-                  display: gameDetails?.isPasswordProtected ? "" : "none",
+                  display:
+                    gameDetails?.isPasswordProtected && !checkPlayer()
+                      ? ""
+                      : "none",
                 }}
               />
               <div className="error-message">{errorMessage}</div>
