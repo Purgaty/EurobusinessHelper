@@ -24,7 +24,7 @@
 .game-list {
   height: 70%;
   width: 80%;
-  margin: 2em 0;
+  margin-bottom: 2em;
 
   display: flex;
   flex-direction: column;
@@ -54,19 +54,32 @@
   height: 2em;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  &:first-child {
+    margin-top: 2em;
+  }
 
   &:hover {
     .text-tooltip {
+      visibility: visible;
       opacity: 1;
-      transition-delay: 0.5s;
+      transition-delay: 0.7s;
     }
   }
 }
 
 .text-tooltip {
+  visibility: hidden;
   opacity: 0;
-  background-color: rgba($primary, 0.2);
   width: fit-content;
+  padding: 0.3em;
+  background-color: $primary;
+  border: 1px solid $backgroundLighter;
+  color: $backgroundLighter;
+
+  position: absolute;
+  bottom: 100%;
 
   transition: 0.5s;
 }
