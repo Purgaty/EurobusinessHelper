@@ -23,6 +23,7 @@ internal class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Game> Games => Set<Game>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<TransferRequest> TransferRequest => Set<TransferRequest>();
 
     public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel)
         => Database.BeginTransaction(isolationLevel);
