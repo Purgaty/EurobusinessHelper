@@ -24,7 +24,7 @@
 .game-list {
   height: 70%;
   width: 80%;
-  margin-bottom: 2em;
+  margin: 2em 0;
 
   display: flex;
   flex-direction: column;
@@ -47,67 +47,6 @@
 .game-list::-webkit-scrollbar-thumb {
   background-color: rgba($primary, 0.5);
   border-radius: 150px;
-}
-
-.game-list-item {
-  width: 90%;
-  height: 2em;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  &:first-child {
-    margin-top: 2em;
-  }
-
-  &:hover {
-    .text-tooltip {
-      visibility: visible;
-      opacity: 1;
-      transition-delay: 0.7s;
-    }
-  }
-}
-
-.text-tooltip {
-  visibility: hidden;
-  opacity: 0;
-  width: fit-content;
-  padding: 0.3em;
-  background-color: $primary;
-  border: 1px solid $backgroundLighter;
-  color: $backgroundLighter;
-
-  position: absolute;
-  bottom: 100%;
-
-  transition: 0.5s;
-}
-
-.game {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5em;
-
-  cursor: pointer;
-  font-size: calc(1em + 0.5vw);
-  padding-bottom: 1vh;
-
-  border-bottom: 1px solid $primary;
-}
-
-.game-name {
-  width: 10em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.lock-icon {
-  height: fit-content;
-  margin-left: auto;
 }
 
 .add-game-button {
