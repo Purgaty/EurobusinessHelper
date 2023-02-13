@@ -31,25 +31,26 @@ public class GameController : ControllerBase
     /// <summary>
     ///     Get active new games
     /// </summary>
+    /// <param name="state"></param>
     /// <param name="query"></param>
     /// <returns></returns>
-    [HttpGet]
-    public async Task<IActionResult> GetActiveGames(string query = null)
+    [HttpGet("{state}")]
+    public async Task<IActionResult> GetActiveGames(GameState state, string query = null)
     {
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {
             Query = query,
-            Joinable = true,
-            Participant = await _securityContext.GetCurrentIdentity()
+            Participant = await _securityContext.GetCurrentIdentity(),
+            State = state
         }));
     }
 
     /// <summary>
-    ///     Get games which the current account has joined
+    ///     Get started games which the current account has joined
     /// </summary>
     /// <returns></returns>
-    [HttpGet("mine")]
-    public async Task<IActionResult> GetMyGames(string query = null)
+    [HttpGet("current")]
+    public async Task<IActionResult> GetCurrentGames(string query = null)
     {
         return Ok(await _mediator.Send(new GetActiveGamesQuery
         {

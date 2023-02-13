@@ -1,4 +1,5 @@
 ﻿using EurobusinessHelper.Application.Common.Interfaces;
+using EurobusinessHelper.Domain.Entities;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,16 +20,21 @@ public class GetActiveGamesQueryHandler : IRequestHandler<GetActiveGamesQuery, G
     {
         var dbQuery = _dbContext.Games
             .Where(g => g.IsActive);
+        
+        dbQuery = dbQuery.Where(g => g.State == query.State);
+
+        if (query.State != GameState.New)
+            dbQuery = dbQuery.Where(g => g.Accounts.All(a => a.Owner.Id != query.Participant.Id));
+                
         if (query.Query != default)
             dbQuery = dbQuery.Where(g => g.Name.Contains(query.Query));
-        if (query.Participant != default)
-            dbQuery = query.Joinable ?
-                dbQuery.Where(g => g.Accounts.All(a => a.Owner.Id != query.Participant.Id)) :
-                dbQuery.Where(g => g.Accounts.Any(a => a.Owner.Id == query.Participant.Id));
 
         return new GetActiveGamesQueryResult
         {
-            Items = await dbQuery.ProjectToType<GetActiveGamesQueryResult.Item>(_mapperConfig).ToListAsync(cancellationToken)
+            Items = await dbQuery
+                .OrderByDescending(q => q.CreatedOn)
+                .ProjectToType<GetActiveGamesQueryResult.Item>(_mapperConfig)
+                .ToListAsync(cancellationToken)
         };
     }
 }
