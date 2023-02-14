@@ -28,11 +28,6 @@ export default class GameService {
     return response.data;
   }
 
-  static async postGame(game: NewGame): Promise<void> {
-    const response = await axios.post(config.apiUrl + "/api/game", game);
-    return response.data.items;
-  }
-
   static async joinGame(gameId: string, password: JoinGameData): Promise<void> {
     await axios.put(config.apiUrl + "/api/game/" + gameId, password);
   }

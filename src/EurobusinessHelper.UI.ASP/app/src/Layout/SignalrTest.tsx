@@ -3,11 +3,10 @@ import { useAppSelector } from "../app/hooks";
 import NotificationsHub from "../Services/Hubs/NotificationsHub";
 import { selectIdentity } from "./Footer/authSlice";
 
-const tst : NotificationsHub = null;
-
+//To be removed after creating the messages logic in game
 export const SignalrTest = () => {
     const identity = useAppSelector(selectIdentity);
-    const [hub, setHub] = useState(tst);
+    const [hub, setHub] = useState<NotificationsHub | null>(null);
 
     useEffect(() => {
         if(!identity)
@@ -17,5 +16,5 @@ export const SignalrTest = () => {
         .then(() => setHub(hub));
     }, [identity, setHub]);
 
-    return <div style={{ paddingLeft: "100px" }}>HEHE<button onClick={() => hub.requestTransfer(200)}>SEND</button></div>
+    return <div style={{ paddingLeft: "100px" }}>HEHE<button onClick={() => hub?.requestTransfer(200)}>SEND</button></div>
 }

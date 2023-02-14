@@ -16,6 +16,7 @@ public class GetGameDetailsQueryResult
     public ICollection<Account> Accounts { get; set; }
     public int AccountCount => Accounts.Count;
     public int StartingAccountBalance { get; set; }
+    public int MinimalBankTransferApprovals { get; set; }
     
     public class Account
     {

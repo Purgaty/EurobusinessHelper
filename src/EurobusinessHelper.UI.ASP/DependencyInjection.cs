@@ -3,6 +3,7 @@ using EurobusinessHelper.Application;
 using EurobusinessHelper.Application.Identities.Security;
 using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.Infrastructure;
+using EurobusinessHelper.UI.ASP.Hubs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         return services
                 .Configure<AppConfig>(options => configuration.GetSection(nameof(AppConfig)).Bind(options))
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton<IConnectedAccountsManager, ConnectedAccountsManager>()
                 .AddScoped<ISecurityContext, SecurityContext>()
                 .InjectApplicationDependencies()
                 .InjectInfrastructureDependencies(configuration)

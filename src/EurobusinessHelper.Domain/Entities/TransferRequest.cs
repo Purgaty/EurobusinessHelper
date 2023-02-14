@@ -3,7 +3,6 @@
 public class TransferRequest : IEntity
 {
     public Guid Id { get; set; }
-    public Game Game { get; set; }
     public Account Account { get; set; }
     public int Amount { get; set; }
     public int ApprovalCount { get; set; }

@@ -13,5 +13,8 @@ public enum EurobusinessExceptionCode
     CannotJoinNotNewGame,
     StartingAccountBalanceNotProvided,
     AccountNotFound,
-    InsufficientFunds
+    InsufficientFunds,
+    AccountNotRegistered,
+    MinimalBankTransferApprovalsNotProvided,
+    TransferRequestNotFound
 }
