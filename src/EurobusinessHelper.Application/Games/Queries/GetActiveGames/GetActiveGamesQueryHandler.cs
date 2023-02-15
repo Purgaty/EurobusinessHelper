@@ -24,7 +24,7 @@ public class GetActiveGamesQueryHandler : IRequestHandler<GetActiveGamesQuery, G
         dbQuery = dbQuery.Where(g => g.State == query.State);
 
         if (query.State != GameState.New)
-            dbQuery = dbQuery.Where(g => g.Accounts.All(a => a.Owner.Id != query.Participant.Id));
+            dbQuery = dbQuery.Where(g => g.Accounts.Any(a => a.Owner.Id == query.Participant.Id));
                 
         if (query.Query != default)
             dbQuery = dbQuery.Where(g => g.Name.Contains(query.Query));

@@ -16,7 +16,7 @@
     width: 0;
   }
   .link-text {
-    width: calc(5em + 1vw);
+    width: calc(6em + 1vw);
   }
 }
 
@@ -45,6 +45,7 @@
   margin: 1.5em auto;
   display: flex;
   flex-direction: row;
+  align-items: center;
 
   &:hover {
     .link-icon,

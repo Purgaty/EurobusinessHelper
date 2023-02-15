@@ -5,32 +5,22 @@ import {
   setGameDetails,
   setGameList,
   setGameListSearch,
-  setMyGameList,
 } from "./gameSlice";
 import { GameState, JoinGameData, NewGame } from "./types";
 
 export const refreshGames =
-  () =>
+  (gameState: GameState) =>
   async (dispatch: Function, getState: Function): Promise<void> => {
     const query = selectGameListSearch(getState());
-    await dispatch(fetchGames(query));
-    await dispatch(fetchMyGames(query));
+    await dispatch(fetchGames(gameState, query));
   };
 
 export const fetchGames =
-  (query: string) =>
+  (state: GameState, query: string) =>
   async (dispatch: Function): Promise<void> => {
     dispatch(setGameSearch(query));
-    const gameList = await GameService.getGames(query);
-    dispatch(setGameList(gameList));
-  };
-
-export const fetchMyGames =
-  (query: string) =>
-  async (dispatch: Function): Promise<void> => {
-    dispatch(setGameSearch(query));
-    const gameList = await GameService.getMyGames(query);
-    dispatch(setMyGameList(gameList));
+    const gameList = await GameService.getGames(state, query);
+    dispatch(setGameList({ state, list: gameList }));
   };
 
 export const fetchDetails =
@@ -56,15 +46,24 @@ export const deleteGame = async (gameId: string): Promise<void> => {
   return await GameService.deleteGame(gameId);
 };
 
+export const startGame = async (
+  gameId: string,
+  state: GameState
+): Promise<void> => {
+  await GameService.startGame(gameId, state);
+};
+
 export const setGameSearch =
   (search: string) =>
   (dispatch: Function): void => {
     dispatch(setGameListSearch(search));
   };
 
-export const startGame = async (
+export const transferMoney = async (
   gameId: string,
-  state: GameState
+  payerId: string,
+  receiverId: string,
+  amount: number
 ): Promise<void> => {
-  await GameService.startGame(gameId, state);
+  await GameService.transferMoney(gameId, payerId, receiverId, amount);
 };
