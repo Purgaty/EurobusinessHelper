@@ -19,7 +19,7 @@ const AppSidebar = () => {
         </div>
         <div className="link">
           <FaDice className="link-icon" />
-          <Link className="link-text" to="/games">
+          <Link className="link-text" to="/">
             Games
           </Link>
         </div>
