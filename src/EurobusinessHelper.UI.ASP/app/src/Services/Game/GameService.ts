@@ -9,16 +9,9 @@ import {
 } from "../../Pages/GamePage/types";
 
 export default class GameService {
-  static async getGames(query: string): Promise<Game[]> {
+  static async getGames(state: GameState, query: string): Promise<Game[]> {
     const response = await axios.get(
-      config.apiUrl + "/api/game?query=" + query
-    );
-    return response.data.items;
-  }
-
-  static async getMyGames(query: string): Promise<Game[]> {
-    const response = await axios.get(
-      config.apiUrl + "/api/game/mine?query=" + query
+      config.apiUrl + "/api/game/" + state + "?query=" + query
     );
     return response.data.items;
   }
@@ -39,5 +32,22 @@ export default class GameService {
 
   static async startGame(gameId: string, state: GameState): Promise<void> {
     await axios.put(config.apiUrl + "/api/game/" + gameId + "/state/" + state);
+  }
+
+  static async transferMoney(
+    gameId: string,
+    payerId: string,
+    receiverId: string,
+    amount: number
+  ): Promise<void> {
+    await axios.post(
+      config.apiUrl +
+        "/api/game/" +
+        gameId +
+        "/account/" +
+        payerId +
+        "/transfer",
+      { accountId: receiverId, amount: amount }
+    );
   }
 }

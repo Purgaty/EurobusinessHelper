@@ -1,21 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { Game, GameInfo, GameInfoList } from "./types";
+import { Game, GameInfo, GameInfoList, GameState } from "./types";
+
+interface GameListInfo {
+  state: GameState;
+  list: Game[];
+}
 
 const gameSlice = createSlice({
   name: "game",
   initialState: {
-    gameList: [] as Game[],
-    myGameList: [] as Game[],
+    gameList: {
+      new: [] as Game[],
+      started: [] as Game[],
+    },
     gameDetails: {} as GameInfoList,
     gameListSearch: "",
   },
   reducers: {
-    setGameList: (state, action: PayloadAction<Game[]>) => {
-      state.gameList = action.payload;
-    },
-    setMyGameList: (state, action: PayloadAction<Game[]>) => {
-      state.myGameList = action.payload;
+    setGameList: (state, action: PayloadAction<GameListInfo>) => {
+      if (action.payload.state === GameState.New)
+        state.gameList.new = action.payload.list;
+      else if (action.payload.state === GameState.Started)
+        state.gameList.started = action.payload.list;
     },
     setGameDetails: (state, action: PayloadAction<GameInfo>) => {
       state.gameDetails[action.payload.id] = action.payload;
@@ -26,12 +33,18 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setGameList, setMyGameList, setGameDetails, setGameListSearch } =
+export const { setGameList, setGameDetails, setGameListSearch } =
   gameSlice.actions;
 
-export const selectGameList = (state: RootState): Game[] => state.game.gameList;
-export const selectMyGameList = (state: RootState): Game[] =>
-  state.game.myGameList;
+export const selectGameList =
+  (gameState: GameState) =>
+  (state: RootState): Game[] => {
+    if (gameState === GameState.New) return state.game.gameList.new;
+    else if (gameState === GameState.Started)
+      return state.game.gameList.started;
+
+    return [];
+  };
 export const selectGameDetails =
   (guid: string) =>
   (state: RootState): GameInfo | undefined =>

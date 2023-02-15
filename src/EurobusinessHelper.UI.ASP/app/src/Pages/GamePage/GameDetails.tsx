@@ -19,11 +19,13 @@ import { GameState, Player } from "./types";
 export interface GameDetailsProps {
   gameId: string;
   clearSelectedGame: Function;
+  changeGameState: Function;
 }
 
 export const GameDetails = ({
   gameId,
   clearSelectedGame,
+  changeGameState,
 }: GameDetailsProps) => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -36,15 +38,11 @@ export const GameDetails = ({
     try {
       await joinGame(gameId, { password });
       dispatch(fetchDetails(gameId, true));
-      dispatch(refreshGames());
+      dispatch(refreshGames(GameState.New));
     } catch (error: any) {
       setErrorMessage("Incorrect password");
     }
   }, [dispatch, gameId, password]);
-
-  const handleInput = (event: any) => {
-    setPassword(event.target.value);
-  };
 
   const checkPlayer = () => {
     let check = false;
@@ -70,7 +68,7 @@ export const GameDetails = ({
               className="delete-game"
               onClick={async () => {
                 await deleteGame(gameId);
-                dispatch(refreshGames());
+                dispatch(refreshGames(GameState.New));
                 clearSelectedGame();
               }}
             >
@@ -113,8 +111,9 @@ export const GameDetails = ({
                   className="button button-hover start-button"
                   onClick={async () => {
                     await startGame(gameDetails?.id, GameState.Started);
-                    dispatch(refreshGames());
+                    dispatch(refreshGames(GameState.New));
                     dispatch(fetchDetails(gameId, true));
+                    changeGameState(GameState.Started);
                   }}
                 >
                   <p className="text">Start Game</p>
@@ -141,7 +140,7 @@ export const GameDetails = ({
                       type="password"
                       className="input password-input"
                       value={password}
-                      onChange={handleInput}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="error-message">{errorMessage}</div>
                   </>

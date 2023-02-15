@@ -3,8 +3,13 @@ import { BiSearch } from "react-icons/bi";
 import { useAppDispatch } from "../../app/hooks";
 import { fetchGames } from "./actions";
 import "./GameSearch.scss";
+import { GameState } from "./types";
 
-export const GameSearch = () => {
+export interface GameSearchProps {
+  gameState: GameState;
+}
+
+export const GameSearch = ({ gameState }: GameSearchProps) => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
 
@@ -23,7 +28,7 @@ export const GameSearch = () => {
       />
       <div
         className="button search-button"
-        onClick={() => dispatch(fetchGames(search))}
+        onClick={() => dispatch(fetchGames(gameState, search))}
       >
         <BiSearch />
       </div>

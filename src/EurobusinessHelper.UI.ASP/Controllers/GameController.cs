@@ -46,20 +46,6 @@ public class GameController : ControllerBase
     }
 
     /// <summary>
-    ///     Get started games which the current account has joined
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("current")]
-    public async Task<IActionResult> GetCurrentGames(string query = null)
-    {
-        return Ok(await _mediator.Send(new GetActiveGamesQuery
-        {
-            Query = query,
-            Participant = await _securityContext.GetCurrentIdentity()
-        }));
-    }
-
-    /// <summary>
     ///     Create a new game
     /// </summary>
     /// <param name="command"></param>

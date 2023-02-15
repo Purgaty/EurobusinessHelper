@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
-import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import "./GameList.scss";
 import { Game } from "./types";
 
@@ -25,21 +25,27 @@ export const GameList = ({
   );
 
   return (
-    <>
+    <div className="game-list">
       {list?.map((game, i) => {
-        tippy(`#game-name-${i}`, {
-          content: game.name,
-        });
         return (
           <div
             className="game-list-item"
             key={i}
             onClick={() => onGameClick(game.id)}
           >
-            <div className="game">
-              <p className="game-name" id={`game-name-${i}`}>
-                {game.name}
-              </p>
+            <Tooltip
+              anchorId={`game-${game.id}`}
+              className="tooltip"
+              positionStrategy="fixed"
+            />
+            <div
+              className="game"
+              id={`game-${game.id}`}
+              data-tooltip-content={game.name}
+              data-tooltip-place="bottom"
+            >
+              <p className="game-name">{game.name}</p>
+
               <div className="lock-icon">
                 {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
               </div>
@@ -47,7 +53,7 @@ export const GameList = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
