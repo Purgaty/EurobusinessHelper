@@ -15,7 +15,10 @@ const gameSlice = createSlice({
       started: [] as Game[],
     },
     gameDetails: {} as GameInfoList,
-    gameListSearch: "",
+    gameListSearch: "" as string,
+    selectedGame: "" as string,
+    isNewGame: false as boolean,
+    showGames: GameState.New as GameState,
   },
   reducers: {
     setGameList: (state, action: PayloadAction<GameListInfo>) => {
@@ -30,11 +33,26 @@ const gameSlice = createSlice({
     setGameListSearch: (state, action: PayloadAction<string>) => {
       state.gameListSearch = action.payload;
     },
+    setSelectedGame: (state, action: PayloadAction<string>) => {
+      state.selectedGame = action.payload;
+    },
+    setIsNewGame: (state, action: PayloadAction<boolean>) => {
+      state.isNewGame = action.payload;
+    },
+    setShowGames: (state, action: PayloadAction<GameState>) => {
+      state.showGames = action.payload;
+    },
   },
 });
 
-export const { setGameList, setGameDetails, setGameListSearch } =
-  gameSlice.actions;
+export const {
+  setGameList,
+  setGameDetails,
+  setGameListSearch,
+  setSelectedGame,
+  setIsNewGame,
+  setShowGames,
+} = gameSlice.actions;
 
 export const selectGameList =
   (gameState: GameState) =>
@@ -51,5 +69,11 @@ export const selectGameDetails =
     state.game.gameDetails[guid];
 export const selectGameListSearch = (state: RootState): string =>
   state.game.gameListSearch;
+export const selectSelectedGame = (state: RootState): string =>
+  state.game.selectedGame;
+export const selectIsNewGame = (state: RootState): boolean =>
+  state.game.isNewGame;
+export const selectShowGame = (state: RootState): GameState =>
+  state.game.showGames;
 
 export default gameSlice.reducer;

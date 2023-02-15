@@ -5,22 +5,24 @@ import {
   setGameDetails,
   setGameList,
   setGameListSearch,
+  setSelectedGame,
 } from "./gameSlice";
-import { GameState, JoinGameData, NewGame } from "./types";
+import { GameState, JoinGameData } from "./types";
 
 export const refreshGames =
-  (gameState: GameState) =>
+  (gameState: GameState, resetSelection = false) =>
   async (dispatch: Function, getState: Function): Promise<void> => {
     const query = selectGameListSearch(getState());
-    await dispatch(fetchGames(gameState, query));
+    await dispatch(fetchGames(gameState, query, resetSelection));
   };
 
 export const fetchGames =
-  (state: GameState, query: string) =>
+  (state: GameState, query: string, resetSelection = false) =>
   async (dispatch: Function): Promise<void> => {
     dispatch(setGameSearch(query));
     const gameList = await GameService.getGames(state, query);
     dispatch(setGameList({ state, list: gameList }));
+    if (resetSelection) dispatch(setSelectedGame(gameList[0].id));
   };
 
 export const fetchDetails =

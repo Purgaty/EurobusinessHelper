@@ -5,7 +5,6 @@ import {
   GameInfo,
   GameState,
   JoinGameData,
-  NewGame,
 } from "../../Pages/GamePage/types";
 
 export default class GameService {
