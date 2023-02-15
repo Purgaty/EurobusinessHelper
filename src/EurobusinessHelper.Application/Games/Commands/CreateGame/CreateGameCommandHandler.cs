@@ -47,6 +47,10 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
         if (command.StartingAccountBalance == default)
             throw new EurobusinessException(EurobusinessExceptionCode.StartingAccountBalanceNotProvided,
                 "Starting account balance must be greater than 0");
+        
+        if (command.MinimalBankTransferApprovals == default)
+            throw new EurobusinessException(EurobusinessExceptionCode.MinimalBankTransferApprovalsNotProvided,
+                "Minimal bank transfer approvals must be greater than 0");
     }
 
     private string GetPasswordHash(CreateGameCommand command)

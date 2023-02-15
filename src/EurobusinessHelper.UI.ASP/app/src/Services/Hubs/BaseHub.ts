@@ -12,4 +12,22 @@ export default class BaseHub
         .withUrl(hubUrl)
         .build()
     }
+    
+    public async initializeConnection(accountId: string, retryCount: number = 0) {
+        if(retryCount > 5) {
+            alert("connection error");
+            return;
+        }
+        try {
+            await this.connection.start();
+            await this.connection.send("registerAccount", accountId);
+        } catch(ex) {
+            await this.timeout(2000);
+            await this.initializeConnection(accountId, retryCount + 1);
+        }
+    }
+
+    private timeout(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 }

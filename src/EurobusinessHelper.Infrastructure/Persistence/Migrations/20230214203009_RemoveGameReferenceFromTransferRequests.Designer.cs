@@ -4,6 +4,7 @@ using EurobusinessHelper.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EurobusinessHelper.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230214203009_RemoveGameReferenceFromTransferRequests")]
+    partial class RemoveGameReferenceFromTransferRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,6 +136,36 @@ namespace EurobusinessHelper.Infrastructure.Persistence.Migrations
                     b.ToTable("Identities");
                 });
 
+            modelBuilder.Entity("EurobusinessHelper.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("FromId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ToId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("ToId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("EurobusinessHelper.Domain.Entities.TransferRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -192,6 +224,21 @@ namespace EurobusinessHelper.Infrastructure.Persistence.Migrations
                         .HasForeignKey("CreatedById");
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("EurobusinessHelper.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("EurobusinessHelper.Domain.Entities.Account", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId");
+
+                    b.HasOne("EurobusinessHelper.Domain.Entities.Account", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId");
+
+                    b.Navigation("From");
+
+                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("EurobusinessHelper.Domain.Entities.TransferRequest", b =>

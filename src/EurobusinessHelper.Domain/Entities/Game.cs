@@ -12,8 +12,10 @@ public class Game : IEntity
     public DateTime ModifiedOn { get; set; }
     public GameState State { get; set; } = GameState.New;
     public int StartingAccountBalance { get; set; }
+    public int MinimalBankTransferApprovals { get; set; }
     
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+    public virtual ICollection<TransferRequest> TransferRequests { get; set; } = new List<TransferRequest>();
 }
 
 public enum GameState

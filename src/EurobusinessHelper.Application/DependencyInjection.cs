@@ -1,5 +1,7 @@
 ﻿using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
+using EurobusinessHelper.Application.Accounts.Commands.TransferMoneyFromBank;
 using EurobusinessHelper.Application.Accounts.Queries.CheckAccountGameAccess;
+using EurobusinessHelper.Application.Accounts.Queries.GetAccountGame;
 using EurobusinessHelper.Application.Common.Utilities.PasswordHasher;
 using EurobusinessHelper.Application.Games.Commands.CreateGame;
 using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
@@ -12,6 +14,8 @@ using EurobusinessHelper.Application.Identities.Commands.CreateIdentity;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityByEmail;
 using EurobusinessHelper.Application.Identities.Queries.GetIdentityById;
 using EurobusinessHelper.Application.Identities.Security;
+using EurobusinessHelper.Application.TransferRequest.Commands.ApproveRequest;
+using EurobusinessHelper.Application.TransferRequest.Commands.CreateTransferRequest;
 using EurobusinessHelper.Domain.Entities;
 using Mapster;
 using MapsterMapper;
@@ -32,6 +36,9 @@ public static class DependencyInjection
                 .AddTransient<IRequestHandler<DeleteGameCommand, Unit>, DeleteGameCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateGameStateCommand, Unit>, UpdateGameStateCommandHandler>()
                 .AddTransient<IRequestHandler<TransferMoneyCommand, Unit>, TransferMoneyCommandHandler>()
+                .AddTransient<IRequestHandler<TransferMoneyFromBankCommand, Unit>, TransferMoneyFromBankCommandHandler>()
+                .AddTransient<IRequestHandler<CreateTransferRequestCommand, Guid>, CreateTransferRequestCommandHandler>()
+                .AddTransient<IRequestHandler<ApproveRequestCommand, Unit>, ApproveRequestCommandHandler>()
 
                 //queries
                 .AddTransient<IRequestHandler<GetIdentityByEmailQuery, Identity>, GetIdentityByEmailQueryHandler>()
@@ -40,6 +47,7 @@ public static class DependencyInjection
                 .AddTransient<IRequestHandler<GetGameDetailsQuery, GetGameDetailsQueryResult>, GetGameDetailsQueryHandler>()
                 .AddTransient<IRequestHandler<GetIdentityGamesQuery, GetIdentityGamesQueryResult>, GetIdentityGamesQueryHandler>()
                 .AddTransient<IRequestHandler<CheckAccountGameAccessQuery, bool>, CheckAccountGameAccessQueryHandler>()
+                .AddTransient<IRequestHandler<GetAccountGameQuery, Guid>, GetAccountGameQueryHandler>()
             
                 //utilities
                 .AddTransient<IPasswordHasher, PasswordHasher>()

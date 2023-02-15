@@ -31,10 +31,6 @@ export const fetchDetails =
     dispatch(setGameDetails(details));
   };
 
-export const postGame = async (game: NewGame): Promise<void> => {
-  return await GameService.postGame(game);
-};
-
 export const joinGame = async (
   gameId: string,
   password: JoinGameData
