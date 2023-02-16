@@ -6,6 +6,7 @@ import {
   GameState,
   JoinGameData,
 } from "../../Pages/GamePage/types";
+import { NewGame } from "./types";
 
 export default class GameService {
   static async getGames(state: GameState, query: string): Promise<Game[]> {
@@ -51,5 +52,10 @@ export default class GameService {
         "/transfer",
       { accountId: receiverId, amount: amount }
     );
+  }
+
+  static async createGame(game: NewGame): Promise<string> {
+    const response = await axios.post(config.apiUrl + "/api/game", game);
+    return response.data;
   }
 }

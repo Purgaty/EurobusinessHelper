@@ -4,22 +4,23 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useAppDispatch } from "../../app/hooks";
 import "./GameList.scss";
-import { setIsNewGame, setSelectedGame } from "./gameSlice";
-import { Game } from "./types";
+import { setOpenGameMode, setSelectedGame } from "./gameSlice";
+import { Game, GameState } from "./types";
 
 export interface GameListProps {
   list: Game[];
+  gameMode: GameState;
 }
 
-export const GameList = ({ list }: GameListProps) => {
+export const GameList = ({ list, gameMode }: GameListProps) => {
   const dispatch = useAppDispatch();
 
   const onGameClick = useCallback(
     (gameId: string) => {
       dispatch(setSelectedGame(gameId));
-      dispatch(setIsNewGame(false));
+      dispatch(setOpenGameMode(gameMode));
     },
-    [dispatch]
+    [dispatch, gameMode]
   );
 
   return (
@@ -41,6 +42,7 @@ export const GameList = ({ list }: GameListProps) => {
               id={`game-${game.id}`}
               data-tooltip-content={game.name}
               data-tooltip-place="bottom"
+              data-tooltip-delay-show={500}
             >
               <p className="game-name">{game.name}</p>
 

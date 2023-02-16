@@ -9,7 +9,7 @@ export interface GameSearchProps {
   gameState: GameState;
 }
 
-export const GameSearch = ({ gameState }: GameSearchProps) => {
+const GameSearch = ({ gameState }: GameSearchProps) => {
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState<string>("");
 

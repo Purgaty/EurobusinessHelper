@@ -1,26 +1,30 @@
 @import "../../colours.scss";
 
-.new-game {
+.new-game-form {
   width: 30%;
-  min-width: 10em;
-  height: 100%;
+  min-width: 20em;
+}
+
+.new-game {
+  width: 100%;
   margin-top: 3rem;
-  padding: 2em;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3em;
+  gap: 1.5em;
+
+  p {
+    font-size: calc(1em + 0.5vw);
+    margin-right: auto;
+  }
 }
 
 .new-game-title {
+  width: 100%;
   margin-bottom: 1em;
   font-size: calc(1em + 1vw);
-}
-
-.password-title {
-  font-size: calc(1em + 0.5vw);
-  margin-right: auto;
+  text-align: center;
 }
 
 .new-game-input {
@@ -33,13 +37,18 @@
   }
 }
 
+.minimum-accounts {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .password-switch {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  margin-top: 2em;
 }
 
 .buttons {
@@ -54,9 +63,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  color: $primary;
 
   font-size: calc(1em + 0.5vw);
   margin: 1em 0;
+  padding: 0 0.5em;
 }
 .password-switch {
   input:checked + .slider {

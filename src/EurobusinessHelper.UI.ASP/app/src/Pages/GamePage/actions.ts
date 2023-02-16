@@ -1,4 +1,5 @@
 import GameService from "../../Services/Game/GameService";
+import { NewGame } from "../../Services/Game/types";
 import {
   selectGameDetails,
   selectGameListSearch,
@@ -7,7 +8,7 @@ import {
   setGameListSearch,
   setSelectedGame,
 } from "./gameSlice";
-import { ErrorCodes, GameState, JoinGameData } from "./types";
+import { ErrorCodes, GameState, JoinGameData, NewGameForm } from "./types";
 
 export const refreshGames =
   (gameState: GameState, resetSelection = false) =>
@@ -101,4 +102,9 @@ export const getErrorMessage = (error: string) => {
     default:
       return "";
   }
+};
+
+export const createNewGame = async (values: NewGameForm): Promise<string> => {
+  const game = new NewGame(values);
+  return await GameService.createGame(game);
 };
