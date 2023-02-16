@@ -43,3 +43,21 @@ export enum GameState {
   Started = "Started",
   Finished = "Finished",
 }
+
+export enum ErrorCodes {
+  InternalAppError = "InternalAppError",
+  UnauthorizedUser = "UnauthorizedUser",
+  GameNotFound = "GameNotFound",
+  AccountAlreadyExists = "AccountAlreadyExists",
+  InvalidGamePassword = "InvalidGamePassword",
+  PasswordNotProvided = "PasswordNotProvided",
+  GameAccessDenied = "GameAccessDenied",
+  InvalidGameStateChange = "InvalidGameStateChange",
+  CannotJoinNotNewGame = "CannotJoinNotNewGame",
+  StartingAccountBalanceNotProvided = "StartingAccountBalanceNotProvided",
+  AccountNotFound = "AccountNotFound",
+  InsufficientFunds = "InsufficientFunds",
+  AccountNotRegistered = "AccountNotRegistered",
+  MinimalBankTransferApprovalsNotProvided = "MinimalBankTransferApprovalsNotProvided",
+  TransferRequestNotFound = "TransferRequestNotFound",
+}

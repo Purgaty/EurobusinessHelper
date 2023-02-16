@@ -29,7 +29,10 @@ export default class GameService {
     return response.data;
   }
 
-  static async startGame(gameId: string, state: GameState): Promise<void> {
+  static async changeGameState(
+    gameId: string,
+    state: GameState
+  ): Promise<void> {
     await axios.put(config.apiUrl + "/api/game/" + gameId + "/state/" + state);
   }
 
