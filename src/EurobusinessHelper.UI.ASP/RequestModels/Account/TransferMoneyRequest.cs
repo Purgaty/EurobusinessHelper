@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EurobusinessHelper.UI.ASP.RequestModels.GameManagement;
+namespace EurobusinessHelper.UI.ASP.RequestModels.Account;
 
 /// <summary>
 /// Transfer money request

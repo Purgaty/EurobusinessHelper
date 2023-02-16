@@ -1,6 +1,6 @@
 ﻿using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
 using EurobusinessHelper.UI.ASP.Filters;
-using EurobusinessHelper.UI.ASP.RequestModels.GameManagement;
+using EurobusinessHelper.UI.ASP.RequestModels.Account;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
