@@ -14,7 +14,7 @@ import {
   refreshGames,
 } from "./actions";
 import "./GameDetails.scss";
-import { selectGameDetails, setShowGames } from "./gameSlice";
+import { selectGameDetails, setOpenGameMode, setShowGames } from "./gameSlice";
 import Loader from "./Loader";
 import { GameState, Player } from "./types";
 
@@ -86,37 +86,27 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
         <div className="line-block">
           <div className="tags">
             <div className="state">{gameDetails?.state}</div>
-            <div className="is-active">
-              {gameDetails?.isActive ? (
-                <>
-                  <div className="active"></div>
-                  <div>Active</div>
-                </>
-              ) : (
-                <>
-                  <div className="not-active"></div>
-                  <div>Not Active</div>
-                </>
-              )}
+            <div className="min-approvals">
+              Min Approvals: {gameDetails?.minimalBankTransferApprovals}
             </div>
             <div className="players">Players: {gameDetails?.accountCount}</div>
           </div>
-          {gameDetails?.createdBy.email === identity?.email &&
-            gameDetails?.state !== GameState.Started && (
-              <div className="start-block">
-                <div
-                  className="button button-hover start-button"
-                  onClick={async () => {
-                    await changeGameState(gameDetails?.id, GameState.Started);
-                    dispatch(refreshGames(GameState.New));
-                    dispatch(fetchDetails(gameId, true));
-                    dispatch(setShowGames(GameState.Started));
-                  }}
-                >
-                  <p className="text">Start Game</p>
-                </div>
+          {gameDetails?.createdBy.email === identity?.email && (
+            <div className="start-block">
+              <div
+                className="button button-hover start-button"
+                onClick={async () => {
+                  await changeGameState(gameDetails?.id, GameState.Started);
+                  dispatch(refreshGames(GameState.New));
+                  dispatch(fetchDetails(gameId, true));
+                  dispatch(setShowGames(GameState.Started));
+                  dispatch(setOpenGameMode(GameState.Started));
+                }}
+              >
+                <p className="text">Start Game</p>
               </div>
-            )}
+            </div>
+          )}
         </div>
 
         <div className="details-block">

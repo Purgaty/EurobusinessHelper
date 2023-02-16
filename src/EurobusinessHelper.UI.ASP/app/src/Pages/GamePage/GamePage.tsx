@@ -7,19 +7,36 @@ import { GameDetails } from "./GameDetails";
 import "./GamePage.scss";
 import {
   selectGameDetails,
-  selectIsNewGame,
+  selectOpenGameMode,
   selectSelectedGame,
 } from "./gameSlice";
 import Loader from "./Loader";
-import { NewGame } from "./NewGame";
+import NewGame from "./NewGame";
 import { GameState } from "./types";
+
+const getGameDetailsComponent = (
+  openGameState: GameState,
+  gameId: string | undefined
+): JSX.Element => {
+  if (!gameId) return <Loader />;
+  switch (openGameState) {
+    case GameState.NotCreated:
+      return <NewGame />;
+    case GameState.New:
+      return <GameDetails gameId={gameId} />;
+    case GameState.Started:
+      return <CurrentGame gameId={gameId} />;
+    default:
+      return <Loader />;
+  }
+};
 
 const GamePage = () => {
   const dispatch = useAppDispatch();
   const selectedGame = useSelector(
     selectGameDetails(useSelector(selectSelectedGame))
   );
-  const isNewGame = useSelector(selectIsNewGame);
+  const openGameState = useSelector(selectOpenGameMode);
 
   useEffect(() => {
     dispatch(refreshGames(GameState.New, true));
@@ -29,15 +46,7 @@ const GamePage = () => {
   return (
     <div className="game-page">
       <div className="container details-container">
-        {isNewGame ? (
-          <NewGame />
-        ) : selectedGame?.state === GameState.New ? (
-          <GameDetails gameId={selectedGame.id} />
-        ) : selectedGame?.state === GameState.Started ? (
-          <CurrentGame gameId={selectedGame.id} />
-        ) : (
-          <Loader />
-        )}
+        {getGameDetailsComponent(openGameState, selectedGame?.id)}
       </div>
     </div>
   );
