@@ -2,7 +2,7 @@
 
 public static class GameHubMethodNames
 {
-    public const string RequestBankTransferAcceptance = "requestBankTransferAcceptance";
+    public const string RequestBankTransferApproval = "requestBankTransferApproval";
     public const string AccountTransferNotification = "accountTransferNotification";
     public const string BankTransferNotification = "bankTransferNotification";
 }

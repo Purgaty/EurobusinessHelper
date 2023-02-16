@@ -54,7 +54,7 @@ public class GameHub : Hub
         var clients = _connectedAccountsManager.GetGameAccounts(gameId)
             .Where(c => c.Key != currentAccountId)
             .Select(c => Clients.Client(c.Value));
-        var tasks = clients.Select(c => SendTransferAcceptanceRequest(c, currentAccountId, amount, requestId));
+        var tasks = clients.Select(c => SendTransferApprovalRequest(c, currentAccountId, amount, requestId));
         
         await Task.WhenAll(tasks);
     }
@@ -79,9 +79,9 @@ public class GameHub : Hub
         return currentAccountId;
     }
 
-    private static Task SendTransferAcceptanceRequest(IClientProxy client, Guid accountId, int amount, Guid requestId)
+    private static Task SendTransferApprovalRequest(IClientProxy client, Guid accountId, int amount, Guid requestId)
     {
-        return client.SendAsync(GameHubMethodNames.RequestBankTransferAcceptance, accountId, amount, requestId);
+        return client.SendAsync(GameHubMethodNames.RequestBankTransferApproval, accountId, amount, requestId);
     }
 
     /// <summary>

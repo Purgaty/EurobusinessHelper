@@ -69,7 +69,7 @@ app.UseRouting();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.MapHub<GameHub>("/notifications");
+app.MapHub<GameHub>("/game");
 
 app.UseAuthentication();
 app.UseAuthorization();
