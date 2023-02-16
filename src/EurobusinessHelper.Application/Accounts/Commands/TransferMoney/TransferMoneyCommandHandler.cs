@@ -11,17 +11,21 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
 {
     private readonly ISecurityContext _securityContext;
     private readonly IApplicationDbContext _dbContext;
+    private readonly IHubConnector _hubConnector;
 
-    public TransferMoneyCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext)
+    public TransferMoneyCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext, IHubConnector hubConnector)
     {
         _securityContext = securityContext;
         _dbContext = dbContext;
+        _hubConnector = hubConnector;
     }
     public async Task<Unit> Handle(TransferMoneyCommand request, CancellationToken cancellationToken)
     {
         await ValidateCommand(request, cancellationToken);
 
         await UpdateAccountBalance(request, cancellationToken);
+
+        await _hubConnector.SendAccountTransferNotifications(request.FromAccount, request.ToAccount, request.Amount);
         
         return Unit.Value;
     }

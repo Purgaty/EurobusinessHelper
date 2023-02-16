@@ -1,5 +1,6 @@
 import config from "../../app/config";
 import * as signalR from "@microsoft/signalr";
+import methodNames from "./methodNames";
 
 export default class BaseHub
 {
@@ -20,7 +21,7 @@ export default class BaseHub
         }
         try {
             await this.connection.start();
-            await this.connection.send("registerAccount", accountId);
+            await this.connection.send(methodNames.registerAccount, accountId);
         } catch(ex) {
             await this.timeout(2000);
             await this.initializeConnection(accountId, retryCount + 1);

@@ -1,5 +1,6 @@
 ﻿export default {
     requestBankTransferApproval: "requestBankTransferApproval",
     accountTransferNotification: "accountTransferNotification",
-    bankTransferNotification: "bankTransferNotification"
+    bankTransferNotification: "bankTransferNotification",
+    registerAccount: "registerAccount"
 }

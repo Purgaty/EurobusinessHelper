@@ -8,7 +8,6 @@ export const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<GamePage/>}/>
-            <Route path="/test" element={<SignalrTest/>}/>
             <Route path="/login" element={<LoginPage/>}/>
         </Routes>
     );

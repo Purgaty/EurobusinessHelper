@@ -9,6 +9,7 @@ import CurrentPlayers from "./CurrentPlayers";
 import { selectGameDetails } from "./gameSlice";
 import Loader from "./Loader";
 import { GameState, Player } from "./types";
+import {SignalrTest} from "../../Layout/SignalrTest";
 
 interface CurrentGameProps {
   gameId: string;
@@ -34,6 +35,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   if (gameDetails && identity) {
     return (
       <div className="current-game-container">
+        <SignalrTest accountId={gameDetails.accounts.filter(a => a.email === identity?.email)[0].id} />
         <div className="current-game-title">
           {gameDetails?.name}
           {gameDetails?.createdBy.email === identity?.email && (

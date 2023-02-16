@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using EurobusinessHelper.Application;
+using EurobusinessHelper.Application.Common.Interfaces;
 using EurobusinessHelper.Application.Identities.Security;
 using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.Infrastructure;
@@ -30,6 +31,7 @@ public static class DependencyInjection
                 .Configure<AppConfig>(options => configuration.GetSection(nameof(AppConfig)).Bind(options))
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddSingleton<IConnectedAccountsManager, ConnectedAccountsManager>()
+                .AddTransient<IHubConnector, HubConnector>()
                 .AddScoped<ISecurityContext, SecurityContext>()
                 .InjectApplicationDependencies()
                 .InjectInfrastructureDependencies(configuration)
