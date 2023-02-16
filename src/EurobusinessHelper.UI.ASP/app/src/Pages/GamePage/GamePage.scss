@@ -21,57 +21,11 @@
   flex-direction: column;
 }
 
-.add-game-button {
-  width: 80%;
-  min-width: fit-content;
-  height: 5%;
-  min-height: 1.5em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(1em + 0.5vw);
-}
-
-.add-text {
-  margin-right: auto;
-}
-
-.add-icon {
-  margin-left: auto;
-}
-
-.add-text,
-.add-icon {
-  padding: 1em;
-}
-
 .details-container {
   width: 80%;
   height: 90%;
   margin: 3em;
   overflow: hidden;
-}
-
-.games-switch {
-  width: 90%;
-  font-size: calc(0.5em + 1vh);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 0.5em;
-  margin-top: 1em;
-}
-
-.games-switch-title {
-  width: 30%;
-  text-align: center;
-  cursor: pointer;
-}
-
-.current-list {
-  border: solid 2px $accentSecondary;
-  border-bottom: none;
 }
 
 .tooltip {

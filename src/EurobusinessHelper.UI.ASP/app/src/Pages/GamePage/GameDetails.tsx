@@ -12,21 +12,15 @@ import {
   startGame,
 } from "./actions";
 import "./GameDetails.scss";
-import { selectGameDetails } from "./gameSlice";
+import { selectGameDetails, setShowGames } from "./gameSlice";
 import Loader from "./Loader";
 import { GameState, Player } from "./types";
 
 export interface GameDetailsProps {
   gameId: string;
-  clearSelectedGame: Function;
-  changeGameState: Function;
 }
 
-export const GameDetails = ({
-  gameId,
-  clearSelectedGame,
-  changeGameState,
-}: GameDetailsProps) => {
+export const GameDetails = ({ gameId }: GameDetailsProps) => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -58,6 +52,7 @@ export const GameDetails = ({
   }, [gameId]);
 
   const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
+
   if (gameDetails) {
     return (
       <div className="game-details">
@@ -68,8 +63,7 @@ export const GameDetails = ({
               className="delete-game"
               onClick={async () => {
                 await deleteGame(gameId);
-                dispatch(refreshGames(GameState.New));
-                clearSelectedGame();
+                dispatch(refreshGames(GameState.New, true));
               }}
             >
               <BiTrash />
@@ -113,7 +107,7 @@ export const GameDetails = ({
                     await startGame(gameDetails?.id, GameState.Started);
                     dispatch(refreshGames(GameState.New));
                     dispatch(fetchDetails(gameId, true));
-                    changeGameState(GameState.Started);
+                    dispatch(setShowGames(GameState.Started));
                   }}
                 >
                   <p className="text">Start Game</p>

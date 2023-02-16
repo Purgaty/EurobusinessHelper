@@ -3,67 +3,86 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: $backgroundLighter;
-  font-size: calc(1em + 0.5vw);
+  font-size: calc(0.5em + 0.5vw);
   padding: 0 0.5em;
   transition: all 1s;
   position: absolute;
-  z-index: 1;
-}
-
-.sidebar:hover {
-  .menu-open {
-    width: 0;
-  }
-  .link-text {
-    width: calc(6em + 1vw);
-  }
-}
-
-.link-text {
-  transition: all 1s;
-  white-space: nowrap;
-}
-
-.menu-open:hover {
-  color: rgba($accentSecondary, 0.9);
-}
-
-.menu-open {
-  padding-top: 0.5em;
-  cursor: pointer;
-  font-size: calc(1em + 1vw);
-  transition: 1s;
-  position: absolute;
-}
-
-.menu-links {
-  margin: auto 0;
-}
-
-.link {
-  margin: 1.5em auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
+  z-index: 999;
+  overflow: hidden;
+  transform: translateX(-13em);
   &:hover {
-    .link-icon,
-    .link-text {
-      color: rgba($accentSecondary, 0.9);
+    transform: translateX(0);
+    .menu-open {
+      opacity: 1;
+    }
+    .search-icon {
+      opacity: 0;
     }
   }
 }
 
-.link-icon,
-.link-text {
-  margin: 0.5vh;
-  transition: 0.5s;
+.search-icon {
+  transition: all 1s;
+  margin: 1em 5% 0 auto;
+  height: 5%;
+  width: 10%;
 }
-.link-text {
+
+.menu-open {
+  transition: all 1s;
+  opacity: 0;
+  height: 100%;
+  margin: 0 0 2em 0;
+  width: calc(15em + 1vw);
+  display: flex;
+  flex-direction: column;
+}
+
+.games-switch {
+  width: 90%;
+  font-size: calc(0.5em + 1vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.5em;
+  margin: 1em auto;
+}
+
+.games-switch-title {
+  width: 30%;
+  text-align: center;
   cursor: pointer;
-  text-decoration: none;
-  color: $primary;
-  width: 0;
-  overflow: hidden;
+}
+.current-list {
+  border: solid 2px $accentSecondary;
+  border-bottom: none;
+}
+
+.add-game-button {
+  width: 80%;
+  min-width: fit-content;
+  height: 5%;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(1em + 0.5vw);
+  margin: 0 auto;
+}
+
+.add-text {
+  margin-right: auto;
+}
+
+.add-icon {
+  margin-left: auto;
+}
+
+.add-text,
+.add-icon {
+  padding: 1em;
 }

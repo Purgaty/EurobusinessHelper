@@ -2,26 +2,24 @@ import { useCallback } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { useAppDispatch } from "../../app/hooks";
 import "./GameList.scss";
+import { setIsNewGame, setSelectedGame } from "./gameSlice";
 import { Game } from "./types";
 
 export interface GameListProps {
   list: Game[];
-  setSelectedGame: Function;
-  setIsNewGame: Function;
 }
 
-export const GameList = ({
-  list,
-  setSelectedGame,
-  setIsNewGame,
-}: GameListProps) => {
+export const GameList = ({ list }: GameListProps) => {
+  const dispatch = useAppDispatch();
+
   const onGameClick = useCallback(
     (gameId: string) => {
-      setSelectedGame(gameId);
-      setIsNewGame(false);
+      dispatch(setSelectedGame(gameId));
+      dispatch(setIsNewGame(false));
     },
-    [setSelectedGame, setIsNewGame]
+    [dispatch]
   );
 
   return (

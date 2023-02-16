@@ -1,33 +1,86 @@
-import { AiFillHome, AiOutlineMenuUnfold } from "react-icons/ai";
-import { FaDice } from "react-icons/fa";
-import { RiLoginBoxFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect } from "react";
+import { BiSearch } from "react-icons/bi";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../app/hooks";
+import { fetchDetails, refreshGames } from "../../Pages/GamePage/actions";
+import GameList from "../../Pages/GamePage/GameList";
+import GameSearch from "../../Pages/GamePage/GameSearch";
+import {
+  selectGameList,
+  selectSelectedGame,
+  selectShowGame,
+  setIsNewGame,
+  setShowGames,
+} from "../../Pages/GamePage/gameSlice";
+import { GameState } from "../../Pages/GamePage/types";
 import "./AppSidebar.scss";
 
 const AppSidebar = () => {
+  const dispatch = useAppDispatch();
+  const gameList = useSelector(selectGameList(GameState.New));
+  const startedGamesList = useSelector(selectGameList(GameState.Started));
+  const selectedGame = useSelector(selectSelectedGame);
+  const showGames = useSelector(selectShowGame);
+
+  const checkGameList = useCallback(() => {
+    switch (showGames) {
+      case GameState.New:
+        return gameList;
+      case GameState.Started:
+        return startedGamesList;
+      default:
+        return gameList;
+    }
+  }, [gameList, startedGamesList, showGames]);
+
+  useEffect(() => {
+    if (selectedGame) {
+      dispatch(fetchDetails(selectedGame));
+      return;
+    }
+  }, [selectedGame, dispatch, checkGameList]);
+
+  useEffect(() => {
+    dispatch(refreshGames(GameState.New));
+    dispatch(refreshGames(GameState.Started));
+  }, [dispatch]);
   return (
     <div className="sidebar">
-      <div className="menu-buttons">
-        <AiOutlineMenuUnfold className="menu-open" />
-      </div>
-      <div className="menu-links">
-        <div className="link">
-          <AiFillHome className="link-icon" />
-          <Link className="link-text" to="/">
-            Home
-          </Link>
+      <BiSearch className="search-icon" />
+      <div className="menu-open">
+        <GameSearch gameState={showGames} />
+        <div className="games-switch">
+          <p
+            className={
+              "games-switch-title " +
+              (showGames === GameState.New && "current-list")
+            }
+            onClick={() => {
+              dispatch(setShowGames(GameState.New));
+            }}
+          >
+            New
+          </p>
+          <p
+            className={
+              "games-switch-title " +
+              (showGames === GameState.Started && "current-list")
+            }
+            onClick={() => {
+              dispatch(setShowGames(GameState.Started));
+            }}
+          >
+            Started
+          </p>
         </div>
-        <div className="link">
-          <FaDice className="link-icon" />
-          <Link className="link-text" to="/">
-            Games
-          </Link>
-        </div>
-        <div className="link">
-          <RiLoginBoxFill className="link-icon" />
-          <Link className="link-text" to="/login">
-            Login
-          </Link>
+        <GameList list={checkGameList()} />
+        <div
+          className="button button-hover add-game-button"
+          onClick={() => dispatch(setIsNewGame(true))}
+        >
+          <p className="add-text">Add Game</p>
+          <IoMdAddCircleOutline className="add-icon" />
         </div>
       </div>
     </div>
