@@ -30,7 +30,8 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
             IsPasswordProtected = command.IsPasswordProtected,
             Password = GetPasswordHash(command),
             StartingAccountBalance = command.StartingAccountBalance,
-            CreatedBy = await _securityContext.GetCurrentIdentity()
+            CreatedBy = await _securityContext.GetCurrentIdentity(),
+            MinimalBankTransferApprovals = command.MinimalBankTransferApprovals
         };
         _dbContext.Games.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
