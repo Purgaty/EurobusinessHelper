@@ -5,10 +5,6 @@ export interface Game {
   state: GameState;
 }
 
-export interface NewGame extends Game {
-  password: string;
-}
-
 export interface GameInfo extends Game {
   createdBy: {
     id: string;
@@ -21,6 +17,8 @@ export interface GameInfo extends Game {
   modifiedOn: string;
   accounts: [Player];
   accountCount: number;
+  startingAccountBalance: number;
+  minimalBankTransferApprovals: number;
 }
 
 export interface Player {
@@ -39,6 +37,7 @@ export interface GameInfoList {
 }
 
 export enum GameState {
+  NotCreated = "NotCreated",
   New = "New",
   Started = "Started",
   Finished = "Finished",
@@ -60,4 +59,12 @@ export enum ErrorCodes {
   AccountNotRegistered = "AccountNotRegistered",
   MinimalBankTransferApprovalsNotProvided = "MinimalBankTransferApprovalsNotProvided",
   TransferRequestNotFound = "TransferRequestNotFound",
+}
+
+export interface NewGameForm {
+  gameName: string;
+  startingBalance: string;
+  minTransferRequestApprovals: string;
+  hasPassword: boolean;
+  password: string;
 }

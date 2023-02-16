@@ -10,7 +10,7 @@ import {
   selectGameList,
   selectSelectedGame,
   selectShowGame,
-  setIsNewGame,
+  setOpenGameMode,
   setShowGames,
 } from "../../Pages/GamePage/gameSlice";
 import { GameState } from "../../Pages/GamePage/types";
@@ -74,10 +74,10 @@ const AppSidebar = () => {
             Started
           </p>
         </div>
-        <GameList list={checkGameList()} />
+        <GameList list={checkGameList()} gameMode={showGames} />
         <div
           className="button button-hover add-game-button"
-          onClick={() => dispatch(setIsNewGame(true))}
+          onClick={() => dispatch(setOpenGameMode(GameState.NotCreated))}
         >
           <p className="add-text">Add Game</p>
           <IoMdAddCircleOutline className="add-icon" />

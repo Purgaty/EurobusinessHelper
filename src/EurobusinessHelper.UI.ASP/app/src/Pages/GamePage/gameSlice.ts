@@ -17,8 +17,8 @@ const gameSlice = createSlice({
     gameDetails: {} as GameInfoList,
     gameListSearch: "" as string,
     selectedGame: "" as string,
-    isNewGame: false as boolean,
     showGames: GameState.New as GameState,
+    openGameMode: GameState.New as GameState,
   },
   reducers: {
     setGameList: (state, action: PayloadAction<GameListInfo>) => {
@@ -36,11 +36,11 @@ const gameSlice = createSlice({
     setSelectedGame: (state, action: PayloadAction<string>) => {
       state.selectedGame = action.payload;
     },
-    setIsNewGame: (state, action: PayloadAction<boolean>) => {
-      state.isNewGame = action.payload;
-    },
     setShowGames: (state, action: PayloadAction<GameState>) => {
       state.showGames = action.payload;
+    },
+    setOpenGameMode: (state, action: PayloadAction<GameState>) => {
+      state.openGameMode = action.payload;
     },
   },
 });
@@ -50,7 +50,7 @@ export const {
   setGameDetails,
   setGameListSearch,
   setSelectedGame,
-  setIsNewGame,
+  setOpenGameMode,
   setShowGames,
 } = gameSlice.actions;
 
@@ -71,9 +71,9 @@ export const selectGameListSearch = (state: RootState): string =>
   state.game.gameListSearch;
 export const selectSelectedGame = (state: RootState): string =>
   state.game.selectedGame;
-export const selectIsNewGame = (state: RootState): boolean =>
-  state.game.isNewGame;
 export const selectShowGame = (state: RootState): GameState =>
   state.game.showGames;
+export const selectOpenGameMode = (state: RootState): GameState =>
+  state.game.openGameMode;
 
 export default gameSlice.reducer;
