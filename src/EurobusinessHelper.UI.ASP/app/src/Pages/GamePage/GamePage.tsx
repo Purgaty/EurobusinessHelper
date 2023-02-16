@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/hooks";
-import { fetchDetails, refreshGames } from "./actions";
+import { refreshGames } from "./actions";
 import CurrentGame from "./CurrentGame";
 import { GameDetails } from "./GameDetails";
 import "./GamePage.scss";
@@ -20,10 +20,6 @@ const GamePage = () => {
     selectGameDetails(useSelector(selectSelectedGame))
   );
   const isNewGame = useSelector(selectIsNewGame);
-
-  useEffect(() => {
-    if (selectedGame) dispatch(fetchDetails(selectedGame.id));
-  }, [selectedGame, dispatch]);
 
   useEffect(() => {
     dispatch(refreshGames(GameState.New, true));

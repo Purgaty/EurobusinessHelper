@@ -2,14 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
+import { Tooltip } from "react-tooltip";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
 import {
+  changeGameState,
   deleteGame,
   fetchDetails,
+  getErrorMessage,
   joinGame,
   refreshGames,
-  startGame,
 } from "./actions";
 import "./GameDetails.scss";
 import { selectGameDetails, setShowGames } from "./gameSlice";
@@ -34,7 +36,8 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
       dispatch(fetchDetails(gameId, true));
       dispatch(refreshGames(GameState.New));
     } catch (error: any) {
-      setErrorMessage("Incorrect password");
+      setErrorMessage(getErrorMessage(error.response.data.ErrorCode));
+      setTimeout(() => setErrorMessage(""), 3000);
     }
   }, [dispatch, gameId, password]);
 
@@ -104,7 +107,7 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
                 <div
                   className="button button-hover start-button"
                   onClick={async () => {
-                    await startGame(gameDetails?.id, GameState.Started);
+                    await changeGameState(gameDetails?.id, GameState.Started);
                     dispatch(refreshGames(GameState.New));
                     dispatch(fetchDetails(gameId, true));
                     dispatch(setShowGames(GameState.Started));
@@ -133,10 +136,18 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
                     <input
                       type="password"
                       className="input password-input"
+                      id="password-input"
+                      data-tooltip-content={errorMessage}
+                      data-tooltip-place="top"
+                      data-tooltip-variant="error"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
-                    <div className="error-message">{errorMessage}</div>
+
+                    <Tooltip
+                      anchorId="password-input"
+                      isOpen={errorMessage === "" ? false : true}
+                    />
                   </>
                 )}
               </div>

@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { MdOutlineVideogameAssetOff } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
+import { changeGameState, refreshGames } from "./actions";
 import "./CurrentGame.scss";
 import CurrentPlayers from "./CurrentPlayers";
 import { selectGameDetails } from "./gameSlice";
 import Loader from "./Loader";
-import { Player } from "./types";
+import { GameState, Player } from "./types";
 
 interface CurrentGameProps {
   gameId: string;
@@ -17,6 +19,8 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
 
   const gameDetails = useSelector(selectGameDetails(gameId));
   const identity = useAppSelector(selectIdentity);
+
+  const dispatch = useDispatch();
 
   const getCurrentPlayerId = () => {
     let playerId = "";
@@ -30,7 +34,21 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   if (gameDetails && identity) {
     return (
       <div className="current-game-container">
-        <div className="current-game-title">{gameDetails?.name}</div>
+        <div className="current-game-title">
+          {gameDetails?.name}
+          {gameDetails?.createdBy.email === identity?.email && (
+            <div
+              className="finish-icon"
+              onClick={async () => {
+                await changeGameState(gameDetails?.id, GameState.Finished);
+                dispatch(refreshGames(GameState.Started, true));
+              }}
+            >
+              <MdOutlineVideogameAssetOff />
+            </div>
+          )}
+        </div>
+
         <div className="current-players-list">
           {gameDetails?.accounts?.map((player: Player) => (
             <CurrentPlayers
@@ -41,21 +59,24 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
             />
           ))}
         </div>
-        <div className="request-block">
-          <p className="text">Bank Request:</p>
-          <input
-            type="number"
-            value={amount}
-            className="input amount-input"
-            placeholder="Value"
-            onChange={(e) => setAmount(+e.target.value)}
-          />
-          <div
-            className="button button-hover request-button"
-            onClick={() => console.log(amount)}
-          >
-            <p className="text">Request</p>
+        <div className="bottom-block">
+          <div className="request-block">
+            <p className="text">Bank Request:</p>
+            <input
+              type="number"
+              value={amount}
+              className="input amount-input"
+              placeholder="Value"
+              onChange={(e) => setAmount(+e.target.value)}
+            />
+            <div
+              className="button button-hover request-button"
+              onClick={() => console.log(amount)}
+            >
+              <p className="text">Request</p>
+            </div>
           </div>
+          <div className="log-container"></div>
         </div>
       </div>
     );

@@ -7,7 +7,7 @@ import {
   setGameListSearch,
   setSelectedGame,
 } from "./gameSlice";
-import { GameState, JoinGameData } from "./types";
+import { ErrorCodes, GameState, JoinGameData } from "./types";
 
 export const refreshGames =
   (gameState: GameState, resetSelection = false) =>
@@ -44,11 +44,11 @@ export const deleteGame = async (gameId: string): Promise<void> => {
   return await GameService.deleteGame(gameId);
 };
 
-export const startGame = async (
+export const changeGameState = async (
   gameId: string,
   state: GameState
 ): Promise<void> => {
-  await GameService.startGame(gameId, state);
+  await GameService.changeGameState(gameId, state);
 };
 
 export const setGameSearch =
@@ -64,4 +64,41 @@ export const transferMoney = async (
   amount: number
 ): Promise<void> => {
   await GameService.transferMoney(gameId, payerId, receiverId, amount);
+};
+
+export const getErrorMessage = (error: string) => {
+  switch (error) {
+    case ErrorCodes.InternalAppError:
+      return "Internal error";
+    case ErrorCodes.UnauthorizedUser:
+      return "User is unauthorized";
+    case ErrorCodes.GameNotFound:
+      return "Game not found";
+    case ErrorCodes.AccountAlreadyExists:
+      return "Account already exists";
+    case ErrorCodes.InvalidGamePassword:
+      return "Incorrect password";
+    case ErrorCodes.PasswordNotProvided:
+      return "Password not provided";
+    case ErrorCodes.GameAccessDenied:
+      return "Access denied";
+    case ErrorCodes.InvalidGameStateChange:
+      return "Invalid game state change";
+    case ErrorCodes.CannotJoinNotNewGame:
+      return "The game has already started";
+    case ErrorCodes.StartingAccountBalanceNotProvided:
+      return "Starting accounts balance not provided";
+    case ErrorCodes.AccountNotFound:
+      return "Account not found";
+    case ErrorCodes.InsufficientFunds:
+      return "Insufficient funds";
+    case ErrorCodes.AccountNotRegistered:
+      return "Account is not registered";
+    case ErrorCodes.MinimalBankTransferApprovalsNotProvided:
+      return "Minimal bank transfer approvals not provided";
+    case ErrorCodes.TransferRequestNotFound:
+      return "Transfer request not found";
+    default:
+      return "";
+  }
 };
