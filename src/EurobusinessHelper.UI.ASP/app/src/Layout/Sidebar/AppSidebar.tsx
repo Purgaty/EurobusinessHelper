@@ -15,6 +15,7 @@ import {
 } from "../../Pages/GamePage/gameSlice";
 import { GameState } from "../../Pages/GamePage/types";
 import "./AppSidebar.scss";
+import {selectIsIdentityLoaded} from "../Footer/authSlice";
 
 const AppSidebar = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const AppSidebar = () => {
   const startedGamesList = useSelector(selectGameList(GameState.Started));
   const selectedGame = useSelector(selectSelectedGame);
   const showGames = useSelector(selectShowGame);
+  const isIdentityLoaded = useSelector(selectIsIdentityLoaded);
 
   const checkGameList = useCallback(() => {
     switch (showGames) {
@@ -37,14 +39,16 @@ const AppSidebar = () => {
   useEffect(() => {
     if (selectedGame) {
       dispatch(fetchDetails(selectedGame));
-      return;
     }
   }, [selectedGame, dispatch, checkGameList]);
 
   useEffect(() => {
-    dispatch(refreshGames(GameState.New));
+    if(!isIdentityLoaded)
+      return;
     dispatch(refreshGames(GameState.Started));
-  }, [dispatch]);
+    dispatch(refreshGames(GameState.New, true));
+  }, [dispatch, isIdentityLoaded]);
+  
   return (
     <div className="sidebar">
       <BiSearch className="search-icon" />

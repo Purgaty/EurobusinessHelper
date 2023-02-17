@@ -13,7 +13,7 @@ export default class GameService {
     const response = await axios.get(
       config.apiUrl + "/api/game/" + state + "?query=" + query
     );
-    return response.data.items;
+    return response?.data.items;
   }
 
   static async getGameDetails(gameId: string): Promise<GameInfo> {

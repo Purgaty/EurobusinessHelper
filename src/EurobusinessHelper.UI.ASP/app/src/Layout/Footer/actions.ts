@@ -1,10 +1,9 @@
 import IdentityService from "../../Services/Identity/IdentityService";
-import { setIdentity } from "./authSlice";
-import { Identity } from "./types";
+import {setIdentity} from "./authSlice";
+import {Identity} from "./types";
 
 const getCurrentIdentity = async (): Promise<Identity> => {
-  const response = await IdentityService.getCurrentIdentity();
-  return response;
+  return await IdentityService.getCurrentIdentity();
 };
 
 export const fetchCurrentIdentity = () => async (dispatch: Function) => {

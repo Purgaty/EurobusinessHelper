@@ -19,6 +19,9 @@ export const { setIdentity, setProviders } = authSlice.actions;
 
 export const selectIdentity = (state: RootState): Identity | undefined =>
   state.auth.identity;
+
+export const selectIsIdentityLoaded = (state: RootState) : boolean =>
+    !!state.auth.identity
 export const selectProviders = (state: RootState): string[] | undefined =>
   state.auth.providers;
 

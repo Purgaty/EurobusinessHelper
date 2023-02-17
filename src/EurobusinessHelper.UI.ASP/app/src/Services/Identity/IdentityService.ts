@@ -7,6 +7,6 @@ export default class IdentityService {
 
   static async getCurrentIdentity(): Promise<GetCurrentIdentityResponse> {
     const response = await axios.get(this.baseUrl + "current");
-    return response.data;
+    return response?.data;
   }
 }

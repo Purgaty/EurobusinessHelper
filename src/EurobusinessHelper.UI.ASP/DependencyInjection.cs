@@ -74,6 +74,8 @@ public static class DependencyInjection
         {
             options.ClientId = configuration["Authentication:Microsoft:ClientId"];
             options.ClientSecret = configuration["Authentication:Microsoft:ClientSecret"];
+            options.AuthorizationEndpoint = configuration["Authentication:Microsoft:AuthorizationEndpoint"];
+            options.TokenEndpoint = configuration["Authentication:Microsoft:TokenEndpoint"];
         });
     }
 
