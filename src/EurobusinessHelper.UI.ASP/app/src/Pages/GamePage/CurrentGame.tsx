@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { MdOutlineVideogameAssetOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { selectIdentity } from "../../Layout/Footer/authSlice";
+import { SignalrTest } from "../../Layout/SignalrTest";
 import { changeGameState, refreshGames } from "./actions";
 import "./CurrentGame.scss";
 import CurrentPlayers from "./CurrentPlayers";
 import { selectGameDetails } from "./gameSlice";
 import Loader from "./Loader";
 import { GameState, Player } from "./types";
-import {SignalrTest} from "../../Layout/SignalrTest";
 
 interface CurrentGameProps {
   gameId: string;
@@ -35,7 +35,12 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   if (gameDetails && identity) {
     return (
       <div className="current-game-container">
-        <SignalrTest accountId={gameDetails.accounts.filter(a => a.email === identity?.email)[0].id} />
+        <SignalrTest
+          accountId={
+            gameDetails.accounts.filter((a) => a.email === identity?.email)[0]
+              .id
+          }
+        />
         <div className="current-game-title">
           {gameDetails?.name}
           {gameDetails?.createdBy.email === identity?.email && (
@@ -63,7 +68,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
         </div>
         <div className="bottom-block">
           <div className="request-block">
-            <p className="text">Bank Request:</p>
+            <p className="rquest-text">Bank Request:</p>
             <input
               type="number"
               value={amount}

@@ -1,6 +1,7 @@
 @import "../../colours.scss";
 
 .sidebar {
+  width: 15em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,7 +27,10 @@
 
 .search-icon {
   transition: all 1s;
-  margin: 1em 5% 0 auto;
+  position: absolute;
+  top: 1em;
+  right: 0.5em;
+
   height: 5%;
   width: 10%;
 }

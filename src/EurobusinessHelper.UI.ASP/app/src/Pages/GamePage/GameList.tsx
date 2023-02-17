@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
@@ -27,11 +27,7 @@ export const GameList = ({ list, gameMode }: GameListProps) => {
     <div className="game-list">
       {list?.map((game, i) => {
         return (
-          <div
-            className="game-list-item"
-            key={i}
-            onClick={() => onGameClick(game.id)}
-          >
+          <div className="game-list-item" key={i}>
             <Tooltip
               anchorId={`game-${game.id}`}
               className="tooltip"
@@ -44,7 +40,9 @@ export const GameList = ({ list, gameMode }: GameListProps) => {
               data-tooltip-place="bottom"
               data-tooltip-delay-show={500}
             >
-              <p className="game-name">{game.name}</p>
+              <p className="game-name" onClick={() => onGameClick(game.id)}>
+                {game.name}
+              </p>
 
               <div className="lock-icon">
                 {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}

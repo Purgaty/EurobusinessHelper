@@ -23,6 +23,7 @@
 }
 
 .line-block {
+  max-width: 90%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -33,6 +34,7 @@
   margin: 1em 0;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 0.5em;
 }
 
@@ -53,10 +55,12 @@
 .start-block {
   width: 20%;
   margin-left: auto;
+  margin-right: 1em;
 }
 
 .start-button {
   width: fit-content;
+  white-space: nowrap;
   .text {
     padding-right: 0.5em;
     padding-left: 0.5em;
@@ -72,7 +76,7 @@
 }
 
 .players-list {
-  width: 40%;
+  width: 50%;
   height: 60%;
   margin-right: auto;
 
@@ -112,7 +116,7 @@
 .join-block {
   margin-left: auto;
   margin-top: 3em;
-  width: 40%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -133,6 +137,7 @@
 
 .join-button {
   width: 30%;
+  min-width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,5 +146,5 @@
 }
 
 .text {
-  padding: 0.2em;
+  padding: 0.2em 1em;
 }

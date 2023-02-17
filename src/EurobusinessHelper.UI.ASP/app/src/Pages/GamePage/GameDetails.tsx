@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,22 +91,23 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
             </div>
             <div className="players">Players: {gameDetails?.accountCount}</div>
           </div>
-          {gameDetails?.createdBy.email === identity?.email && (
-            <div className="start-block">
-              <div
-                className="button button-hover start-button"
-                onClick={async () => {
-                  await changeGameState(gameDetails?.id, GameState.Started);
-                  dispatch(refreshGames(GameState.New));
-                  dispatch(fetchDetails(gameId, true));
-                  dispatch(setShowGames(GameState.Started));
-                  dispatch(setOpenGameMode(GameState.Started));
-                }}
-              >
-                <p className="text">Start Game</p>
+          {gameDetails?.createdBy.email === identity?.email &&
+            gameDetails?.accountCount > 0 && (
+              <div className="start-block">
+                <div
+                  className="button button-hover start-button"
+                  onClick={async () => {
+                    await changeGameState(gameDetails?.id, GameState.Started);
+                    dispatch(refreshGames(GameState.New));
+                    dispatch(fetchDetails(gameId, true));
+                    dispatch(setShowGames(GameState.Started));
+                    dispatch(setOpenGameMode(GameState.Started));
+                  }}
+                >
+                  <p className="text">Start Game</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         <div className="details-block">

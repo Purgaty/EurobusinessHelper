@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import GameHub from "../Services/Hubs/GameHub";
 
 //To be removed after creating the messages logic in game

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useAppDispatch } from "../../app/hooks";
 import { fetchGames } from "./actions";

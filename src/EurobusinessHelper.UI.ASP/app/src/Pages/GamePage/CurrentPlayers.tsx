@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
@@ -66,19 +66,17 @@ export const CurrentPlayers = ({
             className="tooltip"
             isOpen={errorMessage === "" ? false : true}
           />
-          <div className="amount-block">
-            <input
-              type="number"
-              value={amount}
-              id={`input-${player.id}`}
-              data-tooltip-content={errorMessage}
-              data-tooltip-place="top"
-              data-tooltip-variant="error"
-              className="input amount-input"
-              placeholder="Value"
-              onChange={(e) => setAmount(e.target.value)}
-            />
-          </div>
+          <input
+            type="number"
+            value={amount}
+            id={`input-${player.id}`}
+            data-tooltip-content={errorMessage}
+            data-tooltip-place="top"
+            data-tooltip-variant="error"
+            className="input amount-input"
+            placeholder="Value"
+            onChange={(e) => setAmount(e.target.value)}
+          />
 
           <div
             className="button button-hover transfer-button"
