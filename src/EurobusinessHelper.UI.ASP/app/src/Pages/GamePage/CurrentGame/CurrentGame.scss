@@ -1,4 +1,4 @@
-@import "../../colours.scss";
+@import "../../../colours.scss";
 
 .current-game-container {
   width: 90%;
@@ -27,7 +27,7 @@
   height: 10em;
 
   @media only screen and (orientation: portrait) {
-    height: 20em;
+    height: 18em;
   }
 
   display: flex;

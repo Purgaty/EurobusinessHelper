@@ -3,9 +3,12 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useAppDispatch } from "../../app/hooks";
+import {
+  setOpenGameMode,
+  setSelectedGame,
+} from "../../Pages/GamePage/gameSlice";
+import { Game, GameState } from "../../Pages/GamePage/types";
 import "./GameList.scss";
-import { setOpenGameMode, setSelectedGame } from "./gameSlice";
-import { Game, GameState } from "./types";
 
 export interface GameListProps {
   list: Game[];

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useAppDispatch } from "../../app/hooks";
-import { fetchGames } from "./actions";
+import { fetchGames } from "../../Pages/GamePage/actions";
+import { GameState } from "../../Pages/GamePage/types";
 import "./GameSearch.scss";
-import { GameState } from "./types";
 
 export interface GameSearchProps {
   gameState: GameState;

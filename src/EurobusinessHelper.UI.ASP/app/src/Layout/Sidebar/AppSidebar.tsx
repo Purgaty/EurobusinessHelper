@@ -4,8 +4,6 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/hooks";
 import { fetchDetails, refreshGames } from "../../Pages/GamePage/actions";
-import GameList from "../../Pages/GamePage/GameList";
-import GameSearch from "../../Pages/GamePage/GameSearch";
 import {
   selectGameList,
   selectSelectedGame,
@@ -14,8 +12,10 @@ import {
   setShowGames,
 } from "../../Pages/GamePage/gameSlice";
 import { GameState } from "../../Pages/GamePage/types";
+import { selectIsIdentityLoaded } from "../Footer/authSlice";
 import "./AppSidebar.scss";
-import {selectIsIdentityLoaded} from "../Footer/authSlice";
+import GameList from "./GameList";
+import GameSearch from "./GameSearch";
 
 const AppSidebar = () => {
   const dispatch = useAppDispatch();
@@ -43,12 +43,11 @@ const AppSidebar = () => {
   }, [selectedGame, dispatch, checkGameList]);
 
   useEffect(() => {
-    if(!isIdentityLoaded)
-      return;
+    if (!isIdentityLoaded) return;
     dispatch(refreshGames(GameState.Started));
     dispatch(refreshGames(GameState.New, true));
   }, [dispatch, isIdentityLoaded]);
-  
+
   return (
     <div className="sidebar">
       <BiSearch className="search-icon" />

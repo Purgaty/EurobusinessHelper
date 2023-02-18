@@ -3,8 +3,9 @@ import { BiTrash } from "react-icons/bi";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
-import { useAppSelector } from "../../app/hooks";
-import { selectIdentity } from "../../Layout/Footer/authSlice";
+import { useAppSelector } from "../../../app/hooks";
+import { selectIdentity } from "../../../Layout/Footer/authSlice";
+import Loader from "../../Loader";
 import {
   changeGameState,
   deleteGame,
@@ -12,11 +13,10 @@ import {
   getErrorMessage,
   joinGame,
   refreshGames,
-} from "./actions";
+} from "../actions";
+import { selectGameDetails, setOpenGameMode, setShowGames } from "../gameSlice";
+import { GameState, Player } from "../types";
 import "./GameDetails.scss";
-import { selectGameDetails, setOpenGameMode, setShowGames } from "./gameSlice";
-import Loader from "./Loader";
-import { GameState, Player } from "./types";
 
 export interface GameDetailsProps {
   gameId: string;
