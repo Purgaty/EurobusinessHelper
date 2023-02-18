@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EurobusinessHelper.UI.ASP.Controllers;
 
 /// <summary>
-/// Identity controller
+/// Transfer request controller
 /// </summary>
 [Route("/api/transferRequest")]
 public class TransferRequestController : ControllerBase
@@ -20,7 +20,7 @@ public class TransferRequestController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRequest(CreateTransferRequestRequest request)
+    public async Task<IActionResult> CreateRequest([FromBody]CreateTransferRequestRequest request)
     {
         var command = new CreateTransferRequestCommand
         {
