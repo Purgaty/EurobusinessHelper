@@ -48,7 +48,7 @@
 
 .button-hover {
   &:hover {
-    transform: translateY(-1vh);
+    background-color: lighten($color: $accentSecondary, $amount: 10);
   }
 }
 

@@ -116,6 +116,7 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
             {gameDetails?.accounts?.map((player: Player) => (
               <div className="player" key={player.id}>
                 <div className="player-name">{player.name}</div>
+                <div className="player-email">{player.email}</div>
               </div>
             ))}
           </div>
