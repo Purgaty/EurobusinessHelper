@@ -1,4 +1,5 @@
-﻿using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
+﻿using EurobusinessHelper.Application.Accounts.Commands.RequestMoneyTransfer;
+using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
 using EurobusinessHelper.UI.ASP.Filters;
 using EurobusinessHelper.UI.ASP.RequestModels.Account;
 using MediatR;
@@ -42,6 +43,21 @@ public class AccountController : ControllerBase
             Amount = request.Amount
         };
 
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPost("request")]
+    public async Task<IActionResult> RequestMoneyTransfer(Guid gameId, Guid accountId,
+        [FromBody] TransferMoneyRequest request)
+    {
+        var command = new RequestMoneyTransferCommand
+        {
+            GameId = gameId,
+            FromAccount = accountId,
+            ToAccount = request.AccountId,
+            Amount = request.Amount
+        };
         await _mediator.Send(command);
         return NoContent();
     }

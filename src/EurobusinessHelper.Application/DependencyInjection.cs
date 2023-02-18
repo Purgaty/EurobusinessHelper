@@ -1,4 +1,5 @@
-﻿using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
+﻿using EurobusinessHelper.Application.Accounts.Commands.RequestMoneyTransfer;
+using EurobusinessHelper.Application.Accounts.Commands.TransferMoney;
 using EurobusinessHelper.Application.Accounts.Commands.TransferMoneyFromBank;
 using EurobusinessHelper.Application.Accounts.Queries.CheckAccountGameAccess;
 using EurobusinessHelper.Application.Accounts.Queries.GetAccountGame;
@@ -36,6 +37,7 @@ public static class DependencyInjection
                 .AddTransient<IRequestHandler<DeleteGameCommand, Unit>, DeleteGameCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateGameStateCommand, Unit>, UpdateGameStateCommandHandler>()
                 .AddTransient<IRequestHandler<TransferMoneyCommand, Unit>, TransferMoneyCommandHandler>()
+                .AddTransient<IRequestHandler<RequestMoneyTransferCommand, Unit>, RequestMoneyTransferCommandHandler>()
                 .AddTransient<IRequestHandler<TransferMoneyFromBankCommand, Unit>, TransferMoneyFromBankCommandHandler>()
                 .AddTransient<IRequestHandler<CreateTransferRequestCommand, Guid>, CreateTransferRequestCommandHandler>()
                 .AddTransient<IRequestHandler<ApproveRequestCommand, Unit>, ApproveRequestCommandHandler>()

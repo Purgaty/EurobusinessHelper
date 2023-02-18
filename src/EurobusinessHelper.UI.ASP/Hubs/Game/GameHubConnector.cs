@@ -1,4 +1,5 @@
 ﻿using EurobusinessHelper.Application.Accounts.Queries.GetAccountGame;
+using EurobusinessHelper.Application.Common.Exceptions;
 using EurobusinessHelper.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -33,6 +34,14 @@ public class GameHubConnector : IGameHubConnector
             .Select(c => _hubContext.Clients.Client(c.Value));
         var tasks = clients.Select(c => RequestBankTransferApproval(c, requestId, accountId, amount));
         await Task.WhenAll(tasks);
+    }
+
+    public async Task RequestMoneyTransfer(Guid gameId, Guid fromAccount, Guid toAccount, int amount)
+    {
+        if (!_connectedAccountsManager.GetGameAccounts(gameId).TryGetValue(toAccount, out var connectionId))
+            throw new EurobusinessException(EurobusinessExceptionCode.AccountNotRegistered,
+                $"Account {toAccount} is not registered.");
+        await _hubContext.Clients.Client(connectionId).SendAsync(GameHubMethodNames.RequestMoneyTransfer, fromAccount, amount);
     }
 
     private static async Task RequestBankTransferApproval(IClientProxy client, Guid requestId, Guid accountId, int amount)

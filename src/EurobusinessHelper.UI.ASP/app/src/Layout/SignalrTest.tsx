@@ -10,7 +10,8 @@ export const SignalrTest = ({ accountId }: { accountId: string }) => {
       (accountFrom, accountTo, amount) =>
         alert(
           `New account transfer. From ${accountFrom}, to ${accountTo}, amount ${amount}`
-        )
+        ),
+        (account, amount) => alert(`Account ${account} requested $${amount}`)
     );
     hub.initializeConnection(accountId);
   }, [accountId]);

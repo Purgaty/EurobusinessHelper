@@ -41,49 +41,6 @@ public class GameHub : Hub
     }
 
     /// <summary>
-    /// Request bank transfer
-    /// </summary>
-    /// <param name="amount"></param>
-    public async Task RequestBankTransfer(int amount)
-    {
-        var currentAccountId = GetCurrentAccountId();
-        var requestId = await CreateTransferRequest(amount, currentAccountId);
-        var gameId = await GetGameId(currentAccountId);
-        
-        var clients = _connectedAccountsManager.GetGameAccounts(gameId)
-            .Where(c => c.Key != currentAccountId)
-            .Select(c => Clients.Client(c.Value));
-        var tasks = clients.Select(c => SendTransferApprovalRequest(c, currentAccountId, amount, requestId));
-        
-        await Task.WhenAll(tasks);
-    }
-
-    private async Task<Guid> CreateTransferRequest(int amount, Guid currentAccountId)
-    {
-        var requestId = await _mediator.Send(new CreateTransferRequestCommand
-            {
-                AccountId = currentAccountId,
-                Amount = amount
-                
-            });
-        return requestId;
-    }
-
-    private Guid GetCurrentAccountId()
-    {
-        var currentAccountId = _connectedAccountsManager.GetAccountId(Context.ConnectionId);
-        if (currentAccountId == default)
-            throw new EurobusinessException(EurobusinessExceptionCode.AccountNotRegistered,
-                "Account not registered in the hub. First run 'RegisterAccount'");
-        return currentAccountId;
-    }
-
-    private static Task SendTransferApprovalRequest(IClientProxy client, Guid accountId, int amount, Guid requestId)
-    {
-        return client.SendAsync(GameHubMethodNames.RequestBankTransferApproval, accountId, amount, requestId);
-    }
-
-    /// <summary>
     /// Remove accountId on disconnect
     /// </summary>
     /// <param name="exception"></param>
