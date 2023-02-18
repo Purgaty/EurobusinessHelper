@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { MdOutlineVideogameAssetOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "../../app/hooks";
-import { selectIdentity } from "../../Layout/Footer/authSlice";
-import { SignalrTest } from "../../Layout/SignalrTest";
-import { changeGameState, refreshGames } from "./actions";
+import { useAppSelector } from "../../../app/hooks";
+import { selectIdentity } from "../../../Layout/Footer/authSlice";
+import { SignalrTest } from "../../../Layout/SignalrTest";
+import Loader from "../../Loader";
+import { bankRequest, changeGameState, refreshGames } from "../actions";
+import { selectGameDetails } from "../gameSlice";
+import { GameState, Player } from "../types";
 import "./CurrentGame.scss";
 import CurrentPlayers from "./CurrentPlayers";
-import { selectGameDetails } from "./gameSlice";
-import Loader from "./Loader";
-import { GameState, Player } from "./types";
 
 interface CurrentGameProps {
   gameId: string;
 }
 
 export const CurrentGame = ({ gameId }: CurrentGameProps) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<string>("");
 
   const gameDetails = useSelector(selectGameDetails(gameId));
   const identity = useAppSelector(selectIdentity);
@@ -70,15 +70,15 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
           <div className="request-block">
             <p className="rquest-text">Bank Request:</p>
             <input
-              type="number"
+              type="text"
               value={amount}
               className="input amount-input"
               placeholder="Value"
-              onChange={(e) => setAmount(+e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <div
               className="button button-hover request-button"
-              onClick={() => console.log(amount)}
+              onClick={() => bankRequest(getCurrentPlayerId(), +amount)}
             >
               <p className="text">Request</p>
             </div>

@@ -2,9 +2,9 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { fetchDetails, getErrorMessage, transferMoney } from "./actions";
+import { fetchDetails, getErrorMessage, transferMoney } from "../actions";
+import { Player } from "../types";
 import "./CurrentPlayers.scss";
-import { Player } from "./types";
 
 interface CurrentPlayersProps {
   gameId: string;

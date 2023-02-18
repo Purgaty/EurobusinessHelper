@@ -3,11 +3,11 @@ import { BiHelpCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import { Field, formValueSelector, reduxForm } from "redux-form";
-import { createNewGame, refreshGames } from "./actions";
-import { setOpenGameMode, setSelectedGame } from "./gameSlice";
+import { createNewGame, refreshGames } from "../actions";
+import { setOpenGameMode, setSelectedGame } from "../gameSlice";
+import { GameState, NewGameForm } from "../types";
 import "./NewGame.scss";
 import { newGameFieldNames, newGameFormName } from "./newGameConsts";
-import { GameState, NewGameForm } from "./types";
 
 interface NewGameProps {
   handleSubmit: Function;

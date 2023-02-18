@@ -58,4 +58,11 @@ export default class GameService {
     const response = await axios.post(config.apiUrl + "/api/game", game);
     return response.data;
   }
+
+  static async bankRequest(playerId: string, amount: number): Promise<void> {
+    await axios.post(config.apiUrl + "/api/transferRequest", {
+      accountId: playerId,
+      amount: amount,
+    });
+  }
 }
