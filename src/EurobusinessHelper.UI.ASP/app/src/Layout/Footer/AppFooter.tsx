@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchCurrentIdentity } from "./actions";
 import {selectIdentity} from "./authSlice";
 import {useLocation} from "react-router";
+import {SignalrTestMain} from "../SignalrTestMain";
 
 export const AppFooter = () => {
   const dispatch = useAppDispatch();
@@ -15,5 +16,9 @@ export const AppFooter = () => {
     }
   }, [dispatch, identity, location]);
 
-  return <div className="application-footer">{identity?.name}</div>;
+  return <div className="application-footer">
+    <p className="application-footer-name">{identity?.name}</p>
+    <p className="application-footer-email">{identity?.email}</p>
+    <SignalrTestMain />
+  </div>;
 };

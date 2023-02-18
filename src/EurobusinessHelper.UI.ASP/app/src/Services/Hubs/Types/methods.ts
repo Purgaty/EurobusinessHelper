@@ -1,3 +1,5 @@
-﻿export type BankTransferNotification = (accountTo: string, amount: number) => void;
-export type AccountTransferNotification = (accountFrom: string, accountTo: string, amount: number) => void;
-export type RequestBankTransferApproval = (accountId: string, amount: number, requestId: string) => void;
+﻿import {GameState} from "../../../Pages/GamePage/types";
+
+export type GameChangedNotification = () => void;
+export type RequestBankTransferApproval = (requestId: string, accountId: string, amount: number) => void;
+export type GameListChangedNotification = (state: GameState) => void;

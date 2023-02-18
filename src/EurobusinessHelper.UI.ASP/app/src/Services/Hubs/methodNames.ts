@@ -1,8 +1,8 @@
 const methodNames = {
   requestBankTransferApproval: "requestBankTransferApproval",
-  accountTransferNotification: "accountTransferNotification",
-  bankTransferNotification: "bankTransferNotification",
-  registerAccount: "registerAccount",
+  gameChangedNotification: "gameChangedNotification",
+  gameListChangedNotification: "gameListChangedNotification",
+  registerAccount: "registerAccount"
 };
 
 export default methodNames;

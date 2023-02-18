@@ -14,17 +14,16 @@ export default class BaseHub
         .build()
     }
     
-    public async initializeConnection(accountId: string, retryCount: number = 0) {
+    protected async establishConnection(retryCount: number = 0) {
         if(retryCount > 5) {
             alert("connection error");
             return;
         }
         try {
             await this.connection.start();
-            await this.connection.send(methodNames.registerAccount, accountId);
         } catch(ex) {
             await this.timeout(2000);
-            await this.initializeConnection(accountId, retryCount + 1);
+            await this.establishConnection(retryCount + 1);
         }
     }
 

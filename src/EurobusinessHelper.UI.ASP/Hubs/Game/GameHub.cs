@@ -1,11 +1,10 @@
-﻿using System.Collections.Concurrent;
-using EurobusinessHelper.Application.Accounts.Queries.GetAccountGame;
+﻿using EurobusinessHelper.Application.Accounts.Queries.GetAccountGame;
 using EurobusinessHelper.Application.Common.Exceptions;
 using EurobusinessHelper.Application.TransferRequest.Commands.CreateTransferRequest;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace EurobusinessHelper.UI.ASP.Hubs;
+namespace EurobusinessHelper.UI.ASP.Hubs.Game;
 
 /// <summary>
 /// Notification hub

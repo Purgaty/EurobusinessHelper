@@ -11,13 +11,13 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
 {
     private readonly ISecurityContext _securityContext;
     private readonly IApplicationDbContext _dbContext;
-    private readonly IHubConnector _hubConnector;
+    private readonly IGameHubConnector _gameHubConnector;
 
-    public TransferMoneyCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext, IHubConnector hubConnector)
+    public TransferMoneyCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext, IGameHubConnector gameHubConnector)
     {
         _securityContext = securityContext;
         _dbContext = dbContext;
-        _hubConnector = hubConnector;
+        _gameHubConnector = gameHubConnector;
     }
     public async Task<Unit> Handle(TransferMoneyCommand request, CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
 
         await UpdateAccountBalance(request, cancellationToken);
 
-        await _hubConnector.SendAccountTransferNotifications(request.FromAccount, request.ToAccount, request.Amount);
+        await _gameHubConnector.SendGameChangedNotifications(request.GameId);
         
         return Unit.Value;
     }

@@ -11,14 +11,16 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IMainHubConnector _mainHubConnector;
     private readonly ISecurityContext _securityContext;
 
     public CreateGameCommandHandler(IApplicationDbContext dbContext, ISecurityContext securityContext,
-        IPasswordHasher passwordHasher)
+        IPasswordHasher passwordHasher, IMainHubConnector mainHubConnector)
     {
         _dbContext = dbContext;
         _securityContext = securityContext;
         _passwordHasher = passwordHasher;
+        _mainHubConnector = mainHubConnector;
     }
 
     public async Task<Guid> Handle(CreateGameCommand command, CancellationToken cancellationToken)
@@ -36,6 +38,7 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
         _dbContext.Games.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
+        await _mainHubConnector.SendGameListChangedNotifications(entity.State);
         return entity.Id;
     }
 

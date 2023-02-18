@@ -11,11 +11,18 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly ISecurityContext _securityContext;
+    private readonly IGameHubConnector _gameHubConnector;
+    private readonly IMainHubConnector _mainHubConnector;
 
-    public UpdateGameStateCommandHandler(IApplicationDbContext dbContext, ISecurityContext securityContext)
+    public UpdateGameStateCommandHandler(IApplicationDbContext dbContext,
+        ISecurityContext securityContext,
+        IGameHubConnector gameHubConnector,
+        IMainHubConnector mainHubConnector)
     {
         _dbContext = dbContext;
         _securityContext = securityContext;
+        _gameHubConnector = gameHubConnector;
+        _mainHubConnector = mainHubConnector;
     }
     
     public async Task<Unit> Handle(UpdateGameStateCommand request, CancellationToken cancellationToken)
@@ -27,6 +34,9 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
         await ValidateCommand(request, game);
         UpdateGame(request, game);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _gameHubConnector.SendGameChangedNotifications(game.Id);
+        await _mainHubConnector.SendGameListChangedNotifications(request.State);
+        await _mainHubConnector.SendGameListChangedNotifications(game.State);
         return Unit.Value;
     }
 

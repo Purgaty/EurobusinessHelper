@@ -1,6 +1,6 @@
 ﻿using EurobusinessHelper.Application.Games.Commands.CreateGame;
-using EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
 using EurobusinessHelper.Application.Games.Commands.DeleteGame;
+using EurobusinessHelper.Application.Games.Commands.JoinGame;
 using EurobusinessHelper.Application.Games.Commands.UpdateGameState;
 using EurobusinessHelper.Application.Games.Queries.GetActiveGames;
 using EurobusinessHelper.Application.Games.Queries.GetGameAccounts;

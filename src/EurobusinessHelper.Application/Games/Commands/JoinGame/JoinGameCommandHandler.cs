@@ -6,20 +6,22 @@ using EurobusinessHelper.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
+namespace EurobusinessHelper.Application.Games.Commands.JoinGame;
 
 public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand>
 {
     private readonly IApplicationDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IGameHubConnector _gameHubConnector;
     private readonly ISecurityContext _securityContext;
 
     public JoinGameCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext,
-        IPasswordHasher passwordHasher)
+        IPasswordHasher passwordHasher, IGameHubConnector gameHubConnector)
     {
         _securityContext = securityContext;
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
+        _gameHubConnector = gameHubConnector;
     }
 
     public async Task<Unit> Handle(JoinGameCommand request, CancellationToken cancellationToken)
@@ -36,6 +38,7 @@ public class JoinGameCommandHandler : IRequestHandler<JoinGameCommand>
         });
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _gameHubConnector.SendGameChangedNotifications(game.Id);
         return Unit.Value;
     }
 

@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using EurobusinessHelper.UI.ASP;
 using EurobusinessHelper.UI.ASP.Hubs;
+using EurobusinessHelper.UI.ASP.Hubs.Game;
+using EurobusinessHelper.UI.ASP.Hubs.Main;
 using EurobusinessHelper.UI.ASP.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +72,7 @@ app.UseRouting();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapHub<GameHub>("/game");
+app.MapHub<MainHub>("/main");
 
 app.UseAuthentication();
 app.UseAuthorization();

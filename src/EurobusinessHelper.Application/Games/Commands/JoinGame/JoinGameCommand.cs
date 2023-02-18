@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace EurobusinessHelper.Application.Games.Commands.CreateGameAccount;
+namespace EurobusinessHelper.Application.Games.Commands.JoinGame;
 
 public class JoinGameCommand : IRequest
 {

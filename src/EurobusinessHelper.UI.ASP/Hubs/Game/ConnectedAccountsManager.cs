@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace EurobusinessHelper.UI.ASP.Hubs;
+namespace EurobusinessHelper.UI.ASP.Hubs.Game;
 
 public class ConnectedAccountsManager : IConnectedAccountsManager
 {

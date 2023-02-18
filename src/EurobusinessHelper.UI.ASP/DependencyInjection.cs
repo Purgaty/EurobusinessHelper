@@ -5,6 +5,8 @@ using EurobusinessHelper.Application.Identities.Security;
 using EurobusinessHelper.Domain.Config;
 using EurobusinessHelper.Infrastructure;
 using EurobusinessHelper.UI.ASP.Hubs;
+using EurobusinessHelper.UI.ASP.Hubs.Game;
+using EurobusinessHelper.UI.ASP.Hubs.Main;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
@@ -31,7 +33,8 @@ public static class DependencyInjection
                 .Configure<AppConfig>(options => configuration.GetSection(nameof(AppConfig)).Bind(options))
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddSingleton<IConnectedAccountsManager, ConnectedAccountsManager>()
-                .AddTransient<IHubConnector, HubConnector>()
+                .AddTransient<IGameHubConnector, GameHubConnector>()
+                .AddTransient<IMainHubConnector, MainHubConnector>()
                 .AddScoped<ISecurityContext, SecurityContext>()
                 .InjectApplicationDependencies()
                 .InjectInfrastructureDependencies(configuration)

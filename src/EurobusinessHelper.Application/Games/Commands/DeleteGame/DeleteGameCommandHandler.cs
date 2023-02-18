@@ -9,14 +9,18 @@ namespace EurobusinessHelper.Application.Games.Commands.DeleteGame;
 
 public class DeleteGameCommandHandler : IRequestHandler<DeleteGameCommand>
 {
-    private readonly ISecurityContext _securityContext;
     private readonly IApplicationDbContext _dbContext;
+    private readonly IMainHubConnector _mainHubConnector;
+    private readonly ISecurityContext _securityContext;
 
-    public DeleteGameCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext)
+    public DeleteGameCommandHandler(ISecurityContext securityContext, IApplicationDbContext dbContext,
+        IMainHubConnector mainHubConnector)
     {
         _securityContext = securityContext;
         _dbContext = dbContext;
+        _mainHubConnector = mainHubConnector;
     }
+
     public async Task<Unit> Handle(DeleteGameCommand request, CancellationToken cancellationToken)
     {
         var game = await _dbContext.Games
@@ -27,6 +31,7 @@ public class DeleteGameCommandHandler : IRequestHandler<DeleteGameCommand>
 
         game!.IsActive = false;
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _mainHubConnector.SendGameListChangedNotifications(game.State);
         return Unit.Value;
     }
 
