@@ -22,6 +22,14 @@ const NewGame = (props: NewGameProps) => {
   );
   const dispatch = useDispatch();
 
+  const showErrorMessage = useCallback(
+    (message: string) => {
+      setErrorMessage(message);
+      setTimeout(() => setErrorMessage(""), 3000);
+    },
+    [setErrorMessage]
+  );
+
   const onSubmit = useCallback(
     async (values: NewGameForm): Promise<void> => {
       try {
@@ -40,15 +48,7 @@ const NewGame = (props: NewGameProps) => {
         }
       }
     },
-    [dispatch]
-  );
-
-  const showErrorMessage = useCallback(
-    (message: string) => {
-      setErrorMessage(message);
-      setTimeout(() => setErrorMessage(""), 3000);
-    },
-    [setErrorMessage]
+    [dispatch, showErrorMessage]
   );
 
   return (
