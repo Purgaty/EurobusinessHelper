@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
+import GameHub from "../../../Services/Hubs/GameHub";
 import Loader from "../../Loader";
 import {
   changeGameState,
@@ -15,7 +16,7 @@ import {
   refreshGames,
 } from "../actions";
 import { selectGameDetails, setOpenGameMode, setShowGames } from "../gameSlice";
-import { GameState, Player } from "../types";
+import { Account, GameState } from "../types";
 import "./GameDetails.scss";
 
 export interface GameDetailsProps {
@@ -25,6 +26,7 @@ export interface GameDetailsProps {
 export const GameDetails = ({ gameId }: GameDetailsProps) => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [hub, setHub] = useState<GameHub | undefined>(undefined);
 
   const identity = useAppSelector(selectIdentity);
   const gameDetails = useSelector(selectGameDetails(gameId));
@@ -42,17 +44,26 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
   }, [dispatch, gameId, password]);
 
   const checkPlayer = () => {
-    let check = false;
-    for (let i = 0; i < (gameDetails?.accounts?.length ?? 0); i++) {
-      if (gameDetails?.accounts[i].email === identity?.email) check = true;
-    }
-    return check;
+    if (!gameDetails?.accounts?.length) return;
+    return gameDetails.accounts.some((a) => a.email === identity?.email);
   };
 
   useEffect(() => {
     setPassword("");
     setErrorMessage("");
   }, [gameId]);
+
+  useEffect(() => {
+    const hub = new GameHub(
+      () => dispatch(fetchDetails(gameId, true)),
+      (accountFrom, accountTo, amount) =>
+        alert(
+          `New account transfer request. From ${accountFrom}, to ${accountTo}, amount ${amount}`
+        ),
+      (account, amount) => alert(`Account ${account} requested $${amount}`)
+    );
+    hub.initializeGame(gameId).then(() => setHub(hub));
+  }, [dispatch, gameId]);
 
   const playerCheck = useMemo(checkPlayer, [identity, gameDetails]);
 
@@ -113,7 +124,7 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
         <div className="details-block">
           <div className="players-list">
             Players:
-            {gameDetails?.accounts?.map((player: Player) => (
+            {gameDetails?.accounts?.map((player: Account) => (
               <div className="player" key={player.id}>
                 <div className="player-name">{player.name}</div>
                 <div className="player-email">{player.email}</div>

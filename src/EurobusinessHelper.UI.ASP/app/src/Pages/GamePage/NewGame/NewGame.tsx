@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { BiHelpCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
@@ -15,6 +15,8 @@ interface NewGameProps {
 }
 
 const NewGame = (props: NewGameProps) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const hasPassword = useSelector((state) =>
     formValueSelector(newGameFormName)(state, newGameFieldNames.hasPassword)
   );
@@ -22,12 +24,31 @@ const NewGame = (props: NewGameProps) => {
 
   const onSubmit = useCallback(
     async (values: NewGameForm): Promise<void> => {
-      const newGameId = await createNewGame(values);
-      await dispatch(refreshGames(GameState.New));
-      dispatch(setSelectedGame(newGameId));
-      dispatch(setOpenGameMode(GameState.New));
+      try {
+        const newGameId = await createNewGame(values);
+        await dispatch(refreshGames(GameState.New));
+        dispatch(setSelectedGame(newGameId));
+        dispatch(setOpenGameMode(GameState.New));
+      } catch (error: any) {
+        switch (error.response.status) {
+          case 500:
+            showErrorMessage("All fields need values");
+            break;
+          case 400:
+            showErrorMessage("Password not provided");
+            break;
+        }
+      }
     },
     [dispatch]
+  );
+
+  const showErrorMessage = useCallback(
+    (message: string) => {
+      setErrorMessage(message);
+      setTimeout(() => setErrorMessage(""), 3000);
+    },
+    [setErrorMessage]
   );
 
   return (
@@ -94,8 +115,19 @@ const NewGame = (props: NewGameProps) => {
           placeholder="Password"
           autoComplete="off"
         />
-
-        <button type="submit" className="button button-hover game-button">
+        <Tooltip
+          anchorId="submit-button"
+          className="tooltip"
+          isOpen={errorMessage === "" ? false : true}
+        />
+        <button
+          type="submit"
+          className="button button-hover game-button"
+          id="submit-button"
+          data-tooltip-content={errorMessage}
+          data-tooltip-place="top"
+          data-tooltip-variant="error"
+        >
           Add New Game
         </button>
       </div>

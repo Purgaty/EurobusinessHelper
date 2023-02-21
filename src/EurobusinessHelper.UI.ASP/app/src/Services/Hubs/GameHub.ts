@@ -1,23 +1,39 @@
 import BaseHub from "./BaseHub";
 import methodNames from "./methodNames";
-import {GameChangedNotification, RequestBankTransferApproval, RequestMoneyTransfer} from "./Types/methods";
+import {
+  GameChangedNotification,
+  RequestBankTransferApproval,
+  RequestMoneyTransfer,
+} from "./Types/methods";
 
-export default class GameHub extends BaseHub
-{
-    constructor(gameChangedNotification: GameChangedNotification,
-                requestBankTransferApproval: RequestBankTransferApproval,
-                requestMoneyTransfer: RequestMoneyTransfer) {
-        super("/game");
-        
-        this.connection.on(methodNames.gameChangedNotification, gameChangedNotification);
-        this.connection.on(methodNames.requestBankTransferApproval, requestBankTransferApproval);
-        this.connection.on(methodNames.requestMoneyTransfer, requestMoneyTransfer);
-    }
+export default class GameHub extends BaseHub {
+  constructor(
+    gameChangedNotification: GameChangedNotification,
+    requestBankTransferApproval: RequestBankTransferApproval,
+    requestMoneyTransfer: RequestMoneyTransfer
+  ) {
+    super("/game");
 
-    async initializeConnection(accountId: string): Promise<void> {
-        await super.establishConnection();
-        await this.connection.send(methodNames.registerAccount, accountId);
-        console.log(`Account ${accountId} registered`);
-    }
+    this.connection.on(
+      methodNames.gameChangedNotification,
+      gameChangedNotification
+    );
+    this.connection.on(
+      methodNames.requestBankTransferApproval,
+      requestBankTransferApproval
+    );
+    this.connection.on(methodNames.requestMoneyTransfer, requestMoneyTransfer);
+  }
+
+  async initializeAccount(accountId: string): Promise<void> {
+    await super.establishConnection();
+    await this.connection.send(methodNames.registerAccount, accountId);
+    console.log(`Account ${accountId} registered`);
+  }
+
+  async initializeGame(gameId: string): Promise<void> {
+    await super.establishConnection();
+    await this.connection.send(methodNames.registerAccount, gameId);
+    console.log(`Game ${gameId} registered`);
+  }
 }
-

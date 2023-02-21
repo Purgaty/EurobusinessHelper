@@ -3,7 +3,8 @@ const methodNames = {
   gameChangedNotification: "gameChangedNotification",
   gameListChangedNotification: "gameListChangedNotification",
   registerAccount: "registerAccount",
-  requestMoneyTransfer: "requestMoneyTransfer"
+  registerGame: "registerGame",
+  requestMoneyTransfer: "requestMoneyTransfer",
 };
 
 export default methodNames;

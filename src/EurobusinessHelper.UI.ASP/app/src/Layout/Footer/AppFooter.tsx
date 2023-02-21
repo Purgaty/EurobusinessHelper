@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { refreshGames } from "../../Pages/GamePage/actions";
+import { GameState } from "../../Pages/GamePage/types";
+import MainHub from "../../Services/Hubs/MainHub";
 import { fetchCurrentIdentity } from "./actions";
-import {selectIdentity} from "./authSlice";
-import {useLocation} from "react-router";
-import {SignalrTestMain} from "../SignalrTestMain";
+import { selectIdentity } from "./authSlice";
 
 export const AppFooter = () => {
   const dispatch = useAppDispatch();
   const identity = useAppSelector(selectIdentity);
+  const [hub, setHub] = useState<MainHub | undefined>(undefined);
   const location = useLocation();
 
   useEffect(() => {
@@ -16,9 +19,20 @@ export const AppFooter = () => {
     }
   }, [dispatch, identity, location]);
 
-  return <div className="application-footer">
-    <p className="application-footer-name">{identity?.name}</p>
-    <p className="application-footer-email">{identity?.email}</p>
-    <SignalrTestMain />
-  </div>;
+  useEffect(() => {
+    const hub = new MainHub(async (state: any) => {
+      if (state === 0) state = GameState.New;
+      else if (state === 1) state = GameState.Started;
+      await dispatch(refreshGames(state));
+      console.log(`Game list ${state} changed`);
+    });
+    hub.initializeConnection().then(() => setHub(hub));
+  }, [dispatch]);
+
+  return (
+    <div className="application-footer">
+      <p className="application-footer-name">{identity?.name}</p>
+      <p className="application-footer-email">{identity?.email}</p>
+    </div>
+  );
 };

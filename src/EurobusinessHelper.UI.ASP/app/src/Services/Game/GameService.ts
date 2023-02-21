@@ -65,4 +65,27 @@ export default class GameService {
       amount: amount,
     });
   }
+
+  static async requestMoney(
+    gameId: string,
+    payerId: string,
+    receiverId: string,
+    amount: number
+  ): Promise<void> {
+    await axios.post(
+      config.apiUrl +
+        "/api/game/" +
+        gameId +
+        "/account/" +
+        payerId +
+        "/request",
+      { accountId: receiverId, amount: amount }
+    );
+  }
+
+  static async approveRequest(requestId: string): Promise<void> {
+    await axios.put(
+      config.apiUrl + "/api/transferRequest/" + requestId + "/approve"
+    );
+  }
 }

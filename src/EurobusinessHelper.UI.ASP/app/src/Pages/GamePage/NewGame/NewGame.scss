@@ -31,6 +31,9 @@
   width: 100%;
   font-size: 1.5em;
   border-bottom: 2px solid $primary;
+  input {
+    all: unset;
+  }
   &::placeholder {
     opacity: 1;
     color: rgba($primary, 0.5);
