@@ -5,6 +5,7 @@ import { refreshGames } from "../../Pages/GamePage/actions";
 import { GameState } from "../../Pages/GamePage/types";
 import MainHub from "../../Services/Hubs/MainHub";
 import { fetchCurrentIdentity } from "./actions";
+import "./AppFooter.scss";
 import { selectIdentity } from "./authSlice";
 
 export const AppFooter = () => {
