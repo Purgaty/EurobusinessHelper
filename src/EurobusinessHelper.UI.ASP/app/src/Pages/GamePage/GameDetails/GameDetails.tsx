@@ -26,7 +26,7 @@ export interface GameDetailsProps {
 export const GameDetails = ({ gameId }: GameDetailsProps) => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [hub, setHub] = useState<GameHub | undefined>(undefined);
+  const [, setHub] = useState<GameHub | undefined>(undefined);
 
   const identity = useAppSelector(selectIdentity);
   const gameDetails = useSelector(selectGameDetails(gameId));
@@ -56,11 +56,8 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
   useEffect(() => {
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
-      (accountFrom, accountTo, amount) =>
-        alert(
-          `New account transfer request. From ${accountFrom}, to ${accountTo}, amount ${amount}`
-        ),
-      (account, amount) => alert(`Account ${account} requested $${amount}`)
+      (accountFrom, accountTo, amount) => {},
+      (account, amount) => {}
     );
     hub.initializeGame(gameId).then(() => setHub(hub));
   }, [dispatch, gameId]);

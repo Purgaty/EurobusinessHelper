@@ -27,7 +27,7 @@ interface CurrentGameProps {
 export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   const [amount, setAmount] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [hub, setHub] = useState<GameHub | undefined>(undefined);
+  const [, setHub] = useState<GameHub | undefined>(undefined);
 
   const gameDetails = useSelector(selectGameDetails(gameId));
   const identity = useAppSelector(selectIdentity);

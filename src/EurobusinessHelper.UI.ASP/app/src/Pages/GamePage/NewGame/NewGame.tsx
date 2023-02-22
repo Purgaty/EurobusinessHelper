@@ -3,7 +3,7 @@ import { BiHelpCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import { Field, formValueSelector, reduxForm } from "redux-form";
-import { createNewGame, refreshGames } from "../actions";
+import { createNewGame, getErrorMessage, refreshGames } from "../actions";
 import { setOpenGameMode, setSelectedGame } from "../gameSlice";
 import { GameState, NewGameForm } from "../types";
 import "./NewGame.scss";
@@ -22,33 +22,29 @@ const NewGame = (props: NewGameProps) => {
   );
   const dispatch = useDispatch();
 
-  const showErrorMessage = useCallback(
-    (message: string) => {
-      setErrorMessage(message);
-      setTimeout(() => setErrorMessage(""), 3000);
-    },
-    [setErrorMessage]
-  );
-
   const onSubmit = useCallback(
     async (values: NewGameForm): Promise<void> => {
+      if (
+        !values.gameName ||
+        !values.minTransferRequestApprovals ||
+        !values.startingBalance
+      ) {
+        setErrorMessage("All fields need value");
+        setTimeout(() => setErrorMessage(""), 3000);
+        return;
+      }
+
       try {
         const newGameId = await createNewGame(values);
         await dispatch(refreshGames(GameState.New));
         dispatch(setSelectedGame(newGameId));
         dispatch(setOpenGameMode(GameState.New));
       } catch (error: any) {
-        switch (error.response.status) {
-          case 500:
-            showErrorMessage("All fields need values");
-            break;
-          case 400:
-            showErrorMessage("Password not provided");
-            break;
-        }
+        setErrorMessage(getErrorMessage(error.response.data.ErrorCode));
+        setTimeout(() => setErrorMessage(""), 3000);
       }
     },
-    [dispatch, showErrorMessage]
+    [dispatch]
   );
 
   return (

@@ -10,7 +10,7 @@ import { selectIdentity } from "./authSlice";
 export const AppFooter = () => {
   const dispatch = useAppDispatch();
   const identity = useAppSelector(selectIdentity);
-  const [hub, setHub] = useState<MainHub | undefined>(undefined);
+  const [, setHub] = useState<MainHub | undefined>(undefined);
   const location = useLocation();
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export const AppFooter = () => {
       if (state === 0) state = GameState.New;
       else if (state === 1) state = GameState.Started;
       await dispatch(refreshGames(state));
-      console.log(`Game list ${state} changed`);
     });
     hub.initializeConnection().then(() => setHub(hub));
   }, [dispatch]);
