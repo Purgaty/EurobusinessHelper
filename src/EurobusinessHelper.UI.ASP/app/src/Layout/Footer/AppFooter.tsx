@@ -20,9 +20,7 @@ export const AppFooter = () => {
   }, [dispatch, identity, location]);
 
   useEffect(() => {
-    const hub = new MainHub(async (state: any) => {
-      if (state === 0) state = GameState.New;
-      else if (state === 1) state = GameState.Started;
+    const hub = new MainHub(async (state: GameState) => {
       await dispatch(refreshGames(state));
     });
     hub.initializeConnection().then(() => setHub(hub));
