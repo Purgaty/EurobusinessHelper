@@ -39,11 +39,11 @@ public class GameHub : Hub
     /// <summary>
     /// Register gameId
     /// </summary>
-    /// <param name="accountId"></param>
-    public async Task RegisterGame(Guid gameId)
+    /// <param name="gameId"></param>
+    public void RegisterGame(Guid gameId)
     {
         var connectionId = Context.ConnectionId;
-        _connectedAccountsManager.AddAccount(gameId, Guid.NewGuid(), connectionId);
+        _connectedAccountsManager.AddGame(gameId, connectionId);
     }
 
     private async Task<Guid> GetGameId(Guid accountId)

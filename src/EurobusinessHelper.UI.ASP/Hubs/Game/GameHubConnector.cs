@@ -21,8 +21,9 @@ public class GameHubConnector : IGameHubConnector
 
     public async Task SendGameChangedNotifications(Guid gameId)
     {
-        var clients = _connectedAccountsManager.GetGameAccounts(gameId)
-            .Select(c => _hubContext.Clients.Client(c.Value));
+        var clients = _connectedAccountsManager
+            .GetGameAccounts(gameId)
+            .Select(a => _hubContext.Clients.Client(a.ConnectionId));
         var tasks = clients.Select(NotifyGameChanged);
         await Task.WhenAll(tasks);
     }
@@ -30,15 +31,20 @@ public class GameHubConnector : IGameHubConnector
     public async Task RequestBankTransferApprovals(Guid requestId, Guid gameId, Guid accountId, int amount)
     {
         var clients = _connectedAccountsManager.GetGameAccounts(gameId)
-            .Where(a => a.Key != accountId)
-            .Select(c => _hubContext.Clients.Client(c.Value));
+            .Where(a => a.AccountId != accountId)
+            .Select(c => _hubContext.Clients.Client(c.ConnectionId));
         var tasks = clients.Select(c => RequestBankTransferApproval(c, requestId, accountId, amount));
         await Task.WhenAll(tasks);
     }
 
     public async Task RequestMoneyTransfer(Guid gameId, Guid fromAccount, Guid toAccount, int amount)
     {
-        if (!_connectedAccountsManager.GetGameAccounts(gameId).TryGetValue(toAccount, out var connectionId))
+        var connectionId = _connectedAccountsManager
+            .GetGameAccounts(gameId)
+            .Where(c => c.AccountId == toAccount)
+            .Select(c => c.ConnectionId)
+            .FirstOrDefault();
+        if (connectionId == default)
             throw new EurobusinessException(EurobusinessExceptionCode.AccountNotRegistered,
                 $"Account {toAccount} is not registered.");
         await _hubContext.Clients.Client(connectionId).SendAsync(GameHubMethodNames.RequestMoneyTransfer, fromAccount, amount);
