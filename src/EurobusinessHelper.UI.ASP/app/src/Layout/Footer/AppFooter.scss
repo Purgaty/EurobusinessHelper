@@ -1,0 +1,16 @@
+@import "../../colours.scss";
+
+.application-footer {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0.5em 0.5em 1em;
+  align-items: end;
+}
+
+.application-footer-name {
+  font-size: calc(0.7em + 1vw);
+}
+
+.application-footer-email {
+  font-size: calc(0.5em + 1vw);
+}
