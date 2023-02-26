@@ -24,6 +24,7 @@ public class GameHub : Hub
         _connectedAccountsManager = connectedAccountsManager;
         _mediator = mediator;
     }
+
     /// <summary>
     /// Register accountId
     /// </summary>
@@ -33,6 +34,16 @@ public class GameHub : Hub
         var connectionId = Context.ConnectionId;
         var gameId = await GetGameId(accountId);
         _connectedAccountsManager.AddAccount(gameId, accountId, connectionId);
+    }
+    
+    /// <summary>
+    /// Register gameId
+    /// </summary>
+    /// <param name="gameId"></param>
+    public void RegisterGame(Guid gameId)
+    {
+        var connectionId = Context.ConnectionId;
+        _connectedAccountsManager.AddGame(gameId, connectionId);
     }
 
     private async Task<Guid> GetGameId(Guid accountId)

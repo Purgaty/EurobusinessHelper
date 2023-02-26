@@ -47,8 +47,9 @@ public class ApproveRequestCommandHandler : IRequestHandler<ApproveRequestComman
         var approvalsNeeded = await ApprovalsNeeded(requestId, cancellationToken);
         Domain.Entities.TransferRequest request;
         await using var transaction = _dbContext.BeginTransaction(IsolationLevel.Serializable);
-        request = await _dbContext.TransferRequest.
-            FirstAsync(r => r.Id == requestId, cancellationToken);
+        request = await _dbContext.TransferRequest
+            .Include(r => r.Account)
+            .FirstAsync(r => r.Id == requestId, cancellationToken);
         request.ApprovalCount++;
         if (request.ApprovalCount == approvalsNeeded)
             request.Approved = true;

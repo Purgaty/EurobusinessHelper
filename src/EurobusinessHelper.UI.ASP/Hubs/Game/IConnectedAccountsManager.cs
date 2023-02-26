@@ -5,8 +5,7 @@ namespace EurobusinessHelper.UI.ASP.Hubs.Game;
 public interface IConnectedAccountsManager
 {
     public void AddAccount(Guid gameId, Guid accountId, string connectionId);
-    void RemoveAccount(Guid gameId, Guid accountId);
-    Guid GetAccountId(string connectionId);
-    ConcurrentDictionary<Guid, string> GetGameAccounts(Guid gameId);
+    public void AddGame(Guid gameId, string connectionId);
+    ICollection<ConnectedAccount> GetGameAccounts(Guid gameId);
     void RemoveConnection(string connectionId);
 }

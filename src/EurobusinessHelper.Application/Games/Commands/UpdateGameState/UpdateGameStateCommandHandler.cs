@@ -31,12 +31,13 @@ public class UpdateGameStateCommandHandler : IRequestHandler<UpdateGameStateComm
             .Include(g => g.CreatedBy)
             .Include(g => g.Accounts)
             .FirstOrDefaultAsync(g => g.Id == request.GameId, cancellationToken);
+        var oldState = game.State;
         await ValidateCommand(request, game);
         UpdateGame(request, game);
         await _dbContext.SaveChangesAsync(cancellationToken);
         await _gameHubConnector.SendGameChangedNotifications(game.Id);
         await _mainHubConnector.SendGameListChangedNotifications(request.State);
-        await _mainHubConnector.SendGameListChangedNotifications(game.State);
+        await _mainHubConnector.SendGameListChangedNotifications(oldState);
         return Unit.Value;
     }
 

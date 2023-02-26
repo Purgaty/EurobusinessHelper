@@ -137,3 +137,16 @@ export const bankRequest = async (
 ): Promise<void> => {
   await GameService.bankRequest(playerId, amount);
 };
+
+export const requestMoney = async (
+  gameId: string,
+  payerId: string,
+  receiverId: string,
+  amount: number
+): Promise<void> => {
+  await GameService.requestMoney(gameId, payerId, receiverId, amount);
+};
+
+export const approveRequest = async (requestId: string): Promise<void> => {
+  await GameService.approveRequest(requestId);
+};

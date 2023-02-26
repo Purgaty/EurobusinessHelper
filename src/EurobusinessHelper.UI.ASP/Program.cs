@@ -31,7 +31,10 @@ builder.Services.InjectDependencies(builder.Configuration);
 builder.Services.AddCors();
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddSignalR();
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+        options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+    );
 
 builder.Services.AddSwaggerGen(options =>
 {

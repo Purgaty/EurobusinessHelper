@@ -15,13 +15,13 @@ export interface GameInfo extends Game {
   isActive: boolean;
   createdOn: string;
   modifiedOn: string;
-  accounts: [Player];
+  accounts: [Account];
   accountCount: number;
   startingAccountBalance: number;
   minimalBankTransferApprovals: number;
 }
 
-export interface Player {
+export interface Account {
   id: string;
   name: string;
   email: string;
