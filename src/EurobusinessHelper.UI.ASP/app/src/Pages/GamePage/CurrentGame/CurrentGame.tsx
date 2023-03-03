@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
+import { GameOperatingLog } from "../../../Services/Hubs/Types/types";
 import Loader from "../../Loader";
 import {
   approveRequest,
@@ -27,6 +28,7 @@ interface CurrentGameProps {
 export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   const [amount, setAmount] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [operationLog, setOperationLog] = useState<string[]>();
   const [, setHub] = useState<GameHub | undefined>(undefined);
 
   const gameDetails = useSelector(selectGameDetails(gameId));
@@ -54,10 +56,37 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
       (account, amount) => {
         if (window.confirm(`Account ${account} requested $${amount}`))
           transferMoney(gameId, currentAccountId, account, amount);
+      },
+      (logType, toAccount, amount, fromAccount) => {
+        const time = new Date().toLocaleTimeString();
+        let logMessage = "";
+
+        if (logType === GameOperatingLog.TransferCompleted) {
+          logMessage =
+            "[" +
+            time +
+            "] Transfer completed: Player " +
+            toAccount +
+            " recieved $" +
+            amount +
+            " from player " +
+            fromAccount +
+            ".";
+        } else if (logType === GameOperatingLog.BankTransferCompleted) {
+          logMessage =
+            "[" +
+            time +
+            "] Bant transfer completed: Player " +
+            toAccount +
+            " recieved $" +
+            amount +
+            " from the bank";
+        }
+        setOperationLog([logMessage, ...(operationLog || [])]);
       }
     );
     hub.initializeAccount(currentAccountId).then(() => setHub(hub));
-  }, [currentAccountId, dispatch, gameId]);
+  }, [currentAccountId, dispatch, gameId, operationLog]);
 
   const showErrorMessage = useCallback(
     (message: string) => {
@@ -171,7 +200,17 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
               <p className="text">Request</p>
             </div>
           </div>
-          <div className="log-container"></div>
+          <div className="log-container">
+            <div className="log-messages">
+              {operationLog?.map((entry, i) => {
+                return (
+                  <p className="log-entry" key={i}>
+                    {entry}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     );

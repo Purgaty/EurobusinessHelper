@@ -5,6 +5,7 @@ const methodNames = {
   registerAccount: "registerAccount",
   registerGame: "registerGame",
   requestMoneyTransfer: "requestMoneyTransfer",
+  createOperationLog: "createOperationLog",
 };
 
 export default methodNames;

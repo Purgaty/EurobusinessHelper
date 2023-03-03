@@ -56,8 +56,9 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
   useEffect(() => {
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
-      (accountFrom, accountTo, amount) => {},
-      (account, amount) => {}
+      () => {},
+      () => {},
+      () => {}
     );
     hub.initializeGame(gameId).then(() => setHub(hub));
   }, [dispatch, gameId]);

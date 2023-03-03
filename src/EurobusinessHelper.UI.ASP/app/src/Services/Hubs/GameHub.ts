@@ -1,6 +1,7 @@
 import BaseHub from "./BaseHub";
 import methodNames from "./methodNames";
 import {
+  createOperationLog,
   GameChangedNotification,
   RequestBankTransferApproval,
   RequestMoneyTransfer,
@@ -10,7 +11,8 @@ export default class GameHub extends BaseHub {
   constructor(
     gameChangedNotification: GameChangedNotification,
     requestBankTransferApproval: RequestBankTransferApproval,
-    requestMoneyTransfer: RequestMoneyTransfer
+    requestMoneyTransfer: RequestMoneyTransfer,
+    createOperationLog: createOperationLog
   ) {
     super("/game");
 
@@ -23,8 +25,7 @@ export default class GameHub extends BaseHub {
       requestBankTransferApproval
     );
     this.connection.on(methodNames.requestMoneyTransfer, requestMoneyTransfer);
-    //todo implement this accordingly to the methods above
-    this.connection.on("createOperationLog", (logType, toAccount, amount, fromAccount) => console.log({logType, toAccount, amount, fromAccount}));
+    this.connection.on(methodNames.createOperationLog, createOperationLog);
   }
 
   async initializeAccount(accountId: string): Promise<void> {
