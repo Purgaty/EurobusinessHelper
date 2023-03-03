@@ -41,6 +41,18 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
     [gameDetails, identity]
   );
 
+  const getAccountNameAndEmail = useCallback(
+    (accountId: string) => {
+      return (
+        gameDetails?.accounts?.find((a) => a.id === accountId)?.name +
+          " (" +
+          gameDetails?.accounts?.find((a) => a.id === accountId)?.email +
+          ")" || ""
+      );
+    },
+    [gameDetails]
+  );
+
   useEffect(() => {
     if (!currentAccountId) return;
     const hub = new GameHub(
@@ -65,28 +77,34 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
           logMessage =
             "[" +
             time +
-            "] Transfer completed: Player " +
-            toAccount +
+            "] " +
+            getAccountNameAndEmail(toAccount) +
             " recieved $" +
             amount +
-            " from player " +
-            fromAccount +
+            " from " +
+            getAccountNameAndEmail(fromAccount) +
             ".";
         } else if (logType === GameOperatingLog.BankTransferCompleted) {
           logMessage =
             "[" +
             time +
-            "] Bant transfer completed: Player " +
-            toAccount +
+            "] " +
+            getAccountNameAndEmail(toAccount) +
             " recieved $" +
             amount +
-            " from the bank";
+            " from the bank.";
         }
         setOperationLog([logMessage, ...(operationLog || [])]);
       }
     );
     hub.initializeAccount(currentAccountId).then(() => setHub(hub));
-  }, [currentAccountId, dispatch, gameId, operationLog]);
+  }, [
+    currentAccountId,
+    dispatch,
+    gameId,
+    getAccountNameAndEmail,
+    operationLog,
+  ]);
 
   const showErrorMessage = useCallback(
     (message: string) => {
