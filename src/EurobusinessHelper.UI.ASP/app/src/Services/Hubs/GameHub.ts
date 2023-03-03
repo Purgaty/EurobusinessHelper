@@ -31,12 +31,10 @@ export default class GameHub extends BaseHub {
   async initializeAccount(accountId: string): Promise<void> {
     await super.establishConnection();
     await this.connection.send(methodNames.registerAccount, accountId);
-    console.info(`Account ${accountId} registered`);
   }
 
   async initializeGame(gameId: string): Promise<void> {
     await super.establishConnection();
     await this.connection.send(methodNames.registerGame, gameId);
-    console.info(`Game ${gameId} registered`);
   }
 }
