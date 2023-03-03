@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using EurobusinessHelper.Application.Common.Exceptions;
 using EurobusinessHelper.Application.Common.Interfaces;
+using EurobusinessHelper.Application.Common.Models;
 using EurobusinessHelper.Application.Identities.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,8 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
         await UpdateAccountBalance(request, cancellationToken);
 
         await _gameHubConnector.SendGameChangedNotifications(request.GameId);
+        await _gameHubConnector.CreateOperationLog(GameOperationLog.TransferCompleted, request.GameId,
+            request.ToAccount, request.Amount, request.FromAccount);
         
         return Unit.Value;
     }
