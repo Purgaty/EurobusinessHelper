@@ -7,14 +7,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
 import Loader from "../../Loader";
-import {
-  changeGameState,
-  deleteGame,
-  fetchDetails,
-  getErrorMessage,
-  joinGame,
-  refreshGames,
-} from "../actions";
+import { changeGameState, deleteGame, fetchDetails, getErrorMessage, joinGame, refreshGames } from "../actions";
 import { selectGameDetails, setOpenGameMode, setShowGames } from "../gameSlice";
 import { Account, GameState } from "../types";
 import "./GameDetails.scss";
@@ -56,6 +49,7 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
   useEffect(() => {
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
+      //Functions below won't be triggered in this mode
       () => {},
       () => {},
       () => {}
@@ -84,39 +78,34 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
         </div>
         <div className="dates">
           <div className="created">
-            Created on:{" "}
-            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.createdOn}</Moment>
+            Created on: <Moment format="yyyy-MM-DD HH:mm">{gameDetails.createdOn}</Moment>
           </div>
           <div className="modified">
-            Last modified:{" "}
-            <Moment format="yyyy-MM-DD HH:mm">{gameDetails.modifiedOn}</Moment>
+            Last modified: <Moment format="yyyy-MM-DD HH:mm">{gameDetails.modifiedOn}</Moment>
           </div>
         </div>
         <div className="line-block">
           <div className="tags">
             <div className="state">{gameDetails?.state}</div>
-            <div className="min-approvals">
-              Min Approvals: {gameDetails?.minimalBankTransferApprovals}
-            </div>
+            <div className="min-approvals">Min Approvals: {gameDetails?.minimalBankTransferApprovals}</div>
             <div className="players">Players: {gameDetails?.accountCount}</div>
           </div>
-          {gameDetails?.createdBy.email === identity?.email &&
-            gameDetails?.accountCount > 0 && (
-              <div className="start-block">
-                <div
-                  className="button button-hover start-button"
-                  onClick={async () => {
-                    await changeGameState(gameDetails?.id, GameState.Started);
-                    dispatch(refreshGames(GameState.New));
-                    dispatch(fetchDetails(gameId, true));
-                    dispatch(setShowGames(GameState.Started));
-                    dispatch(setOpenGameMode(GameState.Started));
-                  }}
-                >
-                  <p className="text">Start Game</p>
-                </div>
+          {gameDetails?.createdBy.email === identity?.email && gameDetails?.accountCount > 0 && (
+            <div className="start-block">
+              <div
+                className="button button-hover start-button"
+                onClick={async () => {
+                  await changeGameState(gameDetails?.id, GameState.Started);
+                  dispatch(refreshGames(GameState.New));
+                  dispatch(fetchDetails(gameId, true));
+                  dispatch(setShowGames(GameState.Started));
+                  dispatch(setOpenGameMode(GameState.Started));
+                }}
+              >
+                <p className="text">Start Game</p>
               </div>
-            )}
+            </div>
+          )}
         </div>
 
         <div className="details-block">
@@ -145,10 +134,7 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <Tooltip
-                      anchorId="password-input"
-                      isOpen={errorMessage === "" ? false : true}
-                    />
+                    <Tooltip anchorId="password-input" isOpen={errorMessage === "" ? false : true} />
                   </>
                 )}
               </div>

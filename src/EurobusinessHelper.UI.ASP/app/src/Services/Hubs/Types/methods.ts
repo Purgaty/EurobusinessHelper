@@ -9,7 +9,7 @@ export type RequestBankTransferApproval = (
 ) => void;
 export type GameListChangedNotification = (state: GameState) => void;
 export type RequestMoneyTransfer = (accountId: string, amount: number) => void;
-export type createOperationLog = (
+export type CreateOperationLog = (
   logType: GameOperatingLog,
   toAccount: string,
   amount: number,

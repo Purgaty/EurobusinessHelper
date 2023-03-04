@@ -1,7 +1,7 @@
 import BaseHub from "./BaseHub";
 import methodNames from "./methodNames";
 import {
-  createOperationLog,
+  CreateOperationLog,
   GameChangedNotification,
   RequestBankTransferApproval,
   RequestMoneyTransfer,
@@ -12,18 +12,12 @@ export default class GameHub extends BaseHub {
     gameChangedNotification: GameChangedNotification,
     requestBankTransferApproval: RequestBankTransferApproval,
     requestMoneyTransfer: RequestMoneyTransfer,
-    createOperationLog: createOperationLog
+    createOperationLog: CreateOperationLog
   ) {
     super("/game");
 
-    this.connection.on(
-      methodNames.gameChangedNotification,
-      gameChangedNotification
-    );
-    this.connection.on(
-      methodNames.requestBankTransferApproval,
-      requestBankTransferApproval
-    );
+    this.connection.on(methodNames.gameChangedNotification, gameChangedNotification);
+    this.connection.on(methodNames.requestBankTransferApproval, requestBankTransferApproval);
     this.connection.on(methodNames.requestMoneyTransfer, requestMoneyTransfer);
     this.connection.on(methodNames.createOperationLog, createOperationLog);
   }
