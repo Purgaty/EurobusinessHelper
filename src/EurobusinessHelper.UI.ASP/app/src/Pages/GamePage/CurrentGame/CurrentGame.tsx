@@ -54,11 +54,17 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
       (requestId, accountTo, amount) => {
-        if (window.confirm(`Account ${accountTo} requested $${amount}. Request id: ${requestId}`))
+        if (
+          window.confirm(
+            `Account ${getAccountNameAndEmail(
+              accountTo
+            )} requested $${amount}. Request id: ${getAccountNameAndEmail(requestId)}`
+          )
+        )
           approveRequest(requestId);
       },
       (account, amount) => {
-        if (window.confirm(`Account ${account} requested $${amount}`))
+        if (window.confirm(`Account ${getAccountNameAndEmail(account)} requested $${amount}`))
           transferMoney(gameId, currentAccountId, account, amount);
       },
       (logType, toAccount, amount, fromAccount) => {
