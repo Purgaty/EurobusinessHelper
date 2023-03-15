@@ -29,7 +29,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   const [amount, setAmount] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [operationLog, setOperationLog] = useState<string[]>([]);
-  const [, setHub] = useState<GameHub | undefined>(undefined);
+  const [hub, setHub] = useState<GameHub | undefined>(undefined);
 
   const gameDetails = useSelector(selectGameDetails(gameId));
   const identity = useAppSelector(selectIdentity);
@@ -83,12 +83,16 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
       (account, amount) => {
         if (window.confirm(`Account ${getAccountNameAndEmail(account)} requested $${amount}.`))
           transferMoney(gameId, currentAccountId, account, amount);
-      },
-      (logType, toAccount, amount, fromAccount) =>
-        setLogMessage(logType, toAccount, amount, fromAccount)
+      }
     );
     hub.initializeAccount(currentAccountId).then(() => setHub(hub));
-  }, [currentAccountId, dispatch, gameId, getAccountNameAndEmail, operationLog, setLogMessage]);
+  }, [currentAccountId, dispatch, gameId, getAccountNameAndEmail]);
+
+  useEffect(() => {
+    hub?.setOperationLog((logType, toAccount, amount, fromAccount) =>
+      setLogMessage(logType, toAccount, amount, fromAccount)
+    );
+  });
 
   const showErrorMessage = useCallback(
     (message: string) => {

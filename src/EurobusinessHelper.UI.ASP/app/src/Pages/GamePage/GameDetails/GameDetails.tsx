@@ -7,7 +7,14 @@ import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
 import Loader from "../../Loader";
-import { changeGameState, deleteGame, fetchDetails, getErrorMessage, joinGame, refreshGames } from "../actions";
+import {
+  changeGameState,
+  deleteGame,
+  fetchDetails,
+  getErrorMessage,
+  joinGame,
+  refreshGames,
+} from "../actions";
 import { selectGameDetails, setOpenGameMode, setShowGames } from "../gameSlice";
 import { Account, GameState } from "../types";
 import "./GameDetails.scss";
@@ -51,7 +58,6 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
       () => dispatch(fetchDetails(gameId, true)),
       //Functions below won't be triggered in this mode
       () => {},
-      () => {},
       () => {}
     );
     hub.initializeGame(gameId).then(() => setHub(hub));
@@ -87,7 +93,9 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
         <div className="line-block">
           <div className="tags">
             <div className="state">{gameDetails?.state}</div>
-            <div className="min-approvals">Min Approvals: {gameDetails?.minimalBankTransferApprovals}</div>
+            <div className="min-approvals">
+              Min Approvals: {gameDetails?.minimalBankTransferApprovals}
+            </div>
             <div className="players">Players: {gameDetails?.accountCount}</div>
           </div>
           {gameDetails?.createdBy.email === identity?.email && gameDetails?.accountCount > 0 && (
@@ -134,7 +142,10 @@ export const GameDetails = ({ gameId }: GameDetailsProps) => {
                       onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <Tooltip anchorId="password-input" isOpen={errorMessage === "" ? false : true} />
+                    <Tooltip
+                      anchorId="password-input"
+                      isOpen={errorMessage === "" ? false : true}
+                    />
                   </>
                 )}
               </div>

@@ -11,15 +11,13 @@ export default class GameHub extends BaseHub {
   constructor(
     gameChangedNotification: GameChangedNotification,
     requestBankTransferApproval: RequestBankTransferApproval,
-    requestMoneyTransfer: RequestMoneyTransfer,
-    createOperationLog: CreateOperationLog
+    requestMoneyTransfer: RequestMoneyTransfer
   ) {
     super("/game");
 
     this.connection.on(methodNames.gameChangedNotification, gameChangedNotification);
     this.connection.on(methodNames.requestBankTransferApproval, requestBankTransferApproval);
     this.connection.on(methodNames.requestMoneyTransfer, requestMoneyTransfer);
-    this.connection.on(methodNames.createOperationLog, createOperationLog);
   }
 
   async initializeAccount(accountId: string): Promise<void> {
@@ -30,5 +28,9 @@ export default class GameHub extends BaseHub {
   async initializeGame(gameId: string): Promise<void> {
     await super.establishConnection();
     await this.connection.send(methodNames.registerGame, gameId);
+  }
+
+  async setOperationLog(createOperationLog: CreateOperationLog): Promise<void> {
+    this.connection.on(methodNames.createOperationLog, createOperationLog);
   }
 }
