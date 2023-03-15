@@ -61,3 +61,15 @@
   height: fit-content;
   margin-left: auto;
 }
+
+.no-results-block {
+  width: 90%;
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  text-align: center;
+  font-size: 1.5em;
+}
