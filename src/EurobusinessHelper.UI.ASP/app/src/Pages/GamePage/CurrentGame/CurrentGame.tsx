@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
+import { GameOperatingLog } from "../../../Services/Hubs/Types/types";
 import Loader from "../../Loader";
 import {
   approveRequest,
@@ -27,16 +28,44 @@ interface CurrentGameProps {
 export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   const [amount, setAmount] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [, setHub] = useState<GameHub | undefined>(undefined);
+  const [operationLog, setOperationLog] = useState<string[]>([]);
+  const [hub, setHub] = useState<GameHub | undefined>(undefined);
 
   const gameDetails = useSelector(selectGameDetails(gameId));
   const identity = useAppSelector(selectIdentity);
 
   const dispatch = useDispatch();
   const currentAccountId = useMemo(
-    () =>
-      gameDetails?.accounts?.find((a) => a.email === identity?.email)?.id || "",
+    () => gameDetails?.accounts?.find((a) => a.email === identity?.email)?.id || "",
     [gameDetails, identity]
+  );
+
+  const getAccountNameAndEmail = useCallback(
+    (accountId: string) => {
+      const account = gameDetails?.accounts?.find((a) => a.id === accountId);
+
+      return `${account?.name} (${account?.email})`;
+    },
+    [gameDetails]
+  );
+
+  const setLogMessage = useCallback(
+    (logType: GameOperatingLog, toAccount: string, amount: number, fromAccount: string) => {
+      const time = new Date().toLocaleTimeString();
+      let logMessage = "";
+
+      if (logType === GameOperatingLog.TransferCompleted) {
+        logMessage = `[${time}] ${getAccountNameAndEmail(
+          toAccount
+        )} recieved $${amount} from ${getAccountNameAndEmail(fromAccount)}.`;
+      } else if (logType === GameOperatingLog.BankTransferCompleted) {
+        logMessage = `[${time}] ${getAccountNameAndEmail(
+          toAccount
+        )} recieved $${amount} from the bank.`;
+      }
+      setOperationLog([logMessage, ...operationLog]);
+    },
+    [getAccountNameAndEmail, operationLog]
   );
 
   useEffect(() => {
@@ -46,18 +75,24 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
       (requestId, accountTo, amount) => {
         if (
           window.confirm(
-            `Account ${accountTo} requested $${amount}. Request id: ${requestId}`
+            `Account ${getAccountNameAndEmail(accountTo)} requested $${amount} from the bank.`
           )
         )
           approveRequest(requestId);
       },
       (account, amount) => {
-        if (window.confirm(`Account ${account} requested $${amount}`))
+        if (window.confirm(`Account ${getAccountNameAndEmail(account)} requested $${amount}.`))
           transferMoney(gameId, currentAccountId, account, amount);
       }
     );
     hub.initializeAccount(currentAccountId).then(() => setHub(hub));
-  }, [currentAccountId, dispatch, gameId]);
+  }, [currentAccountId, dispatch, gameId, getAccountNameAndEmail]);
+
+  useEffect(() => {
+    hub?.setOperationLog((logType, toAccount, amount, fromAccount) =>
+      setLogMessage(logType, toAccount, amount, fromAccount)
+    );
+  });
 
   const showErrorMessage = useCallback(
     (message: string) => {
@@ -95,13 +130,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
         showErrorMessage(getErrorMessage(error.response.data.ErrorCode));
       }
     },
-    [
-      validateTransferCommand,
-      gameId,
-      currentAccountId,
-      dispatch,
-      showErrorMessage,
-    ]
+    [validateTransferCommand, gameId, currentAccountId, dispatch, showErrorMessage]
   );
 
   const handleRequest = useCallback(
@@ -115,13 +144,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
         showErrorMessage(getErrorMessage(error.response.data.ErrorCode));
       }
     },
-    [
-      validateTransferCommand,
-      gameId,
-      currentAccountId,
-      dispatch,
-      showErrorMessage,
-    ]
+    [validateTransferCommand, gameId, currentAccountId, dispatch, showErrorMessage]
   );
 
   if (gameDetails && identity) {
@@ -171,7 +194,17 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
               <p className="text">Request</p>
             </div>
           </div>
-          <div className="log-container"></div>
+          <div className="log-container">
+            <div className="log-messages">
+              {operationLog.map((entry, i) => {
+                return (
+                  <p className="log-entry" key={i}>
+                    {entry}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     );
