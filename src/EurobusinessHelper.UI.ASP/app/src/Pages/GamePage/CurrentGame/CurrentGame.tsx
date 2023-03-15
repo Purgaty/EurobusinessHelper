@@ -54,13 +54,7 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
       (requestId, accountTo, amount) => {
-        if (
-          window.confirm(
-            `Account ${getAccountNameAndEmail(
-              accountTo
-            )} requested $${amount}. Request id: ${getAccountNameAndEmail(requestId)}`
-          )
-        )
+        if (window.confirm(`Account ${getAccountNameAndEmail(accountTo)} requested $${amount}.`))
           approveRequest(requestId);
       },
       (account, amount) => {
