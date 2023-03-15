@@ -49,36 +49,46 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
     [gameDetails]
   );
 
+  const setLogMessage = useCallback(
+    (logType: GameOperatingLog, toAccount: string, amount: number, fromAccount: string) => {
+      const time = new Date().toLocaleTimeString();
+      let logMessage = "";
+
+      if (logType === GameOperatingLog.TransferCompleted) {
+        logMessage = `[${time}] ${getAccountNameAndEmail(
+          toAccount
+        )} recieved $${amount} from ${getAccountNameAndEmail(fromAccount)}.`;
+      } else if (logType === GameOperatingLog.BankTransferCompleted) {
+        logMessage = `[${time}] ${getAccountNameAndEmail(
+          toAccount
+        )} recieved $${amount} from the bank.`;
+      }
+      setOperationLog([logMessage, ...operationLog]);
+    },
+    [getAccountNameAndEmail, operationLog]
+  );
+
   useEffect(() => {
     if (!currentAccountId) return;
     const hub = new GameHub(
       () => dispatch(fetchDetails(gameId, true)),
       (requestId, accountTo, amount) => {
-        if (window.confirm(`Account ${getAccountNameAndEmail(accountTo)} requested $${amount}.`))
+        if (
+          window.confirm(
+            `Account ${getAccountNameAndEmail(accountTo)} requested $${amount} from the bank.`
+          )
+        )
           approveRequest(requestId);
       },
       (account, amount) => {
-        if (window.confirm(`Account ${getAccountNameAndEmail(account)} requested $${amount}`))
+        if (window.confirm(`Account ${getAccountNameAndEmail(account)} requested $${amount}.`))
           transferMoney(gameId, currentAccountId, account, amount);
       },
-      (logType, toAccount, amount, fromAccount) => {
-        const time = new Date().toLocaleTimeString();
-        let logMessage = "";
-
-        if (logType === GameOperatingLog.TransferCompleted) {
-          logMessage = `[${time}] ${getAccountNameAndEmail(
-            toAccount
-          )} recieved $${amount} from ${getAccountNameAndEmail(fromAccount)}.`;
-        } else if (logType === GameOperatingLog.BankTransferCompleted) {
-          logMessage = `[${time}] ${getAccountNameAndEmail(
-            toAccount
-          )} recieved $${amount} from the bank.`;
-        }
-        setOperationLog([logMessage, ...operationLog]);
-      }
+      (logType, toAccount, amount, fromAccount) =>
+        setLogMessage(logType, toAccount, amount, fromAccount)
     );
     hub.initializeAccount(currentAccountId).then(() => setHub(hub));
-  }, [currentAccountId, dispatch, gameId, getAccountNameAndEmail, operationLog]);
+  }, [currentAccountId, dispatch, gameId, getAccountNameAndEmail, operationLog, setLogMessage]);
 
   const showErrorMessage = useCallback(
     (message: string) => {
