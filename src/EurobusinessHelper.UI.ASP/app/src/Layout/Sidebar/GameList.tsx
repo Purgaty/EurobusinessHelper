@@ -1,12 +1,10 @@
 import React, { useCallback } from "react";
 import { FaLock, FaLockOpen } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useAppDispatch } from "../../app/hooks";
-import {
-  setOpenGameMode,
-  setSelectedGame,
-} from "../../Pages/GamePage/gameSlice";
+import { setOpenGameMode, setSelectedGame } from "../../Pages/GamePage/gameSlice";
 import { Game, GameState } from "../../Pages/GamePage/types";
 import "./GameList.scss";
 
@@ -28,14 +26,10 @@ export const GameList = ({ list, gameMode }: GameListProps) => {
 
   return (
     <div className="game-list">
-      {list?.map((game, i) => {
-        return (
+      {list.length > 0 ? (
+        list?.map((game, i) => (
           <div className="game-list-item" key={i}>
-            <Tooltip
-              anchorId={`game-${game.id}`}
-              className="tooltip"
-              positionStrategy="fixed"
-            />
+            <Tooltip anchorId={`game-${game.id}`} className="tooltip" positionStrategy="fixed" />
             <div
               className="game"
               id={`game-${game.id}`}
@@ -52,8 +46,13 @@ export const GameList = ({ list, gameMode }: GameListProps) => {
               </div>
             </div>
           </div>
-        );
-      })}
+        ))
+      ) : (
+        <div className="no-results-block">
+          <ImCross className="no-results-icon" />
+          <div className="no-restults-text">No results</div>
+        </div>
+      )}
     </div>
   );
 };

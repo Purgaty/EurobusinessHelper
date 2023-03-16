@@ -16,6 +16,12 @@ const GameSearch = ({ gameState }: GameSearchProps) => {
   const handleInput = (event: any) => {
     setSearch(event.target.value);
   };
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      handleInput(event);
+      dispatch(fetchGames(gameState, search));
+    }
+  };
 
   return (
     <div className="search-bar">
@@ -25,11 +31,9 @@ const GameSearch = ({ gameState }: GameSearchProps) => {
         placeholder="Search..."
         value={search}
         onChange={handleInput}
+        onKeyDown={handleKeyDown}
       />
-      <div
-        className="button search-button"
-        onClick={() => dispatch(fetchGames(gameState, search))}
-      >
+      <div className="button search-button" onClick={() => dispatch(fetchGames(gameState, search))}>
         <BiSearch />
       </div>
     </div>
