@@ -26,30 +26,28 @@ export const GameList = ({ list, gameMode }: GameListProps) => {
 
   return (
     <div className="game-list">
-      {list.length > 0 &&
-        list?.map((game, i) => {
-          return (
-            <div className="game-list-item" key={i}>
-              <Tooltip anchorId={`game-${game.id}`} className="tooltip" positionStrategy="fixed" />
-              <div
-                className="game"
-                id={`game-${game.id}`}
-                data-tooltip-content={game.name}
-                data-tooltip-place="bottom"
-                data-tooltip-delay-show={500}
-              >
-                <p className="game-name" onClick={() => onGameClick(game.id)}>
-                  {game.name}
-                </p>
+      {list.length > 0 ? (
+        list?.map((game, i) => (
+          <div className="game-list-item" key={i}>
+            <Tooltip anchorId={`game-${game.id}`} className="tooltip" positionStrategy="fixed" />
+            <div
+              className="game"
+              id={`game-${game.id}`}
+              data-tooltip-content={game.name}
+              data-tooltip-place="bottom"
+              data-tooltip-delay-show={500}
+            >
+              <p className="game-name" onClick={() => onGameClick(game.id)}>
+                {game.name}
+              </p>
 
-                <div className="lock-icon">
-                  {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
-                </div>
+              <div className="lock-icon">
+                {game.isPasswordProtected ? <FaLock /> : <FaLockOpen />}
               </div>
             </div>
-          );
-        })}
-      {list.length === 0 && (
+          </div>
+        ))
+      ) : (
         <div className="no-results-block">
           <ImCross className="no-results-icon" />
           <div className="no-restults-text">No results</div>
