@@ -48,46 +48,44 @@ const AppSidebar = () => {
     dispatch(refreshGames(GameState.New, true));
   }, [dispatch, isIdentityLoaded]);
 
-  return (
-    <div className="sidebar">
-      <BiSearch className="search-icon" />
-      <div className="menu-open">
-        <GameSearch gameState={showGames} />
-        <div className="games-switch">
-          <p
-            className={
-              "games-switch-title " +
-              (showGames === GameState.New && "current-list")
-            }
-            onClick={() => {
-              dispatch(setShowGames(GameState.New));
-            }}
+  if (isIdentityLoaded)
+    return (
+      <div className="sidebar">
+        <BiSearch className="search-icon" />
+        <div className="menu-open">
+          <GameSearch gameState={showGames} />
+          <div className="games-switch">
+            <p
+              className={"games-switch-title " + (showGames === GameState.New && "current-list")}
+              onClick={() => {
+                dispatch(setShowGames(GameState.New));
+              }}
+            >
+              New
+            </p>
+            <p
+              className={
+                "games-switch-title " + (showGames === GameState.Started && "current-list")
+              }
+              onClick={() => {
+                dispatch(setShowGames(GameState.Started));
+              }}
+            >
+              Started
+            </p>
+          </div>
+          <GameList list={checkGameList()} gameMode={showGames} />
+          <div
+            className="button button-hover add-game-button"
+            onClick={() => dispatch(setOpenGameMode(GameState.NotCreated))}
           >
-            New
-          </p>
-          <p
-            className={
-              "games-switch-title " +
-              (showGames === GameState.Started && "current-list")
-            }
-            onClick={() => {
-              dispatch(setShowGames(GameState.Started));
-            }}
-          >
-            Started
-          </p>
-        </div>
-        <GameList list={checkGameList()} gameMode={showGames} />
-        <div
-          className="button button-hover add-game-button"
-          onClick={() => dispatch(setOpenGameMode(GameState.NotCreated))}
-        >
-          <p className="add-text">Add Game</p>
-          <IoMdAddCircleOutline className="add-icon" />
+            <p className="add-text">Add Game</p>
+            <IoMdAddCircleOutline className="add-icon" />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  else return <></>;
 };
 
 export default AppSidebar;
