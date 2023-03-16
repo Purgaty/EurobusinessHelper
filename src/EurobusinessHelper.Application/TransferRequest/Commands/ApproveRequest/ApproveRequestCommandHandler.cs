@@ -26,8 +26,8 @@ public class ApproveRequestCommandHandler : IRequestHandler<ApproveRequestComman
         await ValidateRequest(request, cancellationToken);
 
         var transferRequest = await ApproveTransferRequest(request.RequestId, cancellationToken);
-        if (transferRequest.Approved)
-            await CompleteTransfer(transferRequest);
+        if (transferRequest.HasBeenApproved)
+            await CompleteTransfer(transferRequest.Request);
         
         return Unit.Value;
     }
@@ -42,21 +42,25 @@ public class ApproveRequestCommandHandler : IRequestHandler<ApproveRequestComman
         await _mediator.Send(command);
     }
 
-    private async Task<Domain.Entities.TransferRequest> ApproveTransferRequest(Guid requestId, CancellationToken cancellationToken)
+    private async Task<(Domain.Entities.TransferRequest Request, bool HasBeenApproved)> ApproveTransferRequest(Guid requestId, CancellationToken cancellationToken)
     {
         var approvalsNeeded = await ApprovalsNeeded(requestId, cancellationToken);
         Domain.Entities.TransferRequest request;
+        var hasBeenApproved = false;
         await using var transaction = _dbContext.BeginTransaction(IsolationLevel.Serializable);
         request = await _dbContext.TransferRequest
             .Include(r => r.Account)
             .FirstAsync(r => r.Id == requestId, cancellationToken);
         request.ApprovalCount++;
         if (request.ApprovalCount == approvalsNeeded)
+        {
             request.Approved = true;
+            hasBeenApproved = true;
+        }
         await _dbContext.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
 
-        return request;
+        return (request, hasBeenApproved);
     }
 
     private async Task<int> ApprovalsNeeded(Guid requestId, CancellationToken cancellationToken)
