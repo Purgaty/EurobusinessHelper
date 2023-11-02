@@ -62,6 +62,10 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
         logMessage = `[${time}] ${getAccountNameAndEmail(
           toAccount
         )} recieved $${amount} from the bank.`;
+      } else if (logType === GameOperatingLog.PaymentCompleted) {
+          logMessage = `[${time}] ${getAccountNameAndEmail(
+              fromAccount
+          )} paid $${amount} to the bank.`;
       }
       setOperationLog([logMessage, ...operationLog]);
     },

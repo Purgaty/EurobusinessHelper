@@ -51,7 +51,7 @@ public class GameHubConnector : IGameHubConnector
         await _hubContext.Clients.Client(connectionId).SendAsync(GameHubMethodNames.RequestMoneyTransfer, fromAccount, amount);
     }
 
-    public async Task CreateOperationLog(GameOperationLog logType, Guid gameId, Guid toAccount, int amount, Guid? fromAccount)
+    public async Task CreateOperationLog(GameOperationLog logType, Guid gameId, Guid? toAccount, int amount, Guid? fromAccount)
     {
         var gameAccounts = _connectedAccountsManager.GetGameAccounts(gameId);
         var tasks = gameAccounts
@@ -61,7 +61,7 @@ public class GameHubConnector : IGameHubConnector
         await Task.WhenAll(tasks);
     }
 
-    private static async Task CreateOperationLog(IClientProxy client, GameOperationLog logType, Guid toAccount, int amount, Guid? fromAccount)
+    private static async Task CreateOperationLog(IClientProxy client, GameOperationLog logType, Guid? toAccount, int amount, Guid? fromAccount)
     {
         await client.SendAsync(GameHubMethodNames.CreateOperationLog, logType, toAccount, amount, fromAccount);
     }
