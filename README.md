@@ -1,2 +1,2 @@
 # EurobusinessHelper
-Money management app for eurobusiness
+Money management app for Eurobusiness/Monopoly
