@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdOutlineVideogameAssetOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { Tooltip } from "react-tooltip";
 import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
@@ -103,13 +104,13 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   );
 
   const validateTransferCommand = useCallback(
-    (amount: string, account: Account) => {
+    (amount: string, accountId: string) => {
       if (!amount) {
         showErrorMessage("Invalid amount");
         return false;
       }
 
-      if (currentAccountId === account.id) {
+      if (currentAccountId === accountId) {
         showErrorMessage("Invalid account");
         return false;
       }
@@ -120,11 +121,11 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   );
 
   const handleTransfer = useCallback(
-    async (account: Account, amount: string) => {
-      if (!validateTransferCommand(amount, account)) return;
+    async (accountId: string, amount: string) => {
+      if (!validateTransferCommand(amount, accountId)) return;
 
       try {
-        await transferMoney(gameId, currentAccountId, account.id, +amount);
+        await transferMoney(gameId, currentAccountId, accountId, +amount);
         dispatch(fetchDetails(gameId, true));
       } catch (error: any) {
         showErrorMessage(getErrorMessage(error.response.data.ErrorCode));
@@ -134,11 +135,11 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
   );
 
   const handleRequest = useCallback(
-    async (account: Account, amount: string) => {
-      if (!validateTransferCommand(amount, account)) return;
+    async (accountId: string, amount: string) => {
+      if (!validateTransferCommand(amount, accountId)) return;
 
       try {
-        await requestMoney(gameId, currentAccountId, account.id, +amount);
+        await requestMoney(gameId, currentAccountId, accountId, +amount);
         dispatch(fetchDetails(gameId, true));
       } catch (error: any) {
         showErrorMessage(getErrorMessage(error.response.data.ErrorCode));
@@ -147,10 +148,36 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
     [validateTransferCommand, gameId, currentAccountId, dispatch, showErrorMessage]
   );
 
+  const handleBankRequest = useCallback(
+    async (accountId: string, amount: string) => {
+      if (!validateTransferCommand(amount, accountId)) return;
+
+      try {
+        bankRequest(accountId, +amount);
+        dispatch(fetchDetails(gameId, true));
+      } catch (error: any) {
+        showErrorMessage(getErrorMessage(error.response.data.ErrorCode));
+      }
+    },
+    [validateTransferCommand, gameId, dispatch, showErrorMessage]
+  );
+
   if (gameDetails && identity) {
     return (
       <div className="current-game-container">
-        <div className="current-game-title">
+        <Tooltip
+          anchorId="current-game-title"
+          className="tooltip"
+          noArrow={true}
+          isOpen={errorMessage === "" ? false : true}
+        />
+        <div
+          className="current-game-title"
+          id="current-game-title"
+          data-tooltip-content={errorMessage}
+          data-tooltip-place="top"
+          data-tooltip-variant="error"
+        >
           {gameDetails?.name}
           {gameDetails?.createdBy.email === identity?.email && (
             <div
@@ -173,23 +200,27 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
               key={account.id}
               handleTransfer={handleTransfer}
               handleRequest={handleRequest}
-              errorMessage={errorMessage}
             />
           ))}
         </div>
         <div className="bottom-block">
           <div className="request-block">
             <p className="rquest-text">Bank Request:</p>
+
             <input
               type="text"
               value={amount}
+              id="bank-request-input"
               className="input amount-input"
               placeholder="Value"
               onChange={(e) => setAmount(e.target.value)}
             />
             <div
               className="button button-hover request-button"
-              onClick={() => bankRequest(currentAccountId, +amount)}
+              onClick={() => {
+                handleBankRequest(currentAccountId, amount);
+                setAmount("");
+              }}
             >
               <p className="text">Request</p>
             </div>
