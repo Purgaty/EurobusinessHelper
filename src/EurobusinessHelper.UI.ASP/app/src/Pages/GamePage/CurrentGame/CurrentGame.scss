@@ -62,17 +62,23 @@
   gap: 1em;
 }
 
-.request-block {
+.bank-block {
   width: 40%;
   min-width: fit-content;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   gap: 0.5em;
 
   .amount-input {
     width: 20%;
   }
+}
+
+.buttons-block {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
 }
 
 .log-container {

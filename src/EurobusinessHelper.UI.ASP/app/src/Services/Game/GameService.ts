@@ -1,18 +1,11 @@
 import axios from "axios";
+import { Game, GameInfo, GameState, JoinGameData } from "../../Pages/GamePage/types";
 import config from "../../app/config";
-import {
-  Game,
-  GameInfo,
-  GameState,
-  JoinGameData,
-} from "../../Pages/GamePage/types";
 import { NewGame } from "./types";
 
 export default class GameService {
   static async getGames(state: GameState, query: string): Promise<Game[]> {
-    const response = await axios.get(
-      config.apiUrl + "/api/game/" + state + "?query=" + query
-    );
+    const response = await axios.get(config.apiUrl + "/api/game/" + state + "?query=" + query);
     return response?.data.items;
   }
 
@@ -30,10 +23,7 @@ export default class GameService {
     return response.data;
   }
 
-  static async changeGameState(
-    gameId: string,
-    state: GameState
-  ): Promise<void> {
+  static async changeGameState(gameId: string, state: GameState): Promise<void> {
     await axios.put(config.apiUrl + "/api/game/" + gameId + "/state/" + state);
   }
 
@@ -43,15 +33,10 @@ export default class GameService {
     receiverId: string,
     amount: number
   ): Promise<void> {
-    await axios.post(
-      config.apiUrl +
-        "/api/game/" +
-        gameId +
-        "/account/" +
-        payerId +
-        "/transfer",
-      { accountId: receiverId, amount: amount }
-    );
+    await axios.post(config.apiUrl + "/api/game/" + gameId + "/account/" + payerId + "/transfer", {
+      accountId: receiverId,
+      amount: amount,
+    });
   }
 
   static async createGame(game: NewGame): Promise<string> {
@@ -66,26 +51,26 @@ export default class GameService {
     });
   }
 
+  static async bankTransfer(gameId: string, payerId: string, amount: number): Promise<void> {
+    await axios.post(config.apiUrl + "/api/game/" + gameId + "/account/" + payerId + "/transfer", {
+      accountId: null,
+      amount: amount,
+    });
+  }
+
   static async requestMoney(
     gameId: string,
     payerId: string,
     receiverId: string,
     amount: number
   ): Promise<void> {
-    await axios.post(
-      config.apiUrl +
-        "/api/game/" +
-        gameId +
-        "/account/" +
-        payerId +
-        "/request",
-      { accountId: receiverId, amount: amount }
-    );
+    await axios.post(config.apiUrl + "/api/game/" + gameId + "/account/" + payerId + "/request", {
+      accountId: receiverId,
+      amount: amount,
+    });
   }
 
   static async approveRequest(requestId: string): Promise<void> {
-    await axios.put(
-      config.apiUrl + "/api/transferRequest/" + requestId + "/approve"
-    );
+    await axios.put(config.apiUrl + "/api/transferRequest/" + requestId + "/approve");
   }
 }

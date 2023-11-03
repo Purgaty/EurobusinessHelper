@@ -49,7 +49,7 @@ public class AccountController : ControllerBase
 
     [HttpPost("request")]
     public async Task<IActionResult> RequestMoneyTransfer(Guid gameId, Guid accountId,
-        [FromBody] TransferMoneyRequest request)
+        [FromBody] RequestMoneyTransferRequest request)
     {
         var command = new RequestMoneyTransferCommand
         {

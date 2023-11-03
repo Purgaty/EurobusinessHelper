@@ -6,7 +6,7 @@ public class PasswordHasher : IPasswordHasher
 {
     public string GetPasswordHash(string password)
     {
-        var generator = new Rfc2898DeriveBytes(password, 0);
+        var generator = new Rfc2898DeriveBytes(password, 0, 10_000, HashAlgorithmName.SHA512);
         var hash = generator.GetBytes(20);
         return Convert.ToBase64String(hash);
     }

@@ -3,5 +3,6 @@
 public enum GameOperationLog
 {
     TransferCompleted,
-    BankTransferCompleted
+    BankTransferCompleted,
+    PaymentCompleted
 }

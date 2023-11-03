@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdOutlineVideogameAssetOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "../../../app/hooks";
 import { selectIdentity } from "../../../Layout/Footer/authSlice";
 import GameHub from "../../../Services/Hubs/GameHub";
 import { GameOperatingLog } from "../../../Services/Hubs/Types/types";
+import { useAppSelector } from "../../../app/hooks";
 import Loader from "../../Loader";
 import {
   approveRequest,
   bankRequest,
+  bankTransfer,
   changeGameState,
   fetchDetails,
   getErrorMessage,
@@ -62,6 +63,10 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
         logMessage = `[${time}] ${getAccountNameAndEmail(
           toAccount
         )} recieved $${amount} from the bank.`;
+      } else if (logType === GameOperatingLog.PaymentCompleted) {
+        logMessage = `[${time}] ${getAccountNameAndEmail(
+          fromAccount
+        )} paid $${amount} to the bank.`;
       }
       setOperationLog([logMessage, ...operationLog]);
     },
@@ -178,8 +183,8 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
           ))}
         </div>
         <div className="bottom-block">
-          <div className="request-block">
-            <p className="rquest-text">Bank Request:</p>
+          <div className="bank-block">
+            <p className="rquest-text">Bank Transactions:</p>
             <input
               type="text"
               value={amount}
@@ -187,11 +192,19 @@ export const CurrentGame = ({ gameId }: CurrentGameProps) => {
               placeholder="Value"
               onChange={(e) => setAmount(e.target.value)}
             />
-            <div
-              className="button button-hover request-button"
-              onClick={() => bankRequest(currentAccountId, +amount)}
-            >
-              <p className="text">Request</p>
+            <div className="buttons-block">
+              <div
+                className="button button-hover request-button"
+                onClick={() => bankRequest(currentAccountId, +amount)}
+              >
+                <p className="text">Request</p>
+              </div>
+              <div
+                className="button button-hover transfer-button"
+                onClick={() => bankTransfer(gameId, currentAccountId, +amount)}
+              >
+                <p className="text">Transfer</p>
+              </div>
             </div>
           </div>
           <div className="log-container">

@@ -27,14 +27,21 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
         await UpdateAccountBalance(request, cancellationToken);
 
         await _gameHubConnector.SendGameChangedNotifications(request.GameId);
-        await _gameHubConnector.CreateOperationLog(GameOperationLog.TransferCompleted, request.GameId,
-            request.ToAccount, request.Amount, request.FromAccount);
+        await _gameHubConnector.CreateOperationLog(
+            request.ToAccount.HasValue
+                ? GameOperationLog.TransferCompleted
+                : GameOperationLog.PaymentCompleted,
+            request.GameId,
+            request.ToAccount,
+            request.Amount,
+            request.FromAccount);
         
         return Unit.Value;
     }
 
     private async Task UpdateAccountBalance(TransferMoneyCommand request, CancellationToken cancellationToken)
     {
+        var isBankTransaction = !request.ToAccount.HasValue;
         await using var transaction = _dbContext.BeginTransaction(IsolationLevel.Serializable);
         
         var accountFrom = await _dbContext.Accounts
@@ -42,11 +49,14 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
         if (accountFrom.Balance < request.Amount)
             throw new EurobusinessException(EurobusinessExceptionCode.InsufficientFunds,
                 $"Insufficient funds on account {accountFrom}");
-        var accountTo = await _dbContext.Accounts
-            .FirstOrDefaultAsync(a => a.Id == request.ToAccount, cancellationToken);
-        
         accountFrom.Balance -= request.Amount;
-        accountTo.Balance += request.Amount;
+        
+        if (!isBankTransaction)
+        {
+            var accountTo = await _dbContext.Accounts
+                .FirstOrDefaultAsync(a => a.Id == request.ToAccount.Value, cancellationToken);
+            accountTo.Balance += request.Amount;
+        }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
@@ -54,7 +64,8 @@ public class TransferMoneyCommandHandler : IRequestHandler<TransferMoneyCommand>
 
     private async Task ValidateCommand(TransferMoneyCommand request, CancellationToken cancellationToken)
     {
-        await ValidateAccount(request.ToAccount, request.GameId, cancellationToken);
+        if(request.ToAccount.HasValue)
+            await ValidateAccount(request.ToAccount.Value, request.GameId, cancellationToken);
         await ValidateAccount(request.FromAccount, request.GameId, cancellationToken);
         await ValidateAccountOwner(request.FromAccount, cancellationToken);
     }
