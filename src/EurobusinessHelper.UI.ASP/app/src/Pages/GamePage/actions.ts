@@ -30,8 +30,7 @@ export const fetchGames =
 
 const resetSelectedGame = (state: GameState) => (dispatch: Function) => {
   if (dispatch(tryResetSelectedGameFromState(state))) return;
-  const otherState =
-    state === GameState.New ? GameState.Started : GameState.New;
+  const otherState = state === GameState.New ? GameState.Started : GameState.New;
   if (dispatch(tryResetSelectedGameFromState(otherState))) return;
   dispatch(setOpenGameMode(GameState.NotCreated));
 };
@@ -56,10 +55,7 @@ export const fetchDetails =
     dispatch(setGameDetails(details));
   };
 
-export const joinGame = async (
-  gameId: string,
-  password: JoinGameData
-): Promise<void> => {
+export const joinGame = async (gameId: string, password: JoinGameData): Promise<void> => {
   await GameService.joinGame(gameId, password);
 };
 
@@ -67,10 +63,7 @@ export const deleteGame = async (gameId: string): Promise<void> => {
   return await GameService.deleteGame(gameId);
 };
 
-export const changeGameState = async (
-  gameId: string,
-  state: GameState
-): Promise<void> => {
+export const changeGameState = async (gameId: string, state: GameState): Promise<void> => {
   await GameService.changeGameState(gameId, state);
 };
 
@@ -131,11 +124,16 @@ export const createNewGame = async (values: NewGameForm): Promise<string> => {
   return await GameService.createGame(game);
 };
 
-export const bankRequest = async (
-  playerId: string,
+export const bankRequest = async (playerId: string, amount: number): Promise<void> => {
+  await GameService.bankRequest(playerId, amount);
+};
+
+export const bankTransfer = async (
+  gameId: string,
+  payerId: string,
   amount: number
 ): Promise<void> => {
-  await GameService.bankRequest(playerId, amount);
+  await GameService.bankTransfer(gameId, payerId, amount);
 };
 
 export const requestMoney = async (
